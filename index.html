@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voyago Logistics — Moving the World Forward</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <style>
+    .nav-link {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-weight: 800;
+      color: #14213d;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 4px;
+      background: #ff5a14;
+      border-radius: 20px 20px 0 0;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #ff5a14;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    @media (max-width: 1023px) {
+      header {
+        position: sticky;
+      }
+
+      nav {
+        height: 76px;
+      }
+
+      nav a[style*="clip-path"] {
+        width: 260px !important;
+        height: 76px !important;
+        padding-left: 24px !important;
+        font-size: 22px !important;
+      }
+    }
+
+    @media (max-width: 520px) {
+      nav a[style*="clip-path"] {
+        width: 220px !important;
+        font-size: 18px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="toast">✓ <span id="tmsg">Done!</span></div>
+  <div class="chat" onclick="showToast('Our logistics team will connect with you shortly! 🚛',3500)">💬</div>
+
+  <!-- WK Transport Navbar -->
+  <header class="fixed top-0 left-0 z-50 w-full bg-white shadow-sm">
+    <!-- Top Bar -->
+    <div class="relative hidden h-[54px] overflow-hidden bg-[#111] text-white lg:block">
+      
+
+      <div class="relative mx-auto flex h-full max-w-[1280px] items-center justify-between px-6">
+        <div class="ml-[280px] flex items-center gap-8 text-sm font-semibold">
+          <span class="flex items-center gap-2">
+            <span class="text-[#ff5a14]">📍</span>
+            Jones Street, New York, USA
+          </span>
+
+          <span class="h-5 w-px bg-white/20"></span>
+
+          <span class="flex items-center gap-2">
+            <span class="text-[#ff5a14]">✈</span>
+            info@wktransport.com
+          </span>
+        </div>
+
+        <div class="flex h-full items-center">
+          <div class="flex items-center gap-4 text-sm">
+            <a href="#" class="transition hover:text-[#ff5a14]">f</a>
+            <a href="#" class="transition hover:text-[#ff5a14]">x</a>
+            <a href="#" class="transition hover:text-[#ff5a14]">ig</a>
+            <a href="#" class="transition hover:text-[#ff5a14]">in</a>
+          </div>
+
+          <a href="#"
+            class="ml-8 flex h-full items-center bg-[#ff5a14] px-9 text-sm font-bold text-white transition hover:bg-[#e94c0c]"
+            style="clip-path: polygon(14% 0, 100% 0, 86% 100%, 0 100%);">
+            Get a Free Quote »
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <nav class="relative h-[86px] bg-white">
+      <div class="mx-auto flex h-full max-w-[1280px] items-center justify-between px-6">
+        <!-- Logo -->
+        <a href="#"
+          class="absolute left-0 top-0 flex h-[100px] w-[300px] items-center pl-12 text-3xl font-extrabold tracking-wide text-white"
+          style="clip-path: polygon(0 0, 76% 0, 100% 100%, 0% 100%); background:#ff5a14;">
+          WK <br>Transport
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="ml-[320px] hidden h-full items-center gap-9 lg:flex">
+          <a href="#" class="nav-link active">Home +</a>
+          <a href="#" class="nav-link">About</a>
+          <a href="#" class="nav-link">Services +</a>
+          <a href="#" class="nav-link">Pages +</a>
+          <a href="#" class="nav-link">Blog +</a>
+          <a href="#" class="nav-link">Contact</a>
+        </div>
+
+        <!-- Right Actions -->
+        <div class="hidden items-center gap-6 lg:flex">
+          <button class="text-3xl leading-none transition hover:text-[#ff5a14]">⌕</button>
+
+          <span class="h-8 w-px bg-gray-200"></span>
+
+          <button class="flex items-center gap-3 text-sm font-semibold text-gray-500">
+            EN
+            <span>⌄</span>
+          </button>
+
+          <span class="h-8 w-px bg-gray-200"></span>
+        </div>
+
+        <!-- Mobile Button -->
+        <button id="menuBtn"
+          class="ml-auto flex h-11 w-11 items-center justify-center rounded-md bg-[#ff5a14] text-2xl text-white lg:hidden">
+          ☰
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="hidden border-t border-gray-100 bg-white px-6 py-5 shadow-lg lg:hidden">
+        <div class="flex flex-col gap-4 font-bold text-[#14213d]">
+          <a href="#" class="text-[#ff5a14]">Home +</a>
+          <a href="#">About</a>
+          <a href="#">Services +</a>
+          <a href="#">Pages +</a>
+          <a href="#">Blog +</a>
+          <a href="#">Contact</a>
+          <a href="#" class="mt-2 rounded bg-[#ff5a14] px-5 py-3 text-center text-white">
+            Get a Free Quote »
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <!-- HERO -->
+  <!-- Hero Section with background video & overlay, and improved content -->
+  <section class="relative h-[60vh] min-h-[750px] w-full flex items-center justify-center overflow-hidden">
+    <!-- Background video layer -->
+    <div class="absolute inset-0 z-0">
+
+      <video autoplay muted loop playsinline class="w-full h-full object-cover"
+        poster="https://placehold.co/1920x1080/1a1a2e/white?text=Fastway+Logistics">
+
+        <source src="assets/video/video-hero1.mp4" type="video/mp4">
+
+        Your browser does not support the video tag.
+      </video>
+      <!-- Dark overlay for better text contrast -->
+      <div class="absolute inset-0 bg-black/55 backdrop-brightness-75"></div>
+      <!-- Additional subtle gradient to make glass navbar pop -->
+      <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40"></div>
+    </div>
+
+    <!-- Hero Text Content  -->
+    <div class="relative z-10 container mx-auto px-8 md:px-16">
+      <div class="max-w-4xl">
+        <h3 class="text-white text-lg md:text-xl font-medium tracking-wide mb-2 uppercase opacity-90">
+          We are providing you
+        </h3>
+        <h1 class="text-white text-5xl md:text-8xl font-black uppercase tracking-tight mb-4 leading-[0.9]">
+          World Class Logistics
+        </h1>
+
+        <div class="w-16 h-1 bg-white mb-10"></div>
+
+        <a href="#"
+          class="inline-block bg-[#ff5e14] hover:bg-[#e45210] text-white font-bold py-4 px-10 rounded-sm text-sm transition-all uppercase tracking-widest shadow-lg">
+          Click Me
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom gradient fade to blend with page -->
+    <div
+      class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black/90 to-transparent z-10 pointer-events-none">
+    </div>
+  </section>
+
+  <!-- Additional dummy content to show scroll effect (glass navbar remains visible) -->
+  <section class="relative bg-black py-7 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition">
+          <div class="w-12 h-12 bg-orange-600/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M3 3h18v18H3zM9 3v18M15 3v18M3 9h18M3 15h18" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white">Global Coverage</h3>
+          <p class="text-white/60 mt-2 text-sm">Operating in 50+ countries with seamless customs clearance.</p>
+        </div>
+        <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition">
+          <div class="w-12 h-12 bg-orange-600/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M12 8v4l3 3M12 2a10 10 0 100 20 10 10 0 000-20z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white">24/7 Tracking</h3>
+          <p class="text-white/60 mt-2 text-sm">Real-time updates and transparent shipment monitoring.</p>
+        </div>
+        <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition">
+          <div class="w-12 h-12 bg-orange-600/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white">Secure Handling</h3>
+          <p class="text-white/60 mt-2 text-sm">Insurance and careful packaging for all cargo types.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--ABOUT US-->
+  <section
+    class="bg-black text-white min-h-screen py-24 px-6 md:px-16 flex flex-col justify-center relative overflow-hidden">
+
+    <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center">
+
+      <div class="z-10">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-3 h-3 bg-[#e65b2e] rounded-full shadow-[0_0_10px_#e65b2e]"></span>
+          <span class="text-sm font-semibold tracking-[0.2em] text-gray-400 uppercase">
+            Our Journey & Mission
+          </span>
+        </div>
+
+        <h2 class="text-5xl md:text-7xl font-bold leading-tight mb-8 tracking-tight">
+          Reliable Logistics <br />
+          <span class="text-gray-500">Since 1998</span>
+        </h2>
+
+        <p class="text-gray-400 text-lg max-w-xl mb-6 leading-relaxed">
+          We started with a single truck and a simple dream: to make global trade accessible for everyone. Today, Voyago
+          stands as a leader in tech-driven cargo solutions.
+        </p>
+
+        <p class="text-gray-400 text-lg max-w-xl mb-10 leading-relaxed">
+          Our team combines decades of experience with modern AI tracking to ensure that no matter where your cargo
+          goes, you have total peace of mind.
+        </p>
+
+
+
+        <div class="flex flex-wrap items-center gap-10">
+          <div class="flex flex-col">
+            <div class="flex items-center">
+              <span class="text-5xl font-bold">25</span>
+              <span class="text-[#e65b2e] text-2xl font-bold ml-1">+</span>
+            </div>
+            <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Years Experience</p>
+          </div>
+
+          <div class="h-12 w-[1px] bg-white/10 hidden md:block"></div>
+
+          <div class="flex items-center gap-4">
+            <div class="flex -space-x-3">
+              <img class="w-12 h-12 rounded-full border-2 border-[#111111] object-cover"
+                src="https://i.pravatar.cc/150?u=9" alt="User">
+              <img class="w-12 h-12 rounded-full border-2 border-[#111111] object-cover"
+                src="https://i.pravatar.cc/150?u=10" alt="User">
+              <img class="w-12 h-12 rounded-full border-2 border-[#111111] object-cover"
+                src="https://i.pravatar.cc/150?u=11" alt="User">
+            </div>
+            <p class="text-sm text-gray-500 max-w-[120px] leading-tight font-medium">
+              Trusted by 10k+ Partners
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative flex justify-center lg:justify-end">
+        <div class="animate-float">
+          <img src="assets/images/01.png" alt="Voyago Cargo"
+            class="max-w-full h-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]">
+        </div>
+
+        <div class="absolute bottom-[-20px] w-1/2 h-4 bg-black/40 blur-xl rounded-[100%] scale-x-125"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!--SERVİCES-->
+  <section class="bg-[#0a0a0a] py-24 px-6 overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="mb-20 relative">
+        <h2
+          class="text-8xl md:text-[12rem] font-black text-white/[0.03] uppercase absolute -top-20 left-0 leading-none select-none">
+          Solutions
+        </h2>
+        <div class="relative z-10 border-l-4 border-[#ff5e14] pl-6">
+          <span class="text-[#ff5e14] text-sm font-bold uppercase tracking-[0.3em]">Premium Logistics</span>
+          <h3 class="text-5xl font-bold text-white mt-2">Our Services</h3>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+        <!-- 1. Courier Services -->
+        <div
+          class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#1a1a1a] border border-white/10 hover:border-[#ff5e14]/50 transition-all duration-500">
+
+          <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80"
+            class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity duration-500"
+            alt="Service">
+
+          <div
+            class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent">
+            <div class="space-y-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+              <div class="w-10 h-[2px] bg-[#ff5e14]"></div>
+              <h4 class="text-2xl font-bold text-white">Courier Services</h4>
+              <p
+                class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed">
+                Precision delivery at the speed of light. Your cargo, our mission.
+              </p>
+              <button
+                class="flex items-center gap-2 text-[#ff5e14] font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
+                Details <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- 2. Courier Services -->
+        <div
+          class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#1a1a1a] border border-white/10 hover:border-[#ff5e14]/50 transition-all duration-500">
+
+          <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80"
+            class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity duration-500"
+            alt="Service">
+
+          <div
+            class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent">
+            <div class="space-y-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+              <div class="w-10 h-[2px] bg-[#ff5e14]"></div>
+              <h4 class="text-2xl font-bold text-white">Courier Services</h4>
+              <p
+                class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed">
+                Precision delivery at the speed of light. Your cargo, our mission.
+              </p>
+              <button
+                class="flex items-center gap-2 text-[#ff5e14] font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
+                Details <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- 3. Courier Services -->
+        <div
+          class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#1a1a1a] border border-white/10 hover:border-[#ff5e14]/50 transition-all duration-500">
+
+          <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80"
+            class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity duration-500"
+            alt="Service">
+
+          <div
+            class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent">
+            <div class="space-y-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+              <div class="w-10 h-[2px] bg-[#ff5e14]"></div>
+              <h4 class="text-2xl font-bold text-white">Courier Services</h4>
+              <p
+                class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed">
+                Precision delivery at the speed of light. Your cargo, our mission.
+              </p>
+              <button
+                class="flex items-center gap-2 text-[#ff5e14] font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
+                Details <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- 4. Courier Services -->
+        <div
+          class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#1a1a1a] border border-white/10 hover:border-[#ff5e14]/50 transition-all duration-500">
+
+          <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80"
+            class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity duration-500"
+            alt="Service">
+
+          <div
+            class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent">
+            <div class="space-y-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+              <div class="w-10 h-[2px] bg-[#ff5e14]"></div>
+              <h4 class="text-2xl font-bold text-white">Courier Services</h4>
+              <p
+                class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed">
+                Precision delivery at the speed of light. Your cargo, our mission.
+              </p>
+              <button
+                class="flex items-center gap-2 text-[#ff5e14] font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
+                Details <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- 5. Courier Services -->
+        <div
+          class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#1a1a1a] border border-white/10 hover:border-[#ff5e14]/50 transition-all duration-500">
+
+          <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80"
+            class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity duration-500"
+            alt="Service">
+
+          <div
+            class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent">
+            <div class="space-y-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+              <div class="w-10 h-[2px] bg-[#ff5e14]"></div>
+              <h4 class="text-2xl font-bold text-white">Courier Services</h4>
+              <p
+                class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed">
+                Precision delivery at the speed of light. Your cargo, our mission.
+              </p>
+              <button
+                class="flex items-center gap-2 text-[#ff5e14] font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
+                Details <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- 1. Courier Services -->
+        <div
+          class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#1a1a1a] border border-white/10 hover:border-[#ff5e14]/50 transition-all duration-500">
+
+          <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80"
+            class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity duration-500"
+            alt="Service">
+
+          <div
+            class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent">
+            <div class="space-y-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+              <div class="w-10 h-[2px] bg-[#ff5e14]"></div>
+              <h4 class="text-2xl font-bold text-white">Courier Services</h4>
+              <p
+                class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed">
+                Precision delivery at the speed of light. Your cargo, our mission.
+              </p>
+              <button
+                class="flex items-center gap-2 text-[#ff5e14] font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
+                Details <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- 1. Courier Services -->
+        <div
+          class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#1a1a1a] border border-white/10 hover:border-[#ff5e14]/50 transition-all duration-500">
+
+          <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80"
+            class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity duration-500"
+            alt="Service">
+
+          <div
+            class="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent">
+            <div class="space-y-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+              <div class="w-10 h-[2px] bg-[#ff5e14]"></div>
+              <h4 class="text-2xl font-bold text-white">Courier Services</h4>
+              <p
+                class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 leading-relaxed">
+                Precision delivery at the speed of light. Your cargo, our mission.
+              </p>
+              <button
+                class="flex items-center gap-2 text-[#ff5e14] font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
+                Details <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- TEAM -->
+  <section class="team-sec px-6" id="team">
+    <div class="container">
+      <div class="rv left">
+        <div class="sec-label">The People Behind The Miles</div>
+        <h2 class="sec-h">Meet Our <span class="ac">Expert</span><br>Team</h2>
+        <p class="sec-sub">Seasoned logistics professionals who live and breathe supply chain — every shipment is
+          personal to us.</p>
+      </div>
+      <div class="team-grid">
+
+        <div class="tc rv up d1">
+          <div class="tc-top bg-[linear-gradient(145deg,#181818,#0e0e0e)]">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=687&auto=format&fit=crop"
+              alt="James Mitchell" class="absolute left-0 top-0 h-full w-full object-cover">
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">James Mitchell</div>
+            <div class="tc-role">CEO & Founder</div>
+            <div class="tc-bio">20+ years shaping global logistics. James founded Voyago to redefine how cargo
+              moves
+              across the world.</div>
+            <div class="tc-soc">
+              <div class="ts">in</div>
+              <div class="ts">𝕏</div>
+              <div class="ts">✉</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tc rv up d2">
+          <div class="tc-top bg-[linear-gradient(145deg,#1c1510,#0e0e0e)]">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=688&auto=format&fit=crop"
+              alt="Sophia Rivera" class="absolute left-0 top-0 h-full w-full object-cover">
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">Sophia Rivera</div>
+            <div class="tc-role">Head of Operations</div>
+            <div class="tc-bio">Expert in route optimization and freight coordination, Sophia keeps every shipment
+              running on schedule.</div>
+            <div class="tc-soc">
+              <div class="ts">in</div>
+              <div class="ts">𝕏</div>
+              <div class="ts">✉</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tc rv up d3">
+          <div class="tc-top bg-[linear-gradient(145deg,#111a11,#0e0e0e)]">
+            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=687&auto=format&fit=crop"
+              alt="Kevin Lee" class="absolute left-0 top-0 h-full w-full object-cover">
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">Kevin Lee</div>
+            <div class="tc-role">Chief Technology Officer</div>
+            <div class="tc-bio">Architects Voyago's AI-powered tracking platform and fleet management system
+              trusted by
+              thousands.</div>
+            <div class="tc-soc">
+              <div class="ts">in</div>
+              <div class="ts">𝕏</div>
+              <div class="ts">✉</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tc rv up d4">
+          <div class="tc-top bg-[linear-gradient(145deg,#15111a,#0e0e0e)]">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=761&auto=format&fit=crop"
+              alt="Priya Nair" class="absolute left-0 top-0 h-full w-full object-cover">
+          </div>
+          <div class="tc-body">
+            <div class="tc-name">Priya Nair</div>
+            <div class="tc-role">Client Relations Director</div>
+            <div class="tc-bio">Ensures every partner feels valued and fully supported from first quote to final
+              delivery.</div>
+            <div class="tc-soc">
+              <div class="ts">in</div>
+              <div class="ts">𝕏</div>
+              <div class="ts">✉</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testi-sec px-6" id="testimonials">
+    <div class="container">
+      <div class="rv right">
+        <div class="sec-label">Testimonials From Clients</div>
+        <h2 class="sec-h">What Our <span class="ac">Clients</span><br>Say</h2>
+        <p class="sec-sub">Real words from real partners who trust Voyago with their most critical shipments every
+          day.
+        </p>
+      </div>
+
+      <!-- SLIDER — shows 3 cards, slides 1 card every 5s -->
+
+      <div class="testi-track" id="testiTrack">
+
+        <div class="team-slider">
+          <div class="tcard">
+            <div class="tcard-q">"</div>
+            <div class="tcard-date">10 May 2025</div>
+            <div class="tcard-stars">★★★★★</div>
+            <p class="tcard-txt">Voyago transformed how we handle cross-border freight. Their tracking system
+              gives us
+              peace of mind, and deliveries are always on time — even during peak season. Truly world-class.</p>
+            <div class="tcard-author">
+              <div class="tcard-av">AB</div>
+              <div>
+                <div class="tcard-name">Anna Brown</div>
+                <div class="tcard-role">Marketing Director</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slider">
+          <div class="tcard">
+            <div class="tcard-q">"</div>
+            <div class="tcard-date">11 May 2025</div>
+            <div class="tcard-stars">★★★★★</div>
+            <p class="tcard-txt">Switching to Voyago cut our shipping costs by 22% and reduced delays
+              dramatically.
+              The team is incredibly responsive — you always feel like a priority client, no matter the shipment
+              size.
+            </p>
+            <div class="tcard-author">
+              <div class="tcard-av">IH</div>
+              <div>
+                <div class="tcard-name">Isabella Harris</div>
+                <div class="tcard-role">Creative Lead</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slider">
+          <div class="tcard">
+            <div class="tcard-q">"</div>
+            <div class="tcard-date">12 May 2025</div>
+            <div class="tcard-stars">★★★★★</div>
+            <p class="tcard-txt">Their warehousing solution integrated seamlessly with our ERP. We can now manage
+              inventory in real time and dispatch orders within hours. An absolute game-changer for our
+              operations.</p>
+            <div class="tcard-author">
+              <div class="tcard-av">EC</div>
+              <div>
+                <div class="tcard-name">Ethan Clark</div>
+                <div class="tcard-role">Customer Support Lead</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slider">
+          <div class="tcard">
+            <div class="tcard-q">"</div>
+            <div class="tcard-date">18 Jun 2025</div>
+            <div class="tcard-stars">★★★★★</div>
+            <p class="tcard-txt">We moved our entire cold-chain logistics to Voyago and haven't looked back.
+              Temperature monitoring is spot-on and we've had zero spoilage incidents since the switch.
+              Exceptional
+              service.</p>
+            <div class="tcard-author">
+              <div class="tcard-av">RM</div>
+              <div>
+                <div class="tcard-name">Rachel Martinez</div>
+                <div class="tcard-role">Supply Chain Manager</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slider">
+          <div class="tcard">
+            <div class="tcard-q">"</div>
+            <div class="tcard-date">02 Jul 2025</div>
+            <div class="tcard-stars">★★★★★</div>
+            <p class="tcard-txt">From customs clearance to last-mile delivery, Voyago handles everything
+              flawlessly.
+              Our international expansion would not have been possible without their global logistics expertise.
+            </p>
+            <div class="tcard-author">
+              <div class="tcard-av">DK</div>
+              <div>
+                <div class="tcard-name">David Kim</div>
+                <div class="tcard-role">VP of Operations</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slider">
+          <div class="tcard">
+            <div class="tcard-q">"</div>
+            <div class="tcard-date">15 Jul 2025</div>
+            <div class="tcard-stars">★★★★★</div>
+            <p class="tcard-txt">Voyago's dedicated account manager made our transition seamless. They customized
+              every route and schedule around our needs — something no other provider was willing to do.</p>
+            <div class="tcard-author">
+              <div class="tcard-av">LW</div>
+              <div>
+                <div class="tcard-name">Laura Wilson</div>
+                <div class="tcard-role">Procurement Director</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slider">
+          <div class="tcard">
+            <div class="tcard-q">"</div>
+            <div class="tcard-date">28 Aug 2025</div>
+            <div class="tcard-stars">★★★★★</div>
+            <p class="tcard-txt">The real-time dashboard is a game-changer. We can see every truck, every pallet,
+              every ETA. It cut our customer inquiry response time by 60%. Phenomenal technology and support.</p>
+            <div class="tcard-author">
+              <div class="tcard-av">MT</div>
+              <div>
+                <div class="tcard-name">Marcus Torres</div>
+                <div class="tcard-role">Logistics Coordinator</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slider">
+          <div class="tcard">
+            <div class="tcard-q">"</div>
+            <div class="tcard-date">03 Sep 2025</div>
+            <div class="tcard-stars">★★★★★</div>
+            <p class="tcard-txt">We needed a partner who could handle hazardous materials with full compliance.
+              Voyago
+              exceeded every safety benchmark and delivered ahead of schedule — three months running now.</p>
+            <div class="tcard-author">
+              <div class="tcard-av">SJ</div>
+              <div>
+                <div class="tcard-name">Sarah Jensen</div>
+                <div class="tcard-role">Safety & Compliance Officer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Arrows -->
+      <button class="testi-arrow testi-prev" id="testiPrev" aria-label="Previous testimonial">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+      <button class="testi-arrow testi-next" id="testiNext" aria-label="Next testimonial">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 6 15 12 9 18" />
+        </svg>
+      </button>
+
+      <!-- Progress bar -->
+      <div class="testi-progress">
+        <div class="testi-progress-bar" id="testiBar"></div>
+      </div>
+    </div>
+
+    <!-- Dots -->
+    <div class="testi-dots" id="testiDots"></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-sec px-6" id="contact">
+    <div class="container">
+      <div class="rv left">
+        <div class="sec-label">Let's Work Together</div>
+        <h2 class="sec-h">Contact <span class="ac">Us</span></h2>
+        <p class="sec-sub">Whether it's a one-time shipment or a full supply chain overhaul — we're ready to talk. Our
+          team responds within 24 hours.</p>
+      </div>
+      <div class="cgrid">
+        <!-- MAP -->
+        <div class="form-card rv left d1 p-0 h-[455px] overflow-hidden rounded-[22px]">
+          <div id="map" class="relative z-[1] h-full w-full"></div>
+        </div>
+
+        <!-- INFO -->
+        <div class="rv right d2">
+          <div class="cinfo">
+            <div class="citem">
+              <div class="cico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--orange)"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg></div>
+              <div>
+                <div class="clbl">Headquarters</div>
+                <div class="cval">123 Logistic Drive,<br>San Francisco, CA 94105</div>
+              </div>
+            </div>
+            <div class="citem">
+              <div class="cico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--orange)"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg></div>
+              <div>
+                <div class="clbl">Email Address</div>
+                <div class="cval">info@voyagologistic.com</div>
+              </div>
+            </div>
+            <div class="citem">
+              <div class="cico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--orange)"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                  </path>
+                </svg></div>
+              <div>
+                <div class="clbl">Phone Number</div>
+                <div class="cval">+1 (800) 555-6789</div>
+              </div>
+            </div>
+            <div class="citem">
+              <div class="cico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--orange)"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg></div>
+              <div>
+                <div class="clbl">Operating Hours</div>
+                <div class="cval">Mon–Fri: 7am – 8pm EST<br>Saturday: 8am – 4pm EST</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0d0d0d] border-t border-[var(--border)]">
+    <div class="max-w-7xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
+
+        <!-- NAVIGATION -->
+        <div>
+          <h5 class="font-bold text-sm mb-5 text-white tracking-widest uppercase">Navigation</h5>
+          <a href="#" class="footer-link">Home</a>
+          <a href="#" class="footer-link">About Us</a>
+          <a href="#services" class="footer-link">Services</a>
+          <a href="#" class="footer-link">Pricing</a>
+          <a href="#" class="footer-link">Career</a>
+        </div>
+
+
+        <!-- ADDRESS & CONTACT -->
+        <div>
+          <h5 class="font-bold text-sm mb-5 text-white tracking-widest uppercase">Address</h5>
+          <p class="text-gray-400 text-sm mb-6">123 Logistic Drive San Francisco, CA 94105</p>
+          <h5 class="font-bold text-sm mb-3 text-white tracking-widest uppercase">Contact</h5>
+          <p class="text-gray-400 text-sm mb-2">info@voyagologistic.com</p>
+          <p class="text-gray-400 text-sm">+1 (800) 555-6789</p>
+        </div>
+
+        <!-- BRAND + SOCIALS -->
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <span
+              class="bg-[var(--orange)] text-white [font-family:'Syne',sans-serif] font-[800] text-[18px] px-[9px] py-[5px] rounded-lg">V</span>
+            <span class="[font-family:'Syne',sans-serif] font-[800] text-[22px]">Voyago</span>
+          </div>
+          <p class="text-gray-400 text-sm mb-5 leading-relaxed">Reliable logistics solutions, ensuring your cargo
+            reaches its destination safely &amp; efficiently.</p>
+          <div class="flex gap-2 flex-wrap mt-1">
+            <!-- Facebook -->
+            <a href="#"
+              class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]"
+              title="Facebook">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <!-- X / Twitter -->
+            <a href="#"
+              class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]"
+              title="X / Twitter">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 4l16 16M20 4 4 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                  fill="none" />
+              </svg>
+            </a>
+            <!-- Instagram -->
+            <a href="#"
+              class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]"
+              title="Instagram">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <!-- LinkedIn -->
+            <a href="#"
+              class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]"
+              title="LinkedIn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+            <!-- YouTube -->
+            <a href="#"
+              class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]"
+              title="YouTube">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
+                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#1a1a1a" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- COPYRIGHT -->
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-[var(--border)] mt-10 pt-6">
+        <p class="text-gray-500 text-xs">© 2025 Voyago. All rights reserved.</p>
+        <p class="text-gray-500 text-xs">Designed with precision for reliable logistics.</p>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+    menuBtn.textContent = mobileMenu.classList.contains("hidden") ? "☰" : "×";
+  });
+
+    /* REVEAL ANIMATION */
+    const revealElements = document.querySelectorAll(".rv");
+
+    if (revealElements.length) {
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("on");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: "0px 0px -32px 0px",
+        }
+      );
+
+      revealElements.forEach((el) => revealObserver.observe(el));
+    }
+
+    /* MAP */
+    const mapElement = document.getElementById("map");
+
+    if (mapElement && typeof L !== "undefined") {
+      const map = L.map("map").setView([37.7578, -122.5076], 12);
+
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+        {
+          attribution: "&copy; OpenStreetMap",
+        }
+      ).addTo(map);
+
+      L.circleMarker([37.7578, -122.5076], {
+        color: "#ff6600",
+        fillColor: "#ff6600",
+        fillOpacity: 1,
+        radius: 8,
+      }).addTo(map);
+    }
+  </script>
+  <script src="https://kit.fontawesome.com/a2e0a1b8e4.js" crossorigin="anonymous"></script>
+  <script src="languageSwitcher.js"></script>
+  <script src="js.js"></script>
+</body>
+
+</html>
