@@ -13,719 +13,864 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <style>
+  :root {
+    --orange: #E8511A;
+    --orange-dim: rgba(232, 81, 26, 0.15);
+    --dark: #0E0E0E;
+    --dark2: #141414;
+    --dark3: #1A1A1A;
+    --border: #252525;
+    --muted: #888;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { overflow-x: hidden; background: var(--dark); color: #fff; font-family: 'Barlow', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow Condensed', sans-serif; letter-spacing: -0.01em; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { border-radius: 10px; background: var(--orange); }
+  [x-cloak] { display: none !important; }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    overflow: hidden;
+    background: rgba(255, 94, 20, 0.06);
+    border-top: 1px solid rgba(255, 94, 20, 0.12);
+    border-bottom: 1px solid rgba(255, 94, 20, 0.12);
+    padding: .7rem 0;
+  }
+
+  .marquee-inner {
+    display: flex;
+    gap: 3rem;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+  }
+
+  .marquee-inner:hover { animation-play-state: paused; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  .marquee-item span { color: #ff5e14; }
+
+  @keyframes soft-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-30px); }
+  }
+
+  @keyframes shadow-pulse {
+    0%, 100% { transform: scaleX(1.25); opacity: 0.4; filter: blur(0); }
+    50% { transform: scaleX(1); opacity: 0.2; filter: blur(30px); }
+  }
+
+  .animate-soft-float { animation: soft-float 2s ease-in-out infinite; }
+  .animate-shadow-pulse { animation: shadow-pulse 4s ease-in-out infinite; }
+
+  @keyframes network-pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+  }
+
+  @keyframes line-flow {
+    0% { stroke-dashoffset: 100; }
+    100% { stroke-dashoffset: 0; }
+  }
+
+  .animate-network { animation: network-pulse 4s ease-in-out infinite; }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  @keyframes truck-move {
+    0% { transform: translateX(-5%) translateY(-120%); }
+    100% { transform: translateX(95%) translateY(-120%); }
+  }
+
+  .animate-truck-move { animation: truck-move 12s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+
+  /* Navbar */
+  .dropdown:hover .dropdown-menu { display: block; }
+  .dropdown-menu { display: none; }
+
+  .nav-link {
+    position: relative;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #14213d;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 0;
+    border-radius: 20px 20px 0 0;
+    background: #ff5a14;
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link.active { color: #ff5a14; }
+
+  .nav-link:hover::after,
+  .nav-link.active::after { width: 100%; }
+
   
-       /* ── MARQUEE ── */
-    .marquee-wrap { overflow:hidden; background:rgba(255,94,20,0.06); border-top:1px solid rgba(255,94,20,0.12); border-bottom:1px solid rgba(255,94,20,0.12); padding:.7rem 0; }
-    .marquee-inner { display:flex; gap:3rem; animation:marquee 25s linear infinite; white-space:nowrap; }
-    .marquee-inner:hover { animation-play-state:paused; }
-    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-    .marquee-item { display:flex; align-items:center; gap:.6rem; font-size:.75rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); }
-    .marquee-item span { color:#ff5e14; }
+  /* ── Track ── */
+  .track-rail {
+    height: 2px;
+    background: rgba(255,255,255,0.08);
+    position: relative;
+    border-radius: 99px;
+  }
+  .track-rail-fill {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #e85d04, #ff9500);
+    border-radius: 99px;
+    transition: width 0.45s cubic-bezier(0.34,1.4,0.64,1);
+  }
+ 
+  /* ── Waypoint dots ── */
+  .waypoint {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800; letter-spacing: 0.02em;
+    transition: background 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    z-index: 5;
+  }
+  .waypoint.inactive {
+    background: #1e1e24;
+    border: 2px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.3);
+  }
+  .waypoint.active-wp {
+    background: #e85d04;
+    border: 2px solid #e85d04;
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(232,93,4,0.25);
+  }
+ 
+  /* ── Truck SVG container ── */
+  #truck-wrap {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -160%);
+    transition: left 0.45s cubic-bezier(0.34,1.4,0.64,1);
+    pointer-events: none;
+    z-index: 10;
+  }
+ 
+  /* Wheel spin */
+  .w-spin { animation: wspin 0.7s linear infinite; }
+  .wspin-l { transform-origin: 18px 19px; }
+  .wspin-r { transform-origin: 54px 19px; }
+  @keyframes wspin {
+    to { transform: rotate(360deg); }
+  }
+  /* Idle bob */
+  .truck-svg { animation: tbob 2.5s ease-in-out infinite; }
+  @keyframes tbob {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-2px); }
+  }
+  /* Speed streaks */
+  .streak { animation: streak 0.9s linear infinite; }
+  @keyframes streak {
+    0%   { opacity:0; transform: translateX(4px); }
+    40%  { opacity:0.55; }
+    100% { opacity:0; transform: translateX(-10px); }
+  }
+  /* Headlight pulse */
+  .hlight { animation: hlpulse 2s ease-in-out infinite; }
+  @keyframes hlpulse {
+    0%,100% { opacity:0.55; }
+    50%      { opacity:1; }
+  }
+ 
+  /* ── Cards ── */
+  .no-scrollbar::-webkit-scrollbar { display:none; }
+  .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+ 
+  .svc-card {
+    background: #13131a;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .svc-card:hover,
+  .svc-card.is-active {
+    border-color: rgba(232,93,4,0.45);
+    box-shadow: 0 8px 40px rgba(232,93,4,0.12);
+    transform: translateY(-3px);
+  }
+ 
+  .card-img-wrap {
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .card-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(60%) brightness(0.75);
+    transition: filter 0.6s, transform 0.6s;
+  }
+  .svc-card:hover .card-img-wrap img,
+  .svc-card.is-active .card-img-wrap img {
+    filter: grayscale(0%) brightness(1);
+    transform: scale(1.06);
+  }
+ 
+  .bullet-item {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 12.5px; color: #9ca3af;
+    line-height: 1.5;
+  }
+  .bullet-item::before {
+    content: '';
+    flex-shrink: 0;
+    width: 0; height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 8px solid #e85d04;
+    margin-top: 3px;
+  }
+ 
+  .read-more-btn {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #9ca3af;
+    transition: color 0.25s, gap 0.25s;
+    background: none; border: none; cursor: pointer; padding: 0;
+  }
+  .read-more-btn .arrow-circle {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #e85d04;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.25s, transform 0.25s;
+    flex-shrink: 0;
+  }
+  .svc-card:hover .read-more-btn { color: #e85d04; gap: 12px; }
+  .svc-card:hover .arrow-circle { background: #ff7a2f; transform: scale(1.1); }
 
-
-    /*photo giong up and down */
-    @keyframes soft-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-30px); }
+  /* ── Nav arrows ── */
+  .nav-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: none;
+    transition: background 0.25s, transform 0.2s, opacity 0.2s;
+  }
+  .nav-btn:disabled { opacity: 0.25; cursor: not-allowed; transform: none !important; }
+  .nav-btn:hover:not(:disabled) { transform: scale(1.08); }
+ 
+  /* ── Section label ── */
+  .section-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: #e85d04;
+  }
+  .section-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  /* Update your slider-wrap style */
+#slider-wrap {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  /* Add these for smooth snapping */
+  scroll-snap-type: x mandatory; 
+  -webkit-overflow-scrolling: touch; /* Smooth inertia for iOS */
 }
 
-@keyframes shadow-pulse {
-  0%, 100% { transform: scaleX(1.25) opacity(0.4); }
-  50% { transform: scaleX(1) opacity(0.2) blur(30px); }
+/* Update your svc-card style */
+.svc-card {
+  /* ... your existing styles ... */
+  scroll-snap-align: start; /* Each card snaps to the left edge */
+  scroll-snap-stop: always;
+}
+ 
+/* Add this to your existing CSS */
+.no-transition {
+  transition: none !important;
 }
 
-.animate-soft-float {
-  animation: soft-float 2s ease-in-out infinite;
+/* Ensure the track rail hides the truck if it goes slightly out of bounds */
+.track-rail {
+  overflow: visible; /* Keep truck visible as it exits */
 }
+  /* Reusable */
+  .container { max-width: 1280px; margin: 0 auto; padding-left: 40px; padding-right: 40px; }
+  .sec-label { margin-bottom: 16px; display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange); }
+  .sec-label::before { content: ""; width: 28px; height: 2px; background: var(--orange); }
+  .sec-h { font-weight: 900; text-transform: uppercase; line-height: 1.01; font-size: clamp(32px, 4vw, 52px); }
+  .sec-h .ac { color: var(--orange); }
+  .sec-sub { margin-top: 18px; max-width: 560px; font-size: 18px; line-height: 1.75; color: var(--muted); }
 
-.animate-shadow-pulse {
-  animation: shadow-pulse 4s ease-in-out infinite;
-}
+  /* Testimonials */
+  .testi-sec { position: relative; overflow: hidden; background: var(--dark); padding-top: 80px; padding-bottom: 80px; }
+  .testi-sec::before { content: '"'; pointer-events: none; position: absolute; right: 3%; top: -60px; user-select: none; font-family: 'Barlow Condensed', sans-serif; font-size: 440px; font-weight: 900; line-height: 1; color: rgba(232, 81, 26, 0.04); }
+  .team-sliderr { position: relative; margin-top: 72px; overflow: hidden; border-radius: 18px; }
+  .testi-track { display: flex; transition: transform 0.5s cubic-bezier(.4,0,.2,1); will-change: transform; }
+  .team-slider { box-sizing: border-box; flex: 0 0 33.333333%; padding-left: 11px; padding-right: 11px; }
+  .team-slider .tcard { height: 100%; }
+  .testi-arrow { position: absolute; top: 60%; z-index: 5; display: flex; height: 46px; width: 46px; transform: translateY(-50%); cursor: pointer; align-items: center; justify-content: center; border-radius: 999px; border: 1px solid #2a2a2a; background: rgba(20,20,20,.85); color: #aaa; backdrop-filter: blur(16px); transition: all .3s ease; }
+  .testi-arrow:hover { transform: translateY(-50%) scale(1.1); border-color: var(--orange); background: var(--orange); color: #fff; box-shadow: 0 8px 28px rgba(232,81,26,.35); }
+  .testi-prev { left: 18px; }
+  .testi-next { right: 18px; }
+  .testi-dots { margin-top: 36px; display: flex; justify-content: center; gap: 10px; }
+  .testi-dot { height: 12px; width: 12px; cursor: pointer; border-radius: 999px; border: 2px solid #333; background: #2a2a2a; transition: all .3s ease; }
+  .testi-dot:hover { border-color: #666; background: #555; }
+  .testi-dot.active { transform: scale(1.1); border-color: var(--orange); background: var(--orange); box-shadow: 0 0 12px rgba(232,81,26,.45); }
+  .testi-progress { position: absolute; left: 0; right: 0; bottom: 0; z-index: 5; height: 3px; background: rgba(255,255,255,.06); }
+  .testi-progress-bar { height: 100%; width: 0; border-radius: 0 3px 3px 0; background: linear-gradient(to right, var(--orange), #ff8c5a); transition: width .15s ease; }
 
-/*navbar*/
-    .nav-link {
-      position: relative;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      font-weight: 800;
-      color: #14213d;
-      transition: color 0.3s ease;
+  .tcard { position: relative; overflow: hidden; border-radius: 18px; border: 1px solid var(--border); background: var(--dark3); padding: 34px; transition: all .3s ease; }
+  .tcard:hover { transform: translateY(-7px); border-color: rgba(232,81,26,.4); box-shadow: 0 24px 64px rgba(0,0,0,.45); }
+  .tcard::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; transform-origin: left; transform: scaleX(0); background: linear-gradient(to right, var(--orange), transparent); transition: transform .5s ease; }
+  .tcard:hover::before { transform: scaleX(1); }
+  .tcard-q { margin-bottom: 18px; font-family: serif; font-size: 56px; line-height: .65; color: var(--orange); opacity: .6; }
+  .tcard-date { margin-bottom: 14px; font-size: 13px; color: var(--muted); }
+  .tcard-stars { margin-bottom: 20px; font-size: 15px; letter-spacing: 2px; color: var(--orange); }
+  .tcard-txt { font-size: 17px; line-height: 1.8; color: #ccc; }
+  .tcard-author { margin-top: 28px; display: flex; align-items: center; gap: 14px; border-top: 1px solid var(--border); padding-top: 24px; }
+  .tcard-av { display: flex; height: 54px; width: 54px; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 999px; border: 2px solid rgba(232,81,26,.3); background: rgba(232,81,26,.15); font-family: 'Barlow Condensed', sans-serif; font-size: 19px; font-weight: 800; color: var(--orange); transition: all .3s ease; }
+  .tcard:hover .tcard-av { border-color: var(--orange); background: rgba(232,81,26,.2); }
+  .tcard-name { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .tcard-role { margin-top: 3px; font-size: 14px; color: var(--muted); }
+
+  /* Contact */
+  .contact-sec { position: relative; overflow: hidden; background: var(--dark2); padding-top: 80px; padding-bottom: 80px; }
+  .contact-sec::after { content: ""; pointer-events: none; position: absolute; bottom: -200px; right: -200px; height: 520px; width: 520px; background: radial-gradient(circle, rgba(232,81,26,.07) 0%, transparent 70%); }
+  .cgrid { margin-top: 72px; display: grid; grid-template-columns: 1.35fr 1fr; align-items: start; gap: 84px; }
+  .citem { display: flex; align-items: flex-start; gap: 18px; border-bottom: 1px solid var(--border); padding: 26px 0; }
+  .citem:first-child { border-top: 1px solid var(--border); }
+  .cico { display: flex; height: 50px; width: 50px; flex-shrink: 0; align-items: center; justify-content: center; border-radius: 11px; border: 1px solid rgba(232,81,26,.2); background: rgba(232,81,26,.15); font-size: 21px; transition: all .3s ease; }
+  .citem:hover .cico { transform: scale(1.1); background: rgba(232,81,26,.2); }
+  .clbl { margin-bottom: 7px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
+  .cval { font-size: 17px; line-height: 1.55; color: #e8e8e8; }
+  .form-card { position: relative; overflow: hidden; border-radius: 22px; border: 1px solid var(--border); background: var(--dark3); padding: 46px; }
+  .form-card::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: linear-gradient(to right, var(--orange), #ff8c5a); }
+
+  /* Footer */
+  .footer-link { margin-bottom: 10px; display: block; font-size: 14px; color: #aaa; transition: color .2s ease; }
+  .footer-link:hover { color: var(--orange); }
+  .fsi { display: flex; height: 38px; width: 38px; cursor: pointer; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #222; font-size: 14px; color: #555; transition: all .3s ease; }
+  .fsi:hover { transform: translateY(-2px); border-color: var(--orange); background: rgba(232,81,26,.15); color: var(--orange); }
+
+  /* Chat + toast */
+  .chat { position: fixed; bottom: 34px; right: 34px; z-index: 400; display: flex; height: 58px; width: 58px; cursor: pointer; align-items: center; justify-content: center; border-radius: 999px; background: var(--orange); font-size: 24px; box-shadow: 0 8px 28px rgba(232,81,26,.42); transition: transform .2s ease; }
+  .chat:hover { transform: scale(1.1); }
+  #toast { position: fixed; bottom: 108px; right: 34px; z-index: 600; display: none; max-width: 320px; transform: translateY(16px); border-radius: 13px; border: 1px solid rgba(232,81,26,.4); background: #1c1c1c; padding: 18px 26px; font-size: 16px; color: #fff; opacity: 0; box-shadow: 0 10px 36px rgba(0,0,0,.5); transition: all .3s ease; }
+  #toast.on { display: block; transform: translateY(0); opacity: 1; }
+
+  /* Reveal */
+  .rv { opacity: 0; transition: all 850ms ease-out; }
+  .rv.up { transform: translateY(50px); }
+  .rv.left { transform: translateX(-64px); }
+  .rv.right { transform: translateX(64px); }
+  .rv.sc { transform: scale(.88); }
+  .rv.on { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
+  .rv.d1 { transition-delay: 100ms; }
+  .rv.d2 { transition-delay: 200ms; }
+  .rv.d3 { transition-delay: 300ms; }
+  .rv.d4 { transition-delay: 400ms; }
+  .rv.d5 { transition-delay: 500ms; }
+  .rv.d6 { transition-delay: 600ms; }
+
+  @media (max-width: 1100px) {
+    .team-slider { flex-basis: 50%; }
+    .cgrid { grid-template-columns: 1fr; gap: 52px; }
+  }
+
+  @media (max-width: 1023px) {
+    header { position: sticky; }
+    nav { height: 76px; }
+    nav a[style*="clip-path"] {
+      width: 260px !important;
+      height: 76px !important;
+      padding-left: 24px !important;
+      font-size: 22px !important;
     }
+  }
 
-    .nav-link::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 4px;
-      background: #ff5a14;
-      border-radius: 20px 20px 0 0;
-      transition: width 0.3s ease;
+  @media (max-width: 768px) {
+    .container { padding-left: 24px; padding-right: 24px; }
+    .team-slider { flex-basis: 100%; }
+    .testi-arrow { height: 36px; width: 36px; }
+    .testi-prev { left: 8px; }
+    .testi-next { right: 8px; }
+  }
+
+  @media (max-width: 520px) {
+    nav a[style*="clip-path"] {
+      width: 220px !important;
+      font-size: 18px !important;
     }
-
-    .nav-link:hover,
-    .nav-link.active {
-      color: #ff5a14;
-    }
-
-    .nav-link:hover::after,
-    .nav-link.active::after {
-      width: 100%;
-    }
-
-    @media (max-width: 1023px) {
-      header {
-        position: sticky;
-      }
-
-      nav {
-        height: 76px;
-      }
-
-      nav a[style*="clip-path"] {
-        width: 260px !important;
-        height: 76px !important;
-        padding-left: 24px !important;
-        font-size: 22px !important;
-      }
-    }
-
-    @media (max-width: 520px) {
-      nav a[style*="clip-path"] {
-        width: 220px !important;
-        font-size: 18px !important;
-      }
-    }
-    
-
-@keyframes network-pulse {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.05); }
-}
-
-@keyframes line-flow {
-  0% { stroke-dashoffset: 100; }
-  100% { stroke-dashoffset: 0; }
-}
-
-.animate-network {
-  animation: network-pulse 4s ease-in-out infinite;
-}
-
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-/* Hide scrollbar for IE, Edge and Firefox */
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-   
+  }
 </style>
+
 </head>
 
 <body>
-<div id="toast">✓ <span id="tmsg">Done!</span></div>
-  <div class="chat" onclick="showToast('Our logistics team will connect with you shortly! 🚛',3500)">💬</div>
-
-  <!-- Navbar -->
-<header class="fixed top-0 left-0 z-50 w-full bg-orange-50 shadow-sm">
-    <!-- Top Bar -->
-    <div class="relative hidden h-[44px] overflow-hidden bg-black text-white lg:block">
+   <!-- Navbar -->
+<header id="nav" class="w-full bg-black font-sans relative z-50 border-b border-[#E8511A]/30">
+  
+  <div class="hidden lg:flex w-full h-[100px]">
+    
+    <div class="flex items-center justify-center w-[300px] bg-black h-full relative z-20 px-6 shadow-lg border-r border-[#E8511A]/30">
+      <a href="index.html">
+      <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="AA-SİRKO Logo" class="h-24 w-auto object-contain" />
+    </a>
       
-
-      <div class="relative mx-auto flex h-full max-w-[1280px] items-center justify-between px-6">
-        <div class="ml-[280px] flex items-center gap-8 text-sm font-semibold">
-          <span class="flex items-center gap-2">
-            <span class="text-[#ff5a14]">📍</span>
-            Jones Street, New York, USA
-          </span>
-
-          <span class="h-5 w-px bg-white/20"></span>
-
-          <span class="flex items-center gap-2">
-            <span class="text-[#ff5a14]">✈</span>
-            info@wktransport.com
-          </span>
-        </div>
-
-        <div class="flex h-full items-center">
-          <div class="flex items-center gap-4 text-sm">
-            <a href="#" class="transition hover:text-[#ff5a14]">f</a>
-            <a href="#" class="transition hover:text-[#ff5a14]">x</a>
-            <a href="#" class="transition hover:text-[#ff5a14]">ig</a>
-            <a href="#" class="transition hover:text-[#ff5a14]">in</a>
-          </div>
-        </a>
-
-          <a href="getaquote.html"
-            class="ml-8 flex h-full items-center bg-[#ff5a14] px-9 text-sm font-bold text-white transition hover:bg-[#e94c0c]"
-            style="clip-path: polygon(14% 0, 100% 0, 86% 100%, 0 100%);">
-            Get a Free Quote »
-          </a>
-        </div>
+      <div class="absolute right-[-20px] top-1/2 transform -translate-y-1/2 w-[30px] h-[40px] bg-[#E8511A] shadow-lg z-30 hover:shadow-[0_0_20px_rgba(232,81,26,0.5)] transition-shadow" 
+           style="clip-path: polygon(0 0, 65% 0, 100% 50%, 65% 100%, 0 100%, 35% 50%);">
       </div>
     </div>
 
-    <!-- Main Navbar -->
-    <nav class="relative h-[46px] bg-white">
-      <div class="mx-auto flex h-full max-w-[1280px] items-center justify-between px-6">
-        <!-- Logo -->
-        <a href="#"
-          class="absolute left-0 top-0 flex h-[50px] w-[300px] items-center pl-12 text-3xl font-extrabold tracking-wide text-white"
-          style="clip-path: polygon(0 0, 76% 0, 100% 100%, 0% 100%); background:#ff5a14;">
-          WK <br>Transport
+    <div class="flex-1 flex flex-col h-full w-full bg-black">
+      
+      <div class="bg-gradient-to-r from-black to-[#1a1a1a] h-[50px] w-full flex items-center justify-between text-white text-xs px-8 relative z-10 border-b-2 border-[#E8511A] shadow-lg" 
+           style="clip-path: polygon(15px 0, 100% 0, 100% 100%, 0 100%); margin-left: -15px; padding-left: 35px;">
+        
+        <div class="flex items-center gap-5">
+          <div class="flex items-center gap-4">
+            <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></a>
+            <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/></svg></a>
+            <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+          </div>
+          
+          <div class="h-4 w-[1px] bg-[#E8511A]/40"></div>
+          
+          
+        </div>
+
+        <div class="flex items-center gap-6">
+          <div class="flex items-center gap-2 font-bold tracking-wider text-xs group cursor-pointer hover:text-[#E8511A] transition-colors duration-300">
+            <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z"/></svg>
+            <span>+31 6 8611 0373</span>
+          </div>
+          <div class="h-4 w-[1px] bg-[#E8511A]/40"></div>
+          <div class="flex items-center gap-2 font-bold tracking-wider text-xs group cursor-pointer hover:text-[#E8511A] transition-colors duration-300">
+            <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/></svg>
+            <span>info@assirko.com</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-1 flex items-center justify-between px-8 bg-black to-orange-900 py-0 shadow-lg border-b border-[#E8511A]/20">
+        
+        <a href="getaquote.html" class="flex items-center gap-2 text-white font-bold text-sm group hover:text-[#E8511A] transition-all duration-300 px-4 py-2 rounded-lg hover:bg-[#E8511A]/10">
+          <svg class="w-5 h-5 text-[#E8511A] group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          Get A Quote
+          <svg class="w-3 h-3 text-gray-400 group-hover:text-[#E8511A] transition-colors group-hover:translate-x-1 transition-transform ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
         </a>
 
-        <!-- Desktop Links -->
-        <div class="ml-[320px] hidden h-full items-center gap-9 lg:flex">
-          <a href="index.html" class="nav-link active">Home +</a>
-          <a href="aboutus.html" class="nav-link">About</a>
-          <a href="services.html" class="nav-link">Services +</a>
-          <a href="pages.html" class="nav-link">Pages +</a>
-          <a href="blog.html" class="nav-link">Blog +</a>
-          <a href="contact.html" class="nav-link">Contact</a>
-        </div>
-
-        <!-- Right Actions -->
-        <div class="hidden items-center gap-6 lg:flex">
-          <button class="text-3xl leading-none transition hover:text-[#ff5a14]">⌕</button>
-
-          <span class="h-8 w-px bg-gray-200"></span>
-
-          <button class="flex items-center gap-3 text-sm font-semibold text-gray-500">
-            EN
-            <span>v</span>
-          </button>
-
-          <span class="h-8 w-px bg-gray-200"></span>
-        </div>
-
-        <!-- Mobile Button -->
-        <button id="menuBtn"
-          class="ml-auto flex h-11 w-11 items-center justify-center rounded-md bg-[#ff5a14] text-2xl text-white lg:hidden">
-          ☰
-        </button>
+        <nav class="flex items-center gap-8 text-[13px] font-bold text-white">
+          <a href="index.html" class="text-[#E8511A] relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-full before:h-0.5 before:bg-[#E8511A]">[ Home ]</a>
+          <a href="aboutus.html" class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">About</a>
+          <a href="Services.html" class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Services</a>
+          <a href="industrySolutions.html" class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Solutions</a>
+          <a href="track.html" class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Track</a>
+          <a href="contact.html" class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Contact</a>
+          
+          <div class="h-5 w-0.5 bg-[#E8511A]/40 mx-3"></div>
+          
+          <div class="flex items-center gap-4">
+            <button onclick="switchLanguage('en')" class="hover:text-[#E8511A] transition-colors duration-300 font-bold px-2 py-1">EN</button>
+            <button onclick="switchLanguage('nl')" class="text-gray-500 hover:text-[#E8511A] transition-colors duration-300 font-bold px-2 py-1">NL</button>
+          </div>
+        </nav>
       </div>
-
-      <!-- Mobile Menu -->
-      <div id="mobileMenu" class="hidden border-t border-gray-100 bg-white px-6 py-5 shadow-lg lg:hidden">
-        <div class="flex flex-col gap-4 font-bold text-[#14213d]">
-          <a href="index.html" class="text-[#ff5a14]">Home +</a>
-          <a href="about.html">About</a>
-          <a href="services.html">Services +</a>
-          <a href="pages.html">Pages +</a>
-          <a href="blog.html">Blog +</a>
-          <a href="contact.html">Contact</a>
-          <a href="getaquote.html" class="mt-2 rounded bg-[#ff5a14] px-5 py-3 text-center text-white">
-            Get a Free Quote »
-          </a>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-
-<!--hero-->
-<section class="relative h-[90vh] min-h-[850px] w-full flex items-center justify-center overflow-hidden">
-  
-  <div class=" absolute inset-0 z-0">
-    <video 
-      autoplay 
-      muted 
-      loop 
-      playsinline 
-      class="w-full h-full full object-cover object-cover"
-    >
-      <source src="assets/video/hero.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    
-    <div class="absolute inset-0 bg-black/60 backdrop-brightness-75"></div>
+    </div>
   </div>
 
-<!-- HERO TEXT IMPROVED -->
-<div class="relative z-10 container mx-auto px-6 text-center">
-
-  <!-- HEADLINE -->
-  <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
-
-    <span class="block text-white"> <span data-i18n="index.hero_line1">Driven by</span> <span class="text-[#e85d04]" data-i18n="index.hero_line1_highlight">Speed</span>
-    </span>
-
-    <span class="block mt-2 text-gray-300 text-3xl md:text-5xl lg:text-6xl font-semibold"> <span data-i18n="index.hero_line2">Powered by</span> <span class="text-[#e85d04]" data-i18n="index.hero_line2_highlight">Trust</span>
-    </span>
-
-  </h2>
-
-  <!-- SUBTEXT -->
-  <p class="mt-6 text-gray-400 max-w-xl mx-auto text-sm md:text-base"><span data-i18n="index.hero_desc">Delivering reliable logistics solutions with precision, efficiency, and global reach.</span>
-  </p>
-
-  <!-- BUTTON -->
-  <div class="flex justify-center mt-10">
-    <a href="#service-section"
-      class="bg-gradient-to-r from-[#e85d04] to-[#ff6d00] hover:opacity-90 text-white px-10 py-4 rounded-full font-semibold uppercase text-sm tracking-wider transition-all shadow-lg hover:scale-105 active:scale-95 shadow-orange-900/30"><span data-i18n="index.hero_btn">Read More</span>
+  <div class="lg:hidden flex items-center justify-between p-4 bg-black border-b border-[#E8511A]/30 shadow-lg">
+    <a href="index.html" class="flex items-center gap-2 group">
+      <img src="assests/images/carlogo.png" alt="AA-SİRKO Logo" class="h-10 w-auto object-contain brightness-0 invert group-hover:scale-110 transition-transform" />
     </a>
+    <button onclick="toggleMenu()" class="text-white p-2 focus:outline-none hover:text-[#E8511A] transition-colors">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
   </div>
 
-</div>
+  <div id="mobileMenu" class="hidden lg:hidden flex-col bg-[#0f0f0f] text-white absolute w-full left-0 top-full shadow-lg border-b border-[#E8511A]/30">
+    <div class="flex flex-col gap-2 p-4 bg-black text-xs font-bold border-b border-[#E8511A]/30">
+      <div class="flex items-center gap-2 text-[#E8511A]">
+        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z"/></svg>
+        <span>+31 6 8611 0373</span>
+      </div>
+      <div class="flex items-center gap-2 text-[#E8511A]">
+        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/></svg>
+        <span>info@assirko.com</span>
+      </div>
+    </div>
+    
+    <div class="flex flex-col">
+      <a href="index.html" class="px-6 py-3 text-sm font-bold border-b border-[#E8511A]/20 text-[#E8511A] hover:bg-[#E8511A]/10 transition-colors">Home</a>
+      <a href="aboutus.html" class="px-6 py-3 text-sm font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">About</a>
+      <a href="Services.html" class="px-6 py-3 text-sm font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Services</a>
+      <a href="industrySolutions.html" class="px-6 py-3 text-sm font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Solutions</a>
+      <a href="track.html" class="px-6 py-3 text-sm font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Track & Trace</a>
+      <a href="getaquote.html" class="px-6 py-3 text-sm font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Get A Quote</a>
+      <a href="contact.html" class="px-6 py-3 text-sm font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Contact</a>
+      <div class="px-6 py-4 flex gap-4 border-t border-[#E8511A]/20">
+        <button onclick="switchLanguage('en')" class="text-sm font-bold hover:text-[#E8511A] transition-colors">EN</button>
+        <button onclick="switchLanguage('nl')" class="text-sm font-bold text-gray-500 hover:text-[#E8511A] transition-colors">NL</button>
+      </div>
+    </div>
+  </div>
+</header>
 
-  <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#0a0a0a] to-transparent z-10"></div>
-</section>
+
+
+
+
+  <!--hero-->
+  <section class="relative h-[90vh] min-h-[850px] w-full flex items-center justify-center overflow-hidden">
+
+    <div class=" absolute inset-0 z-0">
+      <video autoplay muted loop playsinline class="w-full h-full object-cover">
+        <source src="assets/video/hero.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <div class="absolute inset-0 bg-black/70 backdrop-brightness-90"></div>
+    </div>
+
+    <!-- HERO TEXT IMPROVED -->
+    <div class="relative z-10 container mx-auto px-6 text-center max-w-4xl">
+
+      <!-- BADGE -->
+      <div class="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-[#E8511A]/15 border border-[#E8511A]/40 rounded-full">
+        <span class="w-2 h-2 bg-[#E8511A] rounded-full animate-pulse"></span>
+        <span class="text-[#E8511A] text-xs font-semibold tracking-wider uppercase">Logistics Excellence</span>
+      </div>
+
+      <!-- HEADLINE -->
+      <h1 class="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-4">
+        <span class="block text-white">Your Cargo Deserves</span>
+        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-[#E8511A] via-orange-400 to-[#E8511A]">
+          The Best Route
+        </span>
+      </h1>
+
+      <!-- SUBHEADING -->
+      <p class="text-sm md:text-base text-gray-300 max-w-2xl mx-auto mb-6 font-medium">
+        Precision logistics meets cutting-edge technology. We deliver to 50+ countries with real-time tracking and industry-leading reliability.
+      </p>
+
+      <!-- KEY STATS -->
+      <div class="grid grid-cols-3 gap-3 max-w-2xl mx-auto mb-8">
+        <div class="bg-white/5 border border-white/10 rounded-lg px-3 py-2 backdrop-blur-sm hover:bg-white/10 transition-colors">
+          <div class="text-lg md:text-xl font-bold text-[#E8511A]">50+</div>
+          <p class="text-xs text-gray-400 mt-1">Countries</p>
+        </div>
+        <div class="bg-white/5 border border-white/10 rounded-lg px-3 py-2 backdrop-blur-sm hover:bg-white/10 transition-colors">
+          <div class="text-lg md:text-xl font-bold text-[#E8511A]">24/7</div>
+          <p class="text-xs text-gray-400 mt-1">Tracking</p>
+        </div>
+        <div class="bg-white/5 border border-white/10 rounded-lg px-3 py-2 backdrop-blur-sm hover:bg-white/10 transition-colors">
+          <div class="text-lg md:text-xl font-bold text-[#E8511A]">99%</div>
+          <p class="text-xs text-gray-400 mt-1">On-Time</p>
+        </div>
+      </div>
+
+      <!-- CTA BUTTONS -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="#service-section"
+          class="bg-gradient-to-r from-[#E8511A] to-orange-500 hover:shadow-[0_0_30px_rgba(232,81,26,0.6)] text-white px-8 py-3 rounded-lg font-bold uppercase text-xs md:text-sm tracking-wider transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg">
+          Get A Quote
+        </a>
+        <a href="#track"
+          class="border-2 border-[#E8511A] text-[#E8511A] hover:bg-[#E8511A] hover:text-white px-8 py-3 rounded-lg font-bold uppercase text-xs md:text-sm tracking-wider transition-all duration-300 hover:scale-105 active:scale-95">
+          Track Shipment
+        </a>
+      </div>
+
+      <!-- TRUST STATEMENT -->
+      <p class="mt-6 text-gray-500 text-xs">
+        Trusted by 10,000+ businesses | Available 24/7 | AI-Powered Route Optimization
+      </p>
+
+    </div>
+
+    <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black via-black/50 to-transparent z-10"></div>
+  </section>
   <!-- ══════════════════════════════════════════════
      MARQUEE TICKER
 ══════════════════════════════════════════════ -->
-<div class="marquee-wrap">
-  <div class="marquee-inner">
-    <!-- Repeated twice for seamless loop -->
-    <div class="marquee-item">Global Freight <span>★</span></div>
-    <div class="marquee-item">50+ Countries <span>★</span></div>
-    <div class="marquee-item">24/7 Tracking <span>★</span></div>
-    <div class="marquee-item">AI-Powered Routes <span>★</span></div>
-    <div class="marquee-item">Secure Handling <span>★</span></div>
-    <div class="marquee-item">Express Delivery <span>★</span></div>
-    <div class="marquee-item">Cold Chain Logistics <span>★</span></div>
-    <div class="marquee-item">Customs Clearance <span>★</span></div>
-    <div class="marquee-item">Trusted Since 1998 <span>★</span></div>
-    <div class="marquee-item">Global Freight <span>★</span></div>
-    <div class="marquee-item">50+ Countries <span>★</span></div>
-    <div class="marquee-item">24/7 Tracking <span>★</span></div>
-    <div class="marquee-item">AI-Powered Routes <span>★</span></div>
-    <div class="marquee-item">Secure Handling <span>★</span></div>
-    <div class="marquee-item">Express Delivery <span>★</span></div>
-    <div class="marquee-item">Cold Chain Logistics <span>★</span></div>
-    <div class="marquee-item">Customs Clearance <span>★</span></div>
-    <div class="marquee-item">Trusted Since 1998 <span>★</span></div>
+  <div class="marquee-wrap">
+    <div class="marquee-inner">
+      <!-- Repeated twice for seamless loop -->
+      <div class="marquee-item">Global Freight <span>★</span></div>
+      <div class="marquee-item">50+ Countries <span>★</span></div>
+      <div class="marquee-item">24/7 Tracking <span>★</span></div>
+      <div class="marquee-item">AI-Powered Routes <span>★</span></div>
+      <div class="marquee-item">Secure Handling <span>★</span></div>
+      <div class="marquee-item">Express Delivery <span>★</span></div>
+      <div class="marquee-item">Cold Chain Logistics <span>★</span></div>
+      <div class="marquee-item">Customs Clearance <span>★</span></div>
+      <div class="marquee-item">Trusted Since 1998 <span>★</span></div>
+      <div class="marquee-item">Global Freight <span>★</span></div>
+      <div class="marquee-item">50+ Countries <span>★</span></div>
+      <div class="marquee-item">24/7 Tracking <span>★</span></div>
+      <div class="marquee-item">AI-Powered Routes <span>★</span></div>
+      <div class="marquee-item">Secure Handling <span>★</span></div>
+      <div class="marquee-item">Express Delivery <span>★</span></div>
+      <div class="marquee-item">Cold Chain Logistics <span>★</span></div>
+      <div class="marquee-item">Customs Clearance <span>★</span></div>
+      <div class="marquee-item">Trusted Since 1998 <span>★</span></div>
+    </div>
   </div>
-</div>
 
-  <!--ABOUT US-->
-<section class="bg-black text-white min-h-screen py-24 px-6 md:px-16 flex flex-col justify-center relative overflow-hidden">
-  
-  <div class="absolute top-1/4 -left-20 w-96 h-96 bg-[#e65b2e]/10 blur-[120px] rounded-full"></div>
+  <!--why you choose us-->
+  <section
+    class="bg-black text-white min-h-screen py-24 px-6 md:px-16 flex flex-col justify-center relative overflow-hidden">
 
-  <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center">
+    <div class="absolute top-1/4 -left-20 w-96 h-96 bg-[#e65b2e]/10 blur-[120px] rounded-full"></div>
 
-    <div class="z-10">
-      <div class="flex items-center gap-3 mb-6">
-        <span class="w-3 h-3 bg-[#e65b2e] rounded-full shadow-[0_0_10px_#e65b2e] animate-pulse"></span>
-        <span class="text-sm font-semibold tracking-[0.2em] text-gray-400 uppercase">
-          The Future of Freight
-        </span>
-      </div>
+    <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center">
 
-      <h2 class="text-5xl md:text-7xl font-bold leading-tight mb-8 tracking-tighter">
-        Moving the World <br />
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-gray-600 italic">
-          Without Limits.
-        </span>
-      </h2>
-
-      <p class="text-gray-400 text-lg max-w-xl mb-6 leading-relaxed">
-        What began as a single-route operation in 1998 has evolved into a global neural network of logistics. At <strong>Voyago</strong>, we don't just move boxes; we bridge the gap between markets and possibilities.
-      </p>
-
-      <p class="text-gray-400 text-lg max-w-xl mb-10 leading-relaxed border-l-2 border-[#e65b2e] pl-6 italic">
-        "By integrating proprietary AI with a legacy of grit, we ensure your cargo arrives before you even start to worry."
-      </p>
-
-      <div class="flex flex-wrap items-center gap-10">
-        <div class="flex flex-col">
-          <div class="flex items-center">
-            <span class="text-5xl font-bold">25</span>
-            <span class="text-[#e65b2e] text-2xl font-bold ml-1">+</span>
-          </div>
-          <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Years of Precision</p>
+      <div class="z-10">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-3 h-3 bg-[#e65b2e] rounded-full shadow-[0_0_10px_#e65b2e] animate-pulse"></span>
+          <span class="text-sm font-semibold tracking-[0.2em] text-gray-400 uppercase">
+            why you choose us
+          </span>
         </div>
 
-        <div class="h-12 w-[1px] bg-white/10 hidden md:block"></div>
+        <h2 class="text-5xl md:text-7xl font-bold leading-tight mb-8 tracking-tighter">
+          Moving the World <br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-gray-600 italic">
+            Without Limits.
+          </span>
+        </h2>
 
-        <div class="flex items-center gap-4">
-          <div class="flex -space-x-3">
-            <img class="w-12 h-12 rounded-full border-2 border-[#111111] object-cover" src="https://i.pravatar.cc/150?u=12" alt="Partner">
-            <img class="w-12 h-12 rounded-full border-2 border-[#111111] object-cover" src="https://i.pravatar.cc/150?u=15" alt="Partner">
-            <img class="w-12 h-12 rounded-full border-2 border-[#111111] object-cover" src="https://i.pravatar.cc/150?u=22" alt="Partner">
+        <p class="text-gray-400 text-lg max-w-xl mb-6 leading-relaxed">
+          What began as a single-route operation in 1998 has evolved into a global neural network of logistics. At
+          <strong>Voyago</strong>, we don't just move boxes; we bridge the gap between markets and possibilities.
+        </p>
+
+        <p class="text-gray-400 text-lg max-w-xl mb-10 leading-relaxed border-l-2 border-[#e65b2e] pl-6 italic">
+          "By integrating proprietary AI with a legacy of grit, we ensure your cargo arrives before you even start to
+          worry."
+        </p>
+
+        <div class="flex flex-wrap items-center gap-10">
+          <div class="flex flex-col">
+            <div class="flex items-center">
+              <span class="text-5xl font-bold">25</span>
+              <span class="text-[#e65b2e] text-2xl font-bold ml-1">+</span>
+            </div>
+            <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Years of Precision</p>
           </div>
-          <p class="text-sm text-gray-500 max-w-[120px] leading-tight font-medium">
-            Powering 10k+ Global Enterprises
-          </p>
+
+          <div class="h-12 w-[1px] bg-white/10 hidden md:block"></div>
+
+          <div class="flex items-center gap-4">
+            <div class="flex -space-x-3">
+              <img class="w-12 h-12 rounded-full border-2 border-[#111111] object-cover"
+                src="https://i.pravatar.cc/150?u=12" alt="Partner">
+              <img class="w-12 h-12 rounded-full border-2 border-[#111111] object-cover"
+                src="https://i.pravatar.cc/150?u=15" alt="Partner">
+              <img class="w-12 h-12 rounded-full border-2 border-[#111111] object-cover"
+                src="https://i.pravatar.cc/150?u=22" alt="Partner">
+            </div>
+            <p class="text-sm text-gray-500 max-w-[120px] leading-tight font-medium">
+              Powering 10k+ Global Enterprises
+            </p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="relative flex justify-center lg:justify-end">
-      <div class="animate-soft-float">
-        <img src="assets/images/01.png" alt="Voyago Cargo"
-          class="max-w-full h-auto drop-shadow-[0_45px_45px_rgba(230,91,46,0.2)]">
+      <div class="relative flex justify-center lg:justify-end">
+        <div class="animate-soft-float">
+          <img src="assets/images/01.png" alt="Voyago Cargo"
+            class="max-w-full h-auto drop-shadow-[0_45px_45px_rgba(230,91,46,0.2)]">
+        </div>
+
+        <div
+          class="absolute bottom-[-40px] w-1/2 h-6 bg-[#e65b2e]/20 blur-2xl rounded-[100%] scale-x-125 animate-shadow-pulse">
+        </div>
       </div>
 
-      <div class="absolute bottom-[-40px] w-1/2 h-6 bg-[#e65b2e]/20 blur-2xl rounded-[100%] scale-x-125 animate-shadow-pulse"></div>
     </div>
-
-  </div>
-</section>
+  </section>
 
   <!--SERVİCES-->
-<section class="bg-[#0a0a0a] py-24 px-6 overflow-hidden">
-  <div class="max-w-7xl mx-auto">
-
-    <div class="sticky top-0 z-20 pb-12 bg-[#0a0a0a]">
-      <div class="relative w-full px-12">
-        <div class="absolute top-1/2 left-0 w-full h-[1px] bg-white/10 -translate-y-1/2"></div>
-        
-        <div id="truck-indicator" class="absolute top-1/2 left-0 -translate-y-[120%] transition-transform duration-150 ease-out pointer-events-none">
-          <svg width="60" height="30" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-[0_0_8px_rgba(232,93,4,0.6)]">
-            <rect x="5" y="15" width="70" height="30" rx="2" fill="#1a1a1a" stroke="#e85d04" stroke-width="1.5"/>
-            <path d="M75 25H95L105 35V45H75V25Z" fill="#e85d04" />
-            <circle cx="20" cy="50" r="5" fill="#333" stroke="#e85d04" stroke-width="1"/>
-            <circle cx="85" cy="50" r="5" fill="#333" stroke="#e85d04" stroke-width="1"/>
+<section style="background:#0c0c0e; padding: 80px 0;">
+  <div style="max-width:1280px; margin:0 auto; padding: 0 32px;">
+ 
+    <!-- ─── Header ─── -->
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:56px;">
+      <span class="section-eyebrow">What We Offer</span>
+      <h2 class="section-heading" style="font-size:clamp(40px,6vw,72px); color:#fff;">
+        Our <span style="color:#e85d04;">Services</span>
+      </h2>
+      <p style="color:#6b7280; font-size:14px; max-width:420px; line-height:1.7; margin-top:4px;">
+        End-to-end logistics solutions engineered for speed, reliability and full cargo visibility across every mile.
+      </p>
+    </div>
+ 
+    <!-- ─── TRACK ─── -->
+    <div style="padding: 40px 16px; margin-bottom: 10px; position:relative;">
+      <div class="track-rail" id="track-rail">
+        <div class="track-rail-fill" id="track-fill" style="width:0%"></div>
+ 
+        <!-- Waypoints injected by JS -->
+        <div id="waypoints"></div>
+ 
+        <!-- Truck -->
+        <div id="truck-wrap">
+          <svg class="truck-svg" width="110" height="52" viewBox="0 0 110 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+ 
+            <!-- Exhaust -->
+            <ellipse class="streak" cx="5" cy="34" rx="5" ry="2" fill="rgba(232,93,4,0.2)"/>
+            <ellipse class="streak" style="animation-delay:0.3s" cx="4" cy="39" rx="3.5" ry="1.5" fill="rgba(232,93,4,0.13)"/>
+ 
+            <!-- Shadow -->
+            <ellipse cx="55" cy="50" rx="44" ry="3.5" fill="rgba(0,0,0,0.55)"/>
+ 
+            <!-- Trailer -->
+            <rect x="2" y="10" width="68" height="28" rx="3" fill="#1c1c24" stroke="#e85d04" stroke-width="1.2"/>
+            <!-- Trailer ribs -->
+            <line x1="18" y1="10" x2="18" y2="38" stroke="#e85d04" stroke-width="0.5" stroke-opacity="0.3"/>
+            <line x1="34" y1="10" x2="34" y2="38" stroke="#e85d04" stroke-width="0.5" stroke-opacity="0.3"/>
+            <line x1="50" y1="10" x2="50" y2="38" stroke="#e85d04" stroke-width="0.5" stroke-opacity="0.3"/>
+            <!-- Trailer logo strip -->
+            <rect x="8" y="18" width="52" height="8" rx="2" fill="rgba(231,93,4,0.08)" stroke="rgba(232,93,4,0.2)" stroke-width="0.5"/>
+            <text x="34" y="25.5" text-anchor="middle" font-size="5" fill="#e85d04" font-family="Barlow Condensed,sans-serif" font-weight="700" letter-spacing="0.15em" opacity="0.7">CARRYON</text>
+ 
+            <!-- Cab -->
+            <path d="M70 12 L70 38 L106 38 L106 24 L96 12 Z" fill="#1c1c24" stroke="#e85d04" stroke-width="1.2"/>
+            <!-- Cab roof detail -->
+            <rect x="72" y="7" width="20" height="5" rx="1.5" fill="#1a1a22" stroke="#e85d04" stroke-width="0.7" stroke-opacity="0.5"/>
+            <!-- Cab window -->
+            <path d="M72 13 L72 26 L93 26 L93 13 L80 13 Z" fill="#0a1929" stroke="#e85d04" stroke-width="0.6" stroke-opacity="0.5"/>
+            <path d="M96 13 L93 13 L93 26 L104 26 L104 24 L96 13 Z" fill="#0a1929" stroke="#e85d04" stroke-width="0.6" stroke-opacity="0.5"/>
+            <!-- Window shine -->
+            <line x1="74" y1="14" x2="78" y2="24" stroke="white" stroke-width="0.8" stroke-opacity="0.08"/>
+ 
+            <!-- Cab door handle -->
+            <rect x="77" y="31" width="7" height="1.5" rx="0.75" fill="#e85d04" opacity="0.5"/>
+ 
+            <!-- Headlight beam -->
+            <path class="hlight" d="M106 22 L118 16 L119 30 L106 28 Z" fill="rgba(255,210,60,0.12)"/>
+            <!-- Headlight -->
+            <rect x="103" y="21" width="4" height="8" rx="1" fill="#ffd23c" opacity="0.9"/>
+            <rect x="104" y="22" width="2" height="6" rx="0.5" fill="white" opacity="0.5"/>
+ 
+            <!-- Tail light -->
+            <rect x="2" y="20" width="3" height="9" rx="1" fill="#e85d04" opacity="0.85"/>
+            <rect x="3" y="21" width="1" height="7" rx="0.5" fill="white" opacity="0.3"/>
+ 
+            <!-- Hitch -->
+            <rect x="68" y="33" width="4" height="4" rx="1" fill="#2a2a35" stroke="#e85d04" stroke-width="0.8"/>
+ 
+            <!-- Wheel wells trailer -->
+            <path d="M10 38 Q10 47 19 47 Q28 47 28 38" fill="#0a0a0e" stroke="#2a2a35" stroke-width="0.8"/>
+            <path d="M44 38 Q44 47 53 47 Q62 47 62 38" fill="#0a0a0e" stroke="#2a2a35" stroke-width="0.8"/>
+ 
+            <!-- Wheel well cab -->
+            <path d="M77 38 Q77 47 86 47 Q95 47 95 38" fill="#0a0a0e" stroke="#2a2a35" stroke-width="0.8"/>
+ 
+            <!-- Trailer wheels -->
+            <g class="w-spin wspin-l" style="transform-origin:19px 42px">
+              <circle cx="19" cy="42" r="7.5" fill="#1a1a24" stroke="#e85d04" stroke-width="1.1"/>
+              <circle cx="19" cy="42" r="3.5" fill="#111" stroke="#555" stroke-width="0.7"/>
+              <line x1="19" y1="35.5" x2="19" y2="48.5" stroke="#444" stroke-width="0.7"/>
+              <line x1="12.5" y1="42" x2="25.5" y2="42" stroke="#444" stroke-width="0.7"/>
+              <circle cx="19" cy="42" r="1.2" fill="#e85d04"/>
+            </g>
+            <g class="w-spin wspin-r" style="transform-origin:53px 42px">
+              <circle cx="53" cy="42" r="7.5" fill="#1a1a24" stroke="#e85d04" stroke-width="1.1"/>
+              <circle cx="53" cy="42" r="3.5" fill="#111" stroke="#555" stroke-width="0.7"/>
+              <line x1="53" y1="35.5" x2="53" y2="48.5" stroke="#444" stroke-width="0.7"/>
+              <line x1="46.5" y1="42" x2="59.5" y2="42" stroke="#444" stroke-width="0.7"/>
+              <circle cx="53" cy="42" r="1.2" fill="#e85d04"/>
+            </g>
+            <!-- Cab wheel -->
+            <g class="w-spin" style="transform-origin:86px 42px">
+              <circle cx="86" cy="42" r="7.5" fill="#1a1a24" stroke="#e85d04" stroke-width="1.1"/>
+              <circle cx="86" cy="42" r="3.5" fill="#111" stroke="#555" stroke-width="0.7"/>
+              <line x1="86" y1="35.5" x2="86" y2="48.5" stroke="#444" stroke-width="0.7"/>
+              <line x1="79.5" y1="42" x2="92.5" y2="42" stroke="#444" stroke-width="0.7"/>
+              <circle cx="86" cy="42" r="1.2" fill="#e85d04"/>
+            </g>
           </svg>
         </div>
-
-        <div class="flex justify-between text-[10px] uppercase tracking-[0.3em] font-bold text-gray-600 mt-8">
-          <span>Processing</span>
-          <span>In Transit</span>
-          <span>Delivered</span>
-        </div>
+      </div>
+ 
+      <!-- Waypoint labels -->
+      <div id="wp-labels" style="display:flex; justify-content:space-between; margin-top:14px;"></div>
+    </div>
+ 
+    <!-- ─── CARDS SLIDER ─── -->
+    <div id="slider-wrap" style="overflow-x:auto; display:flex; gap:20px; padding-bottom:4px; scroll-behavior:smooth;" class="no-scrollbar">
+      <!-- Cards injected by JS -->
+    </div>
+ 
+    <!-- ─── BOTTOM NAV ─── -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-top:32px;">
+      <div style="display:flex; gap:8px; align-items:center;">
+        <div id="progress-dots" style="display:flex; gap:6px;"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span id="counter" style="font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.15em; color:#4b5563;">01 / 04</span>
+        <button id="btn-prev" class="nav-btn" style="background:#1a1a24; border:1px solid rgba(255,255,255,0.08);" onclick="navigate(-1)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="btn-next" class="nav-btn" style="background:#e85d04; border:1px solid #e85d04;" onclick="navigate(1)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
     </div>
-
-    <div id="services-slider" class="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
-      
-      <div class="min-w-[85%] md:min-w-[450px] snap-center group bg-[#111] border border-white/5 rounded-3xl p-8 transition-all hover:border-[#e85d04]/40">
-        <div class="aspect-video rounded-2xl overflow-hidden mb-8">
-          <img src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?auto=format&fit=crop&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
-        </div>
-        <h4 class="text-2xl font-bold text-white mb-2">Ocean Freight</h4>
-        <p class="text-gray-500 text-sm mb-8 leading-relaxed">International shipping via major global trade routes with real-time vessel monitoring.</p>
-        <button class="w-full py-4 rounded-xl border border-white/10 text-white text-xs font-bold uppercase tracking-widest group-hover:bg-[#e85d04] group-hover:border-[#e85d04] transition-all">View Details</button>
-      </div>
-
-      <div class="min-w-[85%] md:min-w-[450px] snap-center group bg-[#111] border border-white/5 rounded-3xl p-8 transition-all hover:border-[#e85d04]/40">
-        <div class="aspect-video rounded-2xl overflow-hidden mb-8">
-          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
-        </div>
-        <h4 class="text-2xl font-bold text-white mb-2">Smart Container</h4>
-        <p class="text-gray-500 text-sm mb-8 leading-relaxed">Secured unit transport featuring impact sensors and humidity control for sensitive cargo.</p>
-        <button class="w-full py-4 rounded-xl border border-white/10 text-white text-xs font-bold uppercase tracking-widest group-hover:bg-[#e85d04] group-hover:border-[#e85d04] transition-all">View Details</button>
-      </div>
-
-      <div class="min-w-[85%] md:min-w-[450px] snap-center group bg-[#111] border border-white/5 rounded-3xl p-8 transition-all hover:border-[#e85d04]/40">
-        <div class="aspect-video rounded-2xl overflow-hidden mb-8">
-          <img src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
-        </div>
-        <h4 class="text-2xl font-bold text-white mb-2">Global Air</h4>
-        <p class="text-gray-500 text-sm mb-8 leading-relaxed">Priority aviation logistics for urgent deliveries across 190+ countries within 24-48 hours.</p>
-        <button class="w-full py-4 rounded-xl border border-white/10 text-white text-xs font-bold uppercase tracking-widest group-hover:bg-[#e85d04] group-hover:border-[#e85d04] transition-all">View Details</button>
-      </div>
-
-      <div class="min-w-[85%] md:min-w-[450px] snap-center group bg-[#111] border border-white/5 rounded-3xl p-8 transition-all hover:border-[#e85d04]/40">
-        <div class="aspect-video rounded-2xl overflow-hidden mb-8">
-          <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
-        </div>
-        <h4 class="text-2xl font-bold text-white mb-2">Last Mile</h4>
-        <p class="text-gray-500 text-sm mb-8 leading-relaxed">The final step of delivery, optimized by AI to reach your doorstep at record speed.</p>
-        <button class="w-full py-4 rounded-xl border border-white/10 text-white text-xs font-bold uppercase tracking-widest group-hover:bg-[#e85d04] group-hover:border-[#e85d04] transition-all">View Details</button>
-      </div>
-
-    </div>
-
-    
+ 
   </div>
 </section>
-
-<style>
-@keyframes truck-move {
-  0% { transform: translateX(-5%) translateY(-120%); }
-  100% { transform: translateX(95%) translateY(-120%); }
-}
-.animate-truck-move {
-  animation: truck-move 12s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-}
-</style>
+ 
 
 
-  <!-- TEAM -->
-  <section class="team-sec px-6" id="team">
-    <div class="container">
-      <div class="rv left">
-        <div class="sec-label">The People Behind The Miles</div>
-        <h2 class="sec-h">Meet Our <span class="ac">Expert</span><br>Team</h2>
-        <p class="sec-sub">Seasoned logistics professionals who live and breathe supply chain — every shipment is
-          personal to us.</p>
-      </div>
-      <div class="team-grid">
 
-        <div class="tc rv up d1">
-          <div class="tc-top bg-[linear-gradient(145deg,#181818,#0e0e0e)]">
-            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=687&auto=format&fit=crop"
-              alt="James Mitchell" class="absolute left-0 top-0 h-full w-full object-cover">
-          </div>
-          <div class="tc-body">
-            <div class="tc-name">James Mitchell</div>
-            <div class="tc-role">CEO & Founder</div>
-            <div class="tc-bio">20+ years shaping global logistics. James founded Voyago to redefine how cargo
-              moves
-              across the world.</div>
-            <div class="tc-soc">
-              <div class="ts">in</div>
-              <div class="ts">𝕏</div>
-              <div class="ts">✉</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tc rv up d2">
-          <div class="tc-top bg-[linear-gradient(145deg,#1c1510,#0e0e0e)]">
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=688&auto=format&fit=crop"
-              alt="Sophia Rivera" class="absolute left-0 top-0 h-full w-full object-cover">
-          </div>
-          <div class="tc-body">
-            <div class="tc-name">Sophia Rivera</div>
-            <div class="tc-role">Head of Operations</div>
-            <div class="tc-bio">Expert in route optimization and freight coordination, Sophia keeps every shipment
-              running on schedule.</div>
-            <div class="tc-soc">
-              <div class="ts">in</div>
-              <div class="ts">𝕏</div>
-              <div class="ts">✉</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tc rv up d3">
-          <div class="tc-top bg-[linear-gradient(145deg,#111a11,#0e0e0e)]">
-            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=687&auto=format&fit=crop"
-              alt="Kevin Lee" class="absolute left-0 top-0 h-full w-full object-cover">
-          </div>
-          <div class="tc-body">
-            <div class="tc-name">Kevin Lee</div>
-            <div class="tc-role">Chief Technology Officer</div>
-            <div class="tc-bio">Architects Voyago's AI-powered tracking platform and fleet management system
-              trusted by
-              thousands.</div>
-            <div class="tc-soc">
-              <div class="ts">in</div>
-              <div class="ts">𝕏</div>
-              <div class="ts">✉</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="tc rv up d4">
-          <div class="tc-top bg-[linear-gradient(145deg,#15111a,#0e0e0e)]">
-            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=761&auto=format&fit=crop"
-              alt="Priya Nair" class="absolute left-0 top-0 h-full w-full object-cover">
-          </div>
-          <div class="tc-body">
-            <div class="tc-name">Priya Nair</div>
-            <div class="tc-role">Client Relations Director</div>
-            <div class="tc-bio">Ensures every partner feels valued and fully supported from first quote to final
-              delivery.</div>
-            <div class="tc-soc">
-              <div class="ts">in</div>
-              <div class="ts">𝕏</div>
-              <div class="ts">✉</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="testi-sec px-6" id="testimonials">
-    <div class="container">
-      <div class="rv right">
-        <div class="sec-label">Testimonials From Clients</div>
-        <h2 class="sec-h">What Our <span class="ac">Clients</span><br>Say</h2>
-        <p class="sec-sub">Real words from real partners who trust Voyago with their most critical shipments every
-          day.
-        </p>
-      </div>
-
-      <!-- SLIDER — shows 3 cards, slides 1 card every 5s -->
-
-      <div class="testi-track" id="testiTrack">
-
-        <div class="team-slider">
-          <div class="tcard">
-            <div class="tcard-q">"</div>
-            <div class="tcard-date">10 May 2025</div>
-            <div class="tcard-stars">★★★★★</div>
-            <p class="tcard-txt">Voyago transformed how we handle cross-border freight. Their tracking system
-              gives us
-              peace of mind, and deliveries are always on time — even during peak season. Truly world-class.</p>
-            <div class="tcard-author">
-              <div class="tcard-av">AB</div>
-              <div>
-                <div class="tcard-name">Anna Brown</div>
-                <div class="tcard-role">Marketing Director</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="team-slider">
-          <div class="tcard">
-            <div class="tcard-q">"</div>
-            <div class="tcard-date">11 May 2025</div>
-            <div class="tcard-stars">★★★★★</div>
-            <p class="tcard-txt">Switching to Voyago cut our shipping costs by 22% and reduced delays
-              dramatically.
-              The team is incredibly responsive — you always feel like a priority client, no matter the shipment
-              size.
-            </p>
-            <div class="tcard-author">
-              <div class="tcard-av">IH</div>
-              <div>
-                <div class="tcard-name">Isabella Harris</div>
-                <div class="tcard-role">Creative Lead</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="team-slider">
-          <div class="tcard">
-            <div class="tcard-q">"</div>
-            <div class="tcard-date">12 May 2025</div>
-            <div class="tcard-stars">★★★★★</div>
-            <p class="tcard-txt">Their warehousing solution integrated seamlessly with our ERP. We can now manage
-              inventory in real time and dispatch orders within hours. An absolute game-changer for our
-              operations.</p>
-            <div class="tcard-author">
-              <div class="tcard-av">EC</div>
-              <div>
-                <div class="tcard-name">Ethan Clark</div>
-                <div class="tcard-role">Customer Support Lead</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="team-slider">
-          <div class="tcard">
-            <div class="tcard-q">"</div>
-            <div class="tcard-date">18 Jun 2025</div>
-            <div class="tcard-stars">★★★★★</div>
-            <p class="tcard-txt">We moved our entire cold-chain logistics to Voyago and haven't looked back.
-              Temperature monitoring is spot-on and we've had zero spoilage incidents since the switch.
-              Exceptional
-              service.</p>
-            <div class="tcard-author">
-              <div class="tcard-av">RM</div>
-              <div>
-                <div class="tcard-name">Rachel Martinez</div>
-                <div class="tcard-role">Supply Chain Manager</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="team-slider">
-          <div class="tcard">
-            <div class="tcard-q">"</div>
-            <div class="tcard-date">02 Jul 2025</div>
-            <div class="tcard-stars">★★★★★</div>
-            <p class="tcard-txt">From customs clearance to last-mile delivery, Voyago handles everything
-              flawlessly.
-              Our international expansion would not have been possible without their global logistics expertise.
-            </p>
-            <div class="tcard-author">
-              <div class="tcard-av">DK</div>
-              <div>
-                <div class="tcard-name">David Kim</div>
-                <div class="tcard-role">VP of Operations</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="team-slider">
-          <div class="tcard">
-            <div class="tcard-q">"</div>
-            <div class="tcard-date">15 Jul 2025</div>
-            <div class="tcard-stars">★★★★★</div>
-            <p class="tcard-txt">Voyago's dedicated account manager made our transition seamless. They customized
-              every route and schedule around our needs — something no other provider was willing to do.</p>
-            <div class="tcard-author">
-              <div class="tcard-av">LW</div>
-              <div>
-                <div class="tcard-name">Laura Wilson</div>
-                <div class="tcard-role">Procurement Director</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="team-slider">
-          <div class="tcard">
-            <div class="tcard-q">"</div>
-            <div class="tcard-date">28 Aug 2025</div>
-            <div class="tcard-stars">★★★★★</div>
-            <p class="tcard-txt">The real-time dashboard is a game-changer. We can see every truck, every pallet,
-              every ETA. It cut our customer inquiry response time by 60%. Phenomenal technology and support.</p>
-            <div class="tcard-author">
-              <div class="tcard-av">MT</div>
-              <div>
-                <div class="tcard-name">Marcus Torres</div>
-                <div class="tcard-role">Logistics Coordinator</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="team-slider">
-          <div class="tcard">
-            <div class="tcard-q">"</div>
-            <div class="tcard-date">03 Sep 2025</div>
-            <div class="tcard-stars">★★★★★</div>
-            <p class="tcard-txt">We needed a partner who could handle hazardous materials with full compliance.
-              Voyago
-              exceeded every safety benchmark and delivered ahead of schedule — three months running now.</p>
-            <div class="tcard-author">
-              <div class="tcard-av">SJ</div>
-              <div>
-                <div class="tcard-name">Sarah Jensen</div>
-                <div class="tcard-role">Safety & Compliance Officer</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Arrows -->
-      <button class="testi-arrow testi-prev" id="testiPrev" aria-label="Previous testimonial">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-          stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6" />
-        </svg>
-      </button>
-      <button class="testi-arrow testi-next" id="testiNext" aria-label="Next testimonial">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-          stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 6 15 12 9 18" />
-        </svg>
-      </button>
-
-      <!-- Progress bar -->
-      <div class="testi-progress">
-        <div class="testi-progress-bar" id="testiBar"></div>
-      </div>
-    </div>
-
-    <!-- Dots -->
-    <div class="testi-dots" id="testiDots"></div>
-    </div>
-  </section>
 
   <!-- CONTACT -->
   <section class="contact-sec px-6" id="contact">
@@ -824,27 +969,34 @@
         <!-- BRAND + SOCIALS -->
         <div>
           <div class="flex items-center gap-2 mb-3">
-            <span class="bg-[var(--orange)] text-white [font-family:'Syne',sans-serif] font-[800] text-[18px] px-[9px] py-[5px] rounded-lg">V</span>
+            <span
+              class="bg-[var(--orange)] text-white [font-family:'Syne',sans-serif] font-[800] text-[18px] px-[9px] py-[5px] rounded-lg">V</span>
             <span class="[font-family:'Syne',sans-serif] font-[800] text-[22px]">Voyago</span>
           </div>
           <p class="text-gray-400 text-sm mb-5 leading-relaxed">Reliable logistics solutions, ensuring your cargo
             reaches its destination safely &amp; efficiently.</p>
           <div class="flex gap-2 flex-wrap mt-1">
             <!-- Facebook -->
-            <a href="#" class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]" title="Facebook">
+            <a href="#"
+              class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]"
+              title="Facebook">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
               </svg>
             </a>
             <!-- X / Twitter -->
-            <a href="#" class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]" title="X / Twitter">
+            <a href="#"
+              class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]"
+              title="X / Twitter">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M4 4l16 16M20 4 4 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
                   fill="none" />
               </svg>
             </a>
             <!-- Instagram -->
-            <a href="#" class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]" title="Instagram">
+            <a href="#"
+              class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]"
+              title="Instagram">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -853,7 +1005,9 @@
               </svg>
             </a>
             <!-- LinkedIn -->
-            <a href="#" class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]" title="LinkedIn">
+            <a href="#"
+              class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]"
+              title="LinkedIn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                 <rect x="2" y="9" width="4" height="12" />
@@ -861,7 +1015,9 @@
               </svg>
             </a>
             <!-- YouTube -->
-            <a href="#" class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]" title="YouTube">
+            <a href="#"
+              class="fsi inline-flex items-center justify-center w-[38px] h-[38px] rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#aaa] no-underline transition-all duration-[250ms] hover:!bg-[var(--orange)] hover:!border-[var(--orange)] hover:!text-white hover:-translate-y-[3px] hover:shadow-[0_6px_20px_rgba(255,102,0,.35)]"
+              title="YouTube">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path
                   d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
@@ -869,17 +1025,20 @@
               </svg>
             </a>
           </div>
-</div>
+        </div>
       </div>
 
       <!-- COPYRIGHT -->
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-[var(--border)] mt-10 pt-6">
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-[var(--border)] mt-10 pt-6">
         <p class="text-gray-500 text-xs">© 2025 Voyago. All rights reserved.</p>
         <p class="text-gray-500 text-xs">Designed with precision for reliable logistics.</p>
       </div>
     </div>
   </footer>
- 
+  <script>
+    
+  </script>
   <script src="https://kit.fontawesome.com/a2e0a1b8e4.js" crossorigin="anonymous"></script>
   <script src="languageSwitcher.js"></script>
   <script src="js.js"></script>
