@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voyago Logistics — Moving the World Forward</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+ <style>
+    /* Additional custom styling for enhanced glass effect and stability */
+    .glass-nav {
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    /* for older browsers, a solid dark fallback */
+    @supports not (backdrop-filter: blur(12px)) {
+      .glass-nav {
+        background: rgba(0, 0, 0, 0.85);
+      }
+    }
+
+   
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-60px);
+      }
+    }
+
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+    
+
+
+
+     * {
+      font-family: 'Inter', sans-serif;
+    }
+ 
+    .logo-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+ 
+    /* Smooth scroll behavior */
+    html {
+      scroll-behavior: smooth;
+    }
+ 
+    /* Navigation animations */
+    nav {
+      animation: slideDown 0.6s ease-out;
+    }
+ 
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+ 
+    /* Hover effects for nav links */
+    .nav-link {
+      position: relative;
+      overflow: hidden;
+    }
+ 
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, rgba(255, 126, 21, 0.892));
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+ 
+    .nav-link:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+ 
+    /* Mobile menu animation */
+    #mobileMenu.active {
+      animation: slideIn 0.3s ease-out;
+    }
+ 
+    @keyframes slideIn {
+      from {
+        max-height: 0;
+        opacity: 0;
+      }
+      to {
+        max-height: calc(100vh - 60px);
+        opacity: 1;
+      }
+    }
+ 
+    /* Hamburger animation */
+    .hamburger.active #line1 {
+      transform: rotate(45deg) translateY(10px);
+    }
+ 
+    .hamburger.active #line2 {
+      opacity: 0;
+    }
+ 
+    .hamburger.active #line3 {
+      transform: rotate(-45deg) translateY(-10px);
+    }
+ 
+    /* Button hover effect */
+    .btn-hover {
+      position: relative;
+      overflow: hidden;
+    }
+ 
+    .btn-hover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 126, 21, 0.892);
+      transition: left 0.3s ease;
+    }
+ 
+    .btn-hover:hover::before {
+      left: 100%;
+    }
+ 
+    /* Submenu animation */
+    .submenu.active {
+      display: block !important;
+      animation: fadeIn 0.2s ease-out;
+    }
+ 
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+       /* ── MARQUEE ── */
+    .marquee-wrap { overflow:hidden; background:rgba(255,94,20,0.06); border-top:1px solid rgba(255,94,20,0.12); border-bottom:1px solid rgba(255,94,20,0.12); padding:.7rem 0; }
+    .marquee-inner { display:flex; gap:3rem; animation:marquee 25s linear infinite; white-space:nowrap; }
+    .marquee-inner:hover { animation-play-state:paused; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .marquee-item { display:flex; align-items:center; gap:.6rem; font-size:.75rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,0.35); }
+    .marquee-item span { color:#ff5e14; }
+  /*navbar*/
+    .nav-link {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-weight: 800;
+      color: #14213d;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 4px;
+      background: #ff5a14;
+      border-radius: 20px 20px 0 0;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #ff5a14;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+@keyframes network-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+@keyframes line-flow {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-network {
+  animation: network-pulse 4s ease-in-out infinite;
+}
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+   
+</style>
+</head>
+
+<body>
+<div id="toast">✓ <span id="tmsg">Done!</span></div>
+  <div class="chat" onclick="showToast('Our logistics team will connect with you shortly! 🚛',3500)">💬</div>
+
+  <!-- Navbar -->
+<header class="fixed top-0 left-0 z-50 w-full bg-orange-50 shadow-sm  font-['sans-serif']">
+    <!-- Top Bar -->
+    <div class="relative hidden h-[44px] overflow-hidden bg-black text-white lg:block">
+      
+
+      <div class="relative mx-auto flex h-full max-w-[1280px] items-center justify-between px-6">
+        <div class="ml-[280px] flex items-center gap-8 text-sm font-semibold">
+          <span class="flex items-center gap-2">
+            <span class="text-[#ff5a14]">📍</span>
+            Jones Street, New York, USA
+          </span>
+
+          <span class="h-5 w-px bg-white/20"></span>
+
+          <span class="flex items-center gap-2">
+            <span class="text-[#ff5a14]">✈</span>
+            info@wktransport.com
+          </span>
+        </div>
+
+        <div class="flex h-full items-center">
+          <div class="flex items-center gap-4 text-sm">
+            <a href="#" class="transition hover:text-[#ff5a14]">f</a>
+            <a href="#" class="transition hover:text-[#ff5a14]">x</a>
+            <a href="#" class="transition hover:text-[#ff5a14]">ig</a>
+            <a href="#" class="transition hover:text-[#ff5a14]">in</a>
+          </div>
+        </a>
+
+          <a href="getaquote.html"
+            class="ml-8 flex h-full items-center bg-[#ff5a14] px-9 text-sm font-bold text-white transition hover:bg-[#e94c0c]"
+            style="clip-path: polygon(14% 0, 100% 0, 86% 100%, 0 100%);">
+            Get a Free Quote »
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <nav class="relative h-[46px] bg-white">
+      <div class="mx-auto flex h-full max-w-[1280px] items-center justify-between px-6">
+        <!-- Logo -->
+        <a href="#"
+          class="absolute left-0 top-0 flex h-[50px] w-[300px] items-center pl-12 text-3xl font-extrabold tracking-wide text-white"
+          style="clip-path: polygon(0 0, 76% 0, 100% 100%, 0% 100%); background:#ff5a14;">
+          WK <br>Transport
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="ml-[320px] hidden h-full items-center gap-9 lg:flex">
+          <a href="index.html" class="nav-link active">Home +</a>
+          <a href="aboutus.html" class="nav-link">About</a>
+          <a href="services.html" class="nav-link">Services +</a>
+          <a href="pages.html" class="nav-link">Pages +</a>
+          <a href="blog.html" class="nav-link">Blog +</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+        </div>
+
+        <!-- Right Actions -->
+        <div class="hidden items-center gap-6 lg:flex">
+          <button class="text-3xl leading-none transition hover:text-[#ff5a14]">⌕</button>
+
+          <span class="h-8 w-px bg-gray-200"></span>
+
+          <button class="flex items-center gap-3 text-sm font-semibold text-gray-500">
+            EN
+            <span>v</span>
+          </button>
+
+          <span class="h-8 w-px bg-gray-200"></span>
+        </div>
+
+        <!-- Mobile Button -->
+        <button id="menuBtn"
+          class="ml-auto flex h-11 w-11 items-center justify-center rounded-md bg-[#ff5a14] text-2xl text-white lg:hidden">
+          ☰
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="hidden border-t border-gray-100 bg-white px-6 py-5 shadow-lg lg:hidden">
+        <div class="flex flex-col gap-4 font-bold text-[#14213d]">
+          <a href="index.html" class="text-[#ff5a14]">Home +</a>
+          <a href="about.html">About</a>
+          <a href="services.html">Services +</a>
+          <a href="pages.html">Pages +</a>
+          <a href="blog.html">Blog +</a>
+          <a href="contact.html">Contact</a>
+          <a href="getaquote.html" class="mt-2 rounded bg-[#ff5a14] px-5 py-3 text-center text-white">
+            Get a Free Quote »
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+
+
+
+  <!-- HERO SECTION -->
+  <section class="relative h-[60vh] min-h-[750px] w-full flex items-center justify-center overflow-hidden">
+
+    <div class="absolute inset-0 z-0">
+      <img src="assets/images/pexels-yankrukov-7640446.jpg" alt="Transport" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-black/70"></div>
+    </div>
+
+    <div class="relative z-10 container mx-auto px-6 text-center">
+      <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+        <span class="block text-white">
+          <span class="text-[#e85d04]"><span data-i18n="career.hero_title_1">CAREERS</span></span>
+        </span>
+      </h2>
+    </div>
+
+    <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#0a0a0a] to-transparent z-10"></div>
+  </section>
+
+ 
+<section class="bg-[#0a0c10] py-24 px-6 md:px-12 relative overflow-hidden">
+  
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-[#e85d04]/5 rounded-full animate-pulse pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="flex flex-col lg:flex-row gap-12 items-end">
+      
+      <div class="lg:w-2/3">
+        <div class="mb-10">
+          <div class="flex items-center gap-2 mb-6">
+            <div class="w-2 h-2 bg-[#e85d04] rotate-45"></div>
+            <span class="text-gray-500 text-xs font-mono tracking-[0.3em] uppercase" data-i18n="career.intro_tag">
+              Careers / Werken Bij
+            </span>
+          </div>
+          
+          <h1 class="text-6xl md:text-8xl font-black text-white tracking-tighter leading-none mb-8">
+            <span data-i18n="career.intro_title_1" class="block">JOIN THE</span>
+            <span class="text-transparent stroke-orange" style="-webkit-text-stroke: 1px #e85d04;" data-i18n="career.intro_title_2">EVOLUTION.</span>
+          </h1>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <p class="text-gray-400 text-lg leading-relaxed font-light border-l border-[#e85d04] pl-6" data-i18n="career.intro_desc">
+            We are always looking for passionate, driven professionals to join NLTransport WK B.V. Whether you are an experienced logistics expert or just starting your career, there is a place for you.
+          </p>
+          
+          <div class="flex flex-col gap-4">
+             <div class="h-[1px] w-full bg-gradient-to-r from-[#e85d04] to-transparent"></div>
+             <p class="text-[#e85d04] font-mono text-sm tracking-widest">DRIVING GLOBAL SOLUTIONS</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:w-1/3 w-full">
+        <div class="relative group h-[500px] w-full bg-zinc-900 rounded-2xl overflow-hidden shadow-2xl border border-white/5">
+          <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80" 
+               alt="Logistics" 
+               class="w-full h-full object-cover hover:grayscale transition-all duration-700 " />
+          
+          <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent">
+            <div class="flex justify-between items-end">
+              
+              <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-[#e85d04] group-hover:border-[#e85d04] transition-colors">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 stats-row">
+    <div class="stat-card rv up d1">
+      <div class="stat-num"><span data-target="25">0</span><span style="-webkit-text-fill-color:#ff5e14">+</span></div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div class="stat-card rv up d2">
+      <div class="stat-num"><span data-target="50">0</span><span style="-webkit-text-fill-color:#ff5e14">+</span></div>
+      <div class="stat-label">Countries Served</div>
+    </div>
+    <div class="stat-card rv up d3">
+      <div class="stat-num"><span data-target="10">0</span><span style="-webkit-text-fill-color:#ff5e14">K+</span></div>
+      <div class="stat-label">Happy Partners</div>
+    </div>
+    <div class="stat-card rv up d4">
+      <div class="stat-num"><span data-target="99">0</span><span style="-webkit-text-fill-color:#ff5e14">%</span></div>
+      <div class="stat-label">On-time Delivery</div>
+    </div>
+  </div>
+  </div>
+</section>
+
+
+ <!-- 5. jobs WANTED SECTION -->
+<section class="bg-[#0a0c10] py-0 overflow-hidden border-y border-white/5 font-['Oswald']">
+  <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[750px]">
+
+    <div class="relative h-80 lg:h-auto overflow-hidden group">
+      <img src="assets/images/career_intro.jpg" 
+           alt="Logistics Operations" 
+           class="w-full h-full object-cover brightness-50 group-hover:scale-105 transition-transform duration-1000" />
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#0a0c10]/20 to-[#0a0c10] hidden lg:block"></div>
+    </div>
+
+    <div class="bg-[#0a0c10] px-8 md:px-16 py-20 flex flex-col justify-center">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-[2px] bg-[#e85d04]"></span>
+        <span class="text-[#e85d04] text-[10px] font-bold uppercase tracking-[0.3em] font-['Oswald']">
+          Priority Openings
+        </span>
+      </div>
+
+      <h2 class="text-5xl md:text-7xl font-bold text-white tracking-tighter mb-8 leading-[0.9] font-['Oswald'] uppercase">
+        Always looking <br/> 
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#e85d04] to-orange-400">for talent</span>
+      </h2>
+
+      <div class="space-y-4 mb-10">
+        <div class="flex items-start gap-4 p-5 rounded-sm border-l-4 border-white/5 bg-[#111318] hover:border-[#e85d04] transition-all group">
+          <div class="text-[#e85d04] font-black text-xl font-['Oswald']">01</div>
+          <div>
+            <h4 class="text-white font-bold text-lg uppercase font-['Oswald'] tracking-wide">Logistics & Transport</h4>
+            <p class="text-gray-400 text-sm mt-1 font-light leading-relaxed">Drivers (CE/BE), Dispatchers, and Route Planners.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 p-5 rounded-sm border-l-4 border-white/5 bg-[#111318] hover:border-[#e85d04] transition-all group">
+          <div class="text-[#e85d04] font-black text-xl font-['Oswald']">02</div>
+          <div>
+            <h4 class="text-white font-bold text-lg uppercase font-['Oswald'] tracking-wide">Warehouse Operations</h4>
+            <p class="text-gray-400 text-sm mt-1 font-light leading-relaxed">Inventory Managers, Forklift Operators, and Team Leads.</p>
+          </div>
+        </div>
+      </div>
+
+      <a href="#careers" class="inline-flex items-center justify-center bg-[#e85d04] hover:bg-white hover:text-black text-white font-bold uppercase tracking-[0.2em] px-10 py-5 transition-all font-['Oswald'] text-sm">
+        Join the team
+        <svg class="ml-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+  
+ <!-- 7. PARTNER WITH US SECTION -->
+<section class="bg-[#0a0c10] py-24 px-6 md:px-12 relative overflow-hidden font-['Oswald']">
+  
+  <div class="absolute top-0 right-0 w-1/2 h-full bg-[#e85d04]/[0.02] -skew-x-12 translate-x-1/4 pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-3 mb-6">
+        <span class="w-12 h-[1px] bg-[#e85d04]"></span>
+        <span class="text-[#e85d04] text-xs font-bold uppercase tracking-[0.4em] font-['Oswald']" data-i18n="career.partner_tag">
+          Global Collaboration
+        </span>
+        <span class="w-12 h-[1px] bg-[#e85d04]"></span>
+      </div>
+      <h2 class="text-5xl md:text-6xl font-bold text-white tracking-tighter mb-6 font-['Oswald'] uppercase leading-none">
+        Collaborate with <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#e85d04] to-orange-400">NLTransport WK B.V</span>
+      </h2>
+      <p class="text-gray-400 text-lg leading-relaxed max-w-2xl mx-auto font-light" data-i18n="career.partner_desc">
+        We build long-term strategic alliances with transport owners and service providers who value reliability and high-tier logistics performance.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-0 border border-white/5 bg-white/[0.02] backdrop-blur-sm overflow-hidden rounded-sm">
+      
+      <div class="group p-10 border-b md:border-b-0 md:border-r border-white/5 hover:bg-[#e85d04]/[0.03] transition-all duration-500">
+        <div class="w-14 h-14 bg-zinc-900 border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:border-[#e85d04]/50 transition-colors">
+          <svg class="w-7 h-7 text-[#e85d04]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-4 font-['Oswald'] uppercase tracking-wide group-hover:text-[#e85d04] transition-colors" data-i18n="career.partner_card_1_title">Owner-Operators</h3>
+        <p class="text-gray-500 text-sm leading-relaxed mb-6 font-light" data-i18n="career.partner_card_1_desc">
+          Maximize your truck's potential. We provide consistent loads and fair payment terms across the Benelux and DACH regions.
+        </p>
+        <div class="h-[2px] w-8 bg-[#e85d04] group-hover:w-full transition-all duration-700"></div>
+      </div>
+
+      <div class="group p-10 border-b md:border-b-0 md:border-r border-white/5 hover:bg-[#e85d04]/[0.03] transition-all duration-500">
+        <div class="w-14 h-14 bg-zinc-900 border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:border-[#e85d04]/50 transition-colors">
+          <svg class="w-7 h-7 text-[#e85d04]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-4 font-['Oswald'] uppercase tracking-wide group-hover:text-[#e85d04] transition-colors" data-i18n="career.partner_card_2_title">Subcontractors</h3>
+        <p class="text-gray-500 text-sm leading-relaxed mb-6 font-light" data-i18n="career.partner_card_2_desc">
+          Integrate your fleet into our managed network. Benefit from our logistics technology and professional dispatching support.
+        </p>
+        <div class="h-[2px] w-8 bg-[#e85d04] group-hover:w-full transition-all duration-700"></div>
+      </div>
+
+      <div class="group p-10 hover:bg-[#e85d04]/[0.03] transition-all duration-500">
+        <div class="w-14 h-14 bg-zinc-900 border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:border-[#e85d04]/50 transition-colors">
+          <svg class="w-7 h-7 text-[#e85d04]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-4 font-['Oswald'] uppercase tracking-wide group-hover:text-[#e85d04] transition-colors" data-i18n="career.partner_card_3_title">Facility Partners</h3>
+        <p class="text-gray-500 text-sm leading-relaxed mb-6 font-light" data-i18n="career.partner_card_3_desc">
+          Own storage space? Partner with us for regional distribution hubs and cross-docking opportunities.
+        </p>
+        <div class="h-[2px] w-8 bg-[#e85d04] group-hover:w-full transition-all duration-700"></div>
+      </div>
+
+    </div>
+
+    <div class="mt-16 flex flex-col items-center">
+      <a href="#partner-form" class="group relative px-12 py-5 bg-[#e85d04] text-white font-bold font-['Oswald'] uppercase tracking-[0.2em] transition-all hover:bg-white hover:text-black rounded-sm overflow-hidden">
+        <span class="relative z-10" data-i18n="career.partner_btn">Become a Partner</span>
+        <div class="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+      </a>
+      <p class="mt-6 text-gray-500 text-xs font-mono tracking-widest uppercase">Strengthening the supply chain together</p>
+    </div>
+  </div>
+</section>
+
+
+  <!-- FOOTER -->
+  <footer style="background:#0d0d0d;border-top:1px solid var(--border);">
+    <div class="max-w-7xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
+
+        <!-- NAVIGATION -->
+        <div>
+          <h5 class="font-bold text-sm mb-5 text-white tracking-widest uppercase">Navigation</h5>
+          <a href="#" class="footer-link">Home</a>
+          <a href="#" class="footer-link">About Us</a>
+          <a href="#services" class="footer-link">Services</a>
+          <a href="#" class="footer-link">Pricing</a>
+          <a href="#" class="footer-link">Career</a>
+        </div>
+
+
+        <!-- ADDRESS & CONTACT -->
+        <div>
+          <h5 class="font-bold text-sm mb-5 text-white tracking-widest uppercase">Address</h5>
+          <p class="text-gray-400 text-sm mb-6">123 Logistic Drive San Francisco, CA 94105</p>
+          <h5 class="font-bold text-sm mb-3 text-white tracking-widest uppercase">Contact</h5>
+          <p class="text-gray-400 text-sm mb-2">info@voyagologistic.com</p>
+          <p class="text-gray-400 text-sm">+1 (800) 555-6789</p>
+        </div>
+
+        <!-- BRAND + SOCIALS -->
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <span
+              style="background:var(--orange);color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;padding:5px 9px;border-radius:8px;">V</span>
+            <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;">Voyago</span>
+          </div>
+          <p class="text-gray-400 text-sm mb-5 leading-relaxed">Reliable logistics solutions, ensuring your cargo
+            reaches its destination safely &amp; efficiently.</p>
+          <div class="flex gap-2 flex-wrap" style="margin-top:4px;">
+            <!-- Facebook -->
+            <a href="#" class="fsi" title="Facebook"
+              style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;transition:all .25s;text-decoration:none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <!-- X / Twitter -->
+            <a href="#" class="fsi" title="X / Twitter"
+              style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;transition:all .25s;text-decoration:none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 4l16 16M20 4 4 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                  fill="none" />
+              </svg>
+            </a>
+            <!-- Instagram -->
+            <a href="#" class="fsi" title="Instagram"
+              style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;transition:all .25s;text-decoration:none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <!-- LinkedIn -->
+            <a href="#" class="fsi" title="LinkedIn"
+              style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;transition:all .25s;text-decoration:none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+            <!-- YouTube -->
+            <a href="#" class="fsi" title="YouTube"
+              style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;transition:all .25s;text-decoration:none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
+                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#1a1a1a" />
+              </svg>
+            </a>
+          </div>
+          <style>
+            .fsi:hover {
+              background: var(--orange) !important;
+              border-color: var(--orange) !important;
+              color: #fff !important;
+              transform: translateY(-3px);
+              box-shadow: 0 6px 20px rgba(255, 102, 0, .35);
+            }
+          </style>
+        </div>
+      </div>
+
+      <!-- COPYRIGHT -->
+      <div style="border-top:1px solid var(--border);margin-top:40px;padding-top:24px;"
+        class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <p class="text-gray-500 text-xs">© 2025 Voyago. All rights reserved.</p>
+        <p class="text-gray-500 text-xs">Designed with precision for reliable logistics.</p>
+      </div>
+    </div>
+  </footer>
+  <script>
+    /* CURSOR */
+    const cd = document.getElementById('cd'), cr = document.getElementById('cr');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cd.style.left = mx + 'px'; cd.style.top = my + 'px'; });
+    (function loop() { rx += (mx - rx) * .11; ry += (my - ry) * .11; cr.style.left = rx + 'px'; cr.style.top = ry + 'px'; requestAnimationFrame(loop); })();
+    document.querySelectorAll('a,button,.tc,.tcard,.fsi,.ts,.chat').forEach(el => {
+      el.addEventListener('mouseenter', () => cr.classList.add('big'));
+      el.addEventListener('mouseleave', () => cr.classList.remove('big'));
+    });
+
+    /* NAV */
+    const navEl = document.getElementById('nav');
+    window.addEventListener('scroll', () => navEl.classList.toggle('stuck', scrollY > 60), { passive: true });
+
+    /* PARALLAX */
+    const hbg = document.getElementById('hbg');
+    window.addEventListener('scroll', () => { hbg.style.transform = `translateY(${scrollY * .28}px)`; }, { passive: true });
+
+    /* REVEAL */
+    const rvObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); rvObs.unobserve(e.target); } });
+    }, { threshold: .1, rootMargin: '0px 0px -32px 0px' });
+    document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
+
+    /* COUNT-UP */
+    function countUp(el, target) {
+      let n = 0; const dur = 2000, step = 16, inc = target / (dur / step);
+      const suf = el.querySelector('.sfx') ? el.querySelector('.sfx').outerHTML : '';
+      const t = setInterval(() => { n = Math.min(n + inc, target); el.innerHTML = Math.floor(n) + suf; if (n >= target) clearInterval(t); }, step);
+    }
+    const sObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { document.querySelectorAll('[data-target]').forEach(el => countUp(el, +el.dataset.target)); sObs.disconnect(); } });
+    }, { threshold: .5 });
+    const sr = document.querySelector('.stats-row'); if (sr) sObs.observe(sr);
+
+    /* TOAST */
+    function showToast(msg, dur) {
+      const t = document.getElementById('toast');
+      document.getElementById('tmsg').textContent = msg;
+      t.classList.add('on');
+      clearTimeout(t._t);
+      t._t = setTimeout(() => t.classList.remove('on'), dur || 3500);
+    }
+
+    /* FORM */
+    function send() {
+      const fn = document.getElementById('fn').value.trim();
+      const em = document.getElementById('em').value.trim();
+      const msg = document.getElementById('msg').value.trim();
+      if (!fn || !em || !msg) { showToast('⚠ Please fill in name, email & message.', 3200); return; }
+      showToast('✓ Message received! We\'ll be in touch within 24 hours.', 4200);
+      ['fn', 'ln', 'em', 'ph', 'msg'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      document.getElementById('sv').selectedIndex = 0;
+    }
+
+    function nlSub() {
+      const v = document.getElementById('nle').value.trim();
+      if (!v || !v.includes('@')) { showToast('⚠ Please enter a valid email.', 2800); return; }
+      showToast('✓ Subscribed! Welcome to the Voyago newsletter.', 3500);
+      document.getElementById('nle').value = '';
+    }
+
+    function scrollTo(sel) { document.querySelector(sel)?.scrollIntoView({ behavior: 'smooth' }); }
+
+    /* HERO BG LOAD */
+    window.addEventListener('load', () => { document.getElementById('hbg').classList.add('loaded'); });
+    const map = L.map('map').setView([37.7578, -122.5076], 12);
+
+    // Dark tiles
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    // Orange marker
+    const marker = L.circleMarker([37.7578, -122.5076], {
+      color: "#ff6600",
+      fillColor: "#ff6600",
+      fillOpacity: 1,
+      radius: 8
+    }).addTo(map);
+
+    /* TESTIMONIAL SLIDER — 3 visible, slide 1 card every 5s */
+    (function () {
+      const track = document.getElementById('testiTrack');
+      const slides = track.querySelectorAll('.team-slider');
+      const total = slides.length;
+      const visible = 3;
+      const maxIndex = total - visible;   // last valid start index
+      let current = 0;
+      const INTERVAL = 5000;              // 5 seconds
+
+      // Build dots
+      const dotsWrap = document.getElementById('testiDots');
+      for (let i = 0; i <= maxIndex; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => { goTo(i); resetTimer(); });
+        dotsWrap.appendChild(dot);
+      }
+
+      const bar = document.getElementById('testiBar');
+
+      function goTo(idx) {
+        current = Math.max(0, Math.min(idx, maxIndex));
+        const slideW = slides[0].offsetWidth;
+        track.style.transform = `translateX(-${current * slideW}px)`;
+        // update dots
+        dotsWrap.querySelectorAll('.testi-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === current);
+        });
+      }
+
+      // Arrows
+      document.getElementById('testiPrev').addEventListener('click', () => {
+        goTo(current <= 0 ? maxIndex : current - 1);
+        resetTimer();
+      });
+      document.getElementById('testiNext').addEventListener('click', () => {
+        goTo(current >= maxIndex ? 0 : current + 1);
+        resetTimer();
+      });
+
+      // Progress bar animation
+      let progressStart = null;
+      let animFrame = null;
+
+      function animateBar(timestamp) {
+        if (!progressStart) progressStart = timestamp;
+        const elapsed = timestamp - progressStart;
+        const pct = Math.min((elapsed / INTERVAL) * 100, 100);
+        bar.style.width = pct + '%';
+        if (pct < 100) {
+          animFrame = requestAnimationFrame(animateBar);
+        } else {
+          // advance slide
+          goTo(current >= maxIndex ? 0 : current + 1);
+          progressStart = null;
+          animFrame = requestAnimationFrame(animateBar);
+        }
+      }
+
+      function startTimer() {
+        progressStart = null;
+        animFrame = requestAnimationFrame(animateBar);
+      }
+
+      function resetTimer() {
+        cancelAnimationFrame(animFrame);
+        bar.style.width = '0%';
+        startTimer();
+      }
+
+      // Pause on hover
+      const slider = document.getElementById('testiSlider');
+      slider.addEventListener('mouseenter', () => {
+        cancelAnimationFrame(animFrame);
+      });
+      slider.addEventListener('mouseleave', () => {
+        startTimer();
+      });
+
+      startTimer();
+    })();
+  </script>
+  <script src="https://kit.fontawesome.com/a2e0a1b8e4.js" crossorigin="anonymous"></script>
+  <script src="languageSwitcher.js"></script>
+  <script src="js.js"></script>
+</body>
+
+</html>
