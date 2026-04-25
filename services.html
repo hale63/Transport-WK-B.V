@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WKTransport | Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#f97316',
+              bg: '#111111',       // main background
+              card: '#1a1a1a',     // cards/sections
+              border: 'rgba(255,255,255,0.08)'
+            }
+          },
+          fontFamily: {
+            nav: ['Barlow', 'sans-serif'],
+            body: ['Oswald'],
+            display: ['Oswald'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .text-outline {
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(255, 255, 255, .8);
+    }
+
+    .section-label::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: #f97316;
+      display: inline-block;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+
+<body class="overflow-x-hidden bg-brand-bg font-body text-slate-200">
+
+  <!-- Navbar -->
+  <header id="nav" class="w-full bg-black font-sans relative z-50 border-b border-[#E8511A]/30">
+
+    <div class="hidden lg:flex w-full h-[100px]">
+
+      <div
+        class="flex items-center justify-center w-[300px] bg-black h-full relative z-20 px-6 shadow-lg border-r border-[#E8511A]/30">
+        <a href="index.html">
+          <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="AA-SİRKO Logo"
+            class="h-24 w-auto object-contain" />
+        </a>
+
+        <div
+          class="absolute right-[-20px] top-1/2 transform -translate-y-1/2 w-[30px] h-[40px] bg-[#E8511A] shadow-lg z-30 hover:shadow-[0_0_20px_rgba(232,81,26,0.5)] transition-shadow"
+          style="clip-path: polygon(0 0, 65% 0, 100% 50%, 65% 100%, 0 100%, 35% 50%);">
+        </div>
+      </div>
+
+      <div class="flex-1 flex flex-col h-full w-full bg-black">
+
+        <div
+          class="bg-gradient-to-r from-black to-[#1a1a1a] h-[50px] w-full flex items-center justify-between text-white text-xs px-8 relative z-10 border-b-2 border-[#E8511A] shadow-lg"
+          style="clip-path: polygon(15px 0, 100% 0, 100% 100%, 0 100%); margin-left: -15px; padding-left: 35px;">
+
+          <div class="flex items-center gap-5">
+            <div class="flex items-center gap-4">
+              <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg
+                  class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                </svg></a>
+              <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg
+                  class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
+                </svg></a>
+              <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg
+                  class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                </svg></a>
+            </div>
+
+            <div class="h-4 w-[1px] bg-[#E8511A]/40"></div>
+
+
+          </div>
+
+          <div class="flex items-center gap-6">
+            <div
+              class="flex items-center gap-2 font-bold tracking-wider text-xs group cursor-pointer hover:text-[#E8511A] transition-colors duration-300">
+              <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z" />
+              </svg>
+              <span>+31 6 8611 0373</span>
+            </div>
+            <div class="h-4 w-[1px] bg-[#E8511A]/40"></div>
+            <div
+              class="flex items-center gap-2 font-bold tracking-wider text-xs group cursor-pointer hover:text-[#E8511A] transition-colors duration-300">
+              <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
+              </svg>
+              <span>info@assirko.com</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="flex-1 flex items-center justify-between px-8 bg-black to-orange-900 py-0 shadow-lg border-b border-[#E8511A]/20">
+
+          <a href="getaquote.html"
+            class="flex items-center gap-2 text-white font-bold text-sm group hover:text-[#E8511A] transition-all duration-300 px-4 py-2 rounded-lg hover:bg-[#E8511A]/10">
+            <svg class="w-5 h-5 text-[#E8511A] group-hover:scale-110 transition-transform" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+              </path>
+            </svg>
+            Get A Quote
+            <svg
+              class="w-3 h-3 text-gray-400 group-hover:text-[#E8511A] transition-colors group-hover:translate-x-1 transition-transform ml-1"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </a>
+
+          <nav class="flex items-center gap-8 text-[13px] font-bold text-white">
+            <a href="index.html"
+              class="text-[#E8511A] relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-full before:h-0.5 before:bg-[#E8511A]">[
+              Home ]</a>
+            <a href="aboutus.html"
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">About</a>
+            <a href="Services.html"
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Services</a>
+            <a href="career.html"
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Careers</a>
+            <a href="contact.html"
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Contact</a>
+
+            <div class="h-5 w-0.5 bg-[#E8511A]/40 mx-3"></div>
+
+            <div class="flex items-center gap-4">
+              <button onclick="switchLanguage('en')"
+                class="hover:text-[#E8511A] transition-colors duration-300 font-bold px-2 py-1">EN</button>
+              <button onclick="switchLanguage('nl')"
+                class="text-gray-500 hover:text-[#E8511A] transition-colors duration-300 font-bold px-2 py-1">NL</button>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:hidden flex items-center justify-between p-4 bg-black border-b border-[#E8511A]/30 shadow-lg">
+      <a href="index.html" class="flex items-center gap-2 group">
+        <img src="assets/images/carlogo.png" alt="AA-SİRKO Logo"
+          class="h-10 w-auto object-contain brightness-0 invert group-hover:scale-110 transition-transform" />
+      </a>
+      <button onclick="toggleMenu()" class="text-white p-2 focus:outline-none hover:text-[#E8511A] transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu"
+      class="hidden lg:hidden flex-col bg-[#0f0f0f] text-white absolute w-full left-0 top-full shadow-lg border-b border-[#E8511A]/30">
+      <div class="flex flex-col gap-2 p-4 bg-black text-xs font-bold border-b border-[#E8511A]/30">
+        <div class="flex items-center gap-2 text-[#E8511A]">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z" />
+          </svg>
+          <span>+31 6 8611 0373</span>
+        </div>
+        <div class="flex items-center gap-2 text-[#E8511A]">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
+          </svg>
+          <span>info@assirko.com</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <a href="index.html"
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 text-[#E8511A] hover:bg-[#E8511A]/10 transition-colors">Home</a>
+        <a href="aboutus.html"
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">About</a>
+        <a href="Services.html"
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Services</a>
+        <a href="career.html"
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">career</a>
+        <a href="getaquote.html"
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Get
+          A Quote</a>
+        <a href="contact.html"
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Contact</a>
+        <div class="px-6 py-4 flex gap-4 border-t border-[#E8511A]/20">
+          <button onclick="switchLanguage('en')"
+            class="text-sm font-bold hover:text-[#E8511A] transition-colors">EN</button>
+          <button onclick="switchLanguage('nl')"
+            class="text-sm font-bold text-gray-500 hover:text-[#E8511A] transition-colors">NL</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- HERO SECTION -->
+  <section class="relative h-[60vh] min-h-[750px] w-full flex items-center justify-center overflow-hidden">
+
+    <div id="hbg" class="absolute inset-0 z-0">
+      <img src="assets/images/servıces.jpg" alt="Transport" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-black/70"></div>
+    </div>
+
+    <div class="relative z-10 container mx-auto px-6 text-center rv from-left d1">
+      <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+        <span class="block text-white">
+          <span class="text-[#e85d04]"><span data-i18n="career.hero_title_1">Services</span></span>
+        </span>
+      </h2>
+    </div>
+
+    <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#0a0a0a] to-transparent z-10"></div>
+  </section>
+
+
+  <!-- DETAILED SERVICES -->
+  <main class="px-6 pb-24 lg:px-12">
+    <div class="mx-auto max-w-7xl">
+      <template id="not-used"></template>
+
+      <!-- Service 01: Warehousing -->
+      <section id="warehousing" data-aos="fade-up"
+        class="service-detail grid gap-10 border-b border-brand-border py-16 lg:grid-cols-2 lg:items-center lg:gap-20">
+        <div class="relative h-80 lg:h-[440px]"><img class="h-full w-full object-cover brightness-75 saturate-[.85]"
+            src="assets/images/warehouse-workers-counting-boxes-shelves-large-distribution-warehouse.jpg"
+            alt="Warehouse operations" />
+          <div class="absolute bottom-0 right-0 bg-brand-orange px-7 py-6 lg:-bottom-5 lg:-right-5">
+            <div class="font-display text-5xl font-black text-white">12k</div>
+            <div class="mt-1 text-xs font-bold uppercase tracking-widest text-white/75">Square Metres</div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="section-label mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[.2em] text-brand-orange">
+            Service 01</div>
+          <h3 class="font-display text-[clamp(36px,4vw,54px)] font-black uppercase leading-[.95] text-white">
+            Warehousing</h3>
+          <p class="mt-5 text-base leading-8 text-slate-500">Our strategic warehousing facilities give you unparalleled
+            access to major European markets with flexible storage options.</p>
+          <p class="mt-4 text-base leading-8 text-slate-500">From dry storage to temperature-controlled zones, your
+            inventory stays counted, located, and accessible in real-time.</p>
+          <div class="my-7 grid gap-px border border-brand-border bg-brand-border sm:grid-cols-2">
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Total Area</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">12,000 m²</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Pallet Capacity</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">8,000 ppl</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Temp Range</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">-20°C → +22°C</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Security</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">24/7 CCTV</div>
+            </div>
+          </div><a href="#contact"
+            class="inline-block bg-brand-orange px-7 py-4 text-sm font-black uppercase tracking-widest text-white transition hover:-translate-y-0.5 hover:bg-orange-600">Enquire
+            About Storage →</a>
+        </div>
+      </section>
+
+      <!-- Service 02: Shipment Management -->
+      <section id="shipment-management" data-aos="fade-up"
+        class="service-detail grid gap-10 border-b border-brand-border py-16 lg:grid-cols-2 lg:items-center lg:gap-20">
+        <div class="relative h-80 lg:order-2 lg:h-[440px]"><img
+            class="h-full w-full object-cover brightness-75 saturate-[.85]"
+            src="assets/images/4.jpg"
+            alt="Shipment Management" />
+          <div class="absolute bottom-0 right-0 bg-brand-orange px-7 py-6 lg:-bottom-5 lg:-right-5">
+            <div class="font-display text-5xl font-black text-white">360°</div>
+            <div class="mt-1 text-xs font-bold uppercase tracking-widest text-white/75">Visibility</div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="section-label mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[.2em] text-brand-orange">
+            Service 02</div>
+          <h3 class="font-display text-[clamp(36px,4vw,54px)] font-black uppercase leading-[.95] text-white">
+            Shipment<br />Management</h3>
+          <p class="mt-5 text-base leading-8 text-slate-500">End-to-end shipment tracking and management for seamless
+            operations and ultimate peace of mind.</p>
+          <p class="mt-4 text-base leading-8 text-slate-500">You get one contact, a dedicated operations team, KPI
+            dashboards, and flexible scaling for your logistics.</p>
+          <div class="my-7 grid gap-px border border-brand-border bg-brand-border sm:grid-cols-2">
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Reporting Cycle</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">Weekly + Monthly</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">On-Time Rate</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">99.8%</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Contract Type</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">Flexible / Fixed</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Integration</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">API & EDI</div>
+            </div>
+          </div><a href="#contact"
+            class="inline-block bg-brand-orange px-7 py-4 text-sm font-black uppercase tracking-widest text-white transition hover:-translate-y-0.5 hover:bg-orange-600">Optimize
+            Your Freight →</a>
+        </div>
+      </section>
+
+      <!-- Service 03: Heavy and Light Transportation -->
+      <section id="transportation" data-aos="fade-up"
+        class="service-detail grid gap-10 border-b border-brand-border py-16 lg:grid-cols-2 lg:items-center lg:gap-20">
+        <div class="relative h-80 lg:h-[440px]"><img class="h-full w-full object-cover brightness-75 saturate-[.85]"
+            src="assets/images/industrial-port-container-yard.jpg" alt="Transportation trucks" />
+          <div class="absolute -bottom-0 right-0 bg-brand-orange px-7 py-6 lg:-bottom-5 lg:-right-5">
+            <div class="font-display text-5xl font-black text-white">FTL</div>
+            <div class="mt-1 text-xs font-bold uppercase tracking-widest text-white/75">& LTL Available</div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="section-label mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[.2em] text-brand-orange">
+            Service 03</div>
+          <h3 class="font-display text-[clamp(36px,4vw,54px)] font-black uppercase leading-[.95] text-white">
+            Heavy & Light<br />Transportation</h3>
+          <p class="mt-5 text-base leading-8 text-slate-500">Flexible transport solutions tailored to your cargo size.
+            From light vans to heavy-duty trailers.</p>
+          <p class="mt-4 text-base leading-8 text-slate-500">Every shipment is GPS-tracked, securely loaded, and handled
+            by experienced professionals.</p>
+          <div class="my-7 grid gap-px border border-brand-border bg-brand-border sm:grid-cols-2">
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Max Payload</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">24,000 kg</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Loading Metres</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">Up to 13.6 lm</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Coverage</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">Pan-European</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Fleet Options</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">Vans to Megas</div>
+            </div>
+          </div><a href="#contact"
+            class="inline-block bg-brand-orange px-7 py-4 text-sm font-black uppercase tracking-widest text-white transition hover:-translate-y-0.5 hover:bg-orange-600">Request
+            a Freight Quote →</a>
+        </div>
+      </section>
+
+      <!-- Service 04: Same-Day Delivery -->
+      <section id="same-day-delivery" data-aos="fade-up"
+        class="service-detail grid gap-10 border-b border-brand-border py-16 lg:grid-cols-2 lg:items-center lg:gap-20">
+        <div class="relative h-80 lg:order-2 lg:h-[440px]"><img
+            class="h-full w-full object-cover brightness-75 saturate-[.85]"
+            src="assets/images/2.jpg"
+            alt="Express delivery van" />
+          <div class="absolute bottom-0 right-0 bg-brand-orange px-7 py-6 lg:-bottom-5 lg:-right-5">
+            <div class="font-display text-5xl font-black text-white">2h</div>
+            <div class="mt-1 text-xs font-bold uppercase tracking-widest text-white/75">Collection Window</div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="section-label mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[.2em] text-brand-orange">
+            Service 04</div>
+          <h3 class="font-display text-[clamp(36px,4vw,54px)] font-black uppercase leading-[.95] text-white">
+            Same-Day<br />Delivery</h3>
+          <p class="mt-5 text-base leading-8 text-slate-500">Dedicated vehicles collect within 2 hours and travel direct
+            — no hubs, no sorting centres, no delays.</p>
+          <p class="mt-4 text-base leading-8 text-slate-500">Ideal for production parts, documents, medical cargo, and
+            time-critical shipments that cannot wait.</p>
+          <div class="my-7 grid gap-px border border-brand-border bg-brand-border sm:grid-cols-2">
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Collection SLA</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">Within 2 hours</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Coverage</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">NL + Benelux</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Vehicle Types</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">Van → Rigid</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Availability</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">24/7 / 365</div>
+            </div>
+          </div><a href="#contact"
+            class="inline-block bg-brand-orange px-7 py-4 text-sm font-black uppercase tracking-widest text-white transition hover:-translate-y-0.5 hover:bg-orange-600">Book
+            Same-Day Run →</a>
+        </div>
+      </section>
+
+      <!-- Service 05: Returns Management -->
+      <section id="returns-management" data-aos="fade-up"
+        class="service-detail grid gap-10 py-16 lg:grid-cols-2 lg:items-center lg:gap-20">
+        <div class="relative h-80 lg:h-[440px]"><img class="h-full w-full object-cover brightness-75 saturate-[.85]"
+            src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?auto=format&fit=crop&w=1200&q=85"
+            alt="Returns Management" />
+          <div class="absolute bottom-0 right-0 bg-brand-orange px-7 py-6 lg:-bottom-5 lg:-right-5">
+            <div class="font-display text-5xl font-black text-white">48h</div>
+            <div class="mt-1 text-xs font-bold uppercase tracking-widest text-white/75">Processing SLA</div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="section-label mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[.2em] text-brand-orange">
+            Service 05</div>
+          <h3 class="font-display text-[clamp(36px,4vw,54px)] font-black uppercase leading-[.95] text-white">
+            Returns<br />Management</h3>
+          <p class="mt-5 text-base leading-8 text-slate-500">Streamlined reverse logistics to efficiently process,
+            grade, and restock returned items.</p>
+          <p class="mt-4 text-base leading-8 text-slate-500">Recover value faster, improve customer satisfaction, and
+            keep your inventory accurate with our integrated returns flow.</p>
+          <div class="my-7 grid gap-px border border-brand-border bg-brand-border sm:grid-cols-2">
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Processing Time</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">&lt; 48 hours</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Portal Sync</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">Real-Time</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Grading</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">Custom Rules</div>
+            </div>
+            <div class="bg-brand-card p-5">
+              <div class="text-xs font-bold uppercase tracking-widest text-slate-600">Recovery Value</div>
+              <div class="mt-1 font-display text-2xl font-black text-slate-200">Optimized</div>
+            </div>
+          </div><a href="#contact"
+            class="inline-block bg-brand-orange px-7 py-4 text-sm font-black uppercase tracking-widest text-white transition hover:-translate-y-0.5 hover:bg-orange-600">Optimize
+            Returns →</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- HOW IT WORKS -->
+  <section class="border-y border-brand-border bg-brand-card px-6 py-24 lg:px-12">
+    <div class="mx-auto max-w-7xl">
+      <div data-aos="fade-up" class="flex flex-wrap items-end justify-between gap-5">
+        <div>
+          <div
+            class="section-label mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[.2em] text-brand-orange">
+            How It Works</div>
+          <h2 class="font-display text-[clamp(42px,5vw,66px)] font-black uppercase leading-[.95] text-white">From
+            Quote<br />to Delivery</h2>
+        </div>
+        <p class="max-w-[400px] text-base leading-7 text-slate-500">Our streamlined process gets your cargo moving
+          within hours of your first contact.</p>
+      </div>
+      <div data-aos="fade-up"
+        class="relative mt-16 grid gap-9 md:grid-cols-2 lg:grid-cols-5 lg:before:absolute lg:before:left-[10%] lg:before:right-[10%] lg:before:top-9 lg:before:h-px lg:before:bg-gradient-to-r lg:before:from-transparent lg:before:via-brand-orange/40 lg:before:to-transparent">
+        <div class="relative z-10">
+          <div class="mb-7 flex h-[72px] w-[72px] items-center justify-center border border-brand-border bg-brand-bg">
+            <span class="font-display text-3xl font-black text-brand-orange">01</span>
+          </div>
+          <h3 class="font-display text-xl font-black uppercase text-white">Request a Quote</h3>
+          <p class="mt-2 text-sm leading-7 text-slate-500">Fill in our quick form or call us directly. We respond within
+            2 hours.</p>
+        </div>
+        <div class="relative z-10">
+          <div class="mb-7 flex h-[72px] w-[72px] items-center justify-center border border-brand-border bg-brand-bg">
+            <span class="font-display text-3xl font-black text-brand-orange">02</span>
+          </div>
+          <h3 class="font-display text-xl font-black uppercase text-white">Confirm Booking</h3>
+          <p class="mt-2 text-sm leading-7 text-slate-500">Approve shipment details and receive vehicle assignment.</p>
+        </div>
+        <div class="relative z-10">
+          <div class="mb-7 flex h-[72px] w-[72px] items-center justify-center border border-brand-border bg-brand-bg">
+            <span class="font-display text-3xl font-black text-brand-orange">03</span>
+          </div>
+          <h3 class="font-display text-xl font-black uppercase text-white">Collection</h3>
+          <p class="mt-2 text-sm leading-7 text-slate-500">Cargo is loaded, sealed, and marked for tracking.</p>
+        </div>
+        <div class="relative z-10">
+          <div class="mb-7 flex h-[72px] w-[72px] items-center justify-center border border-brand-border bg-brand-bg">
+            <span class="font-display text-3xl font-black text-brand-orange">04</span>
+          </div>
+          <h3 class="font-display text-xl font-black uppercase text-white">Live Tracking</h3>
+          <p class="mt-2 text-sm leading-7 text-slate-500">Monitor shipment progress in real time.</p>
+        </div>
+        <div class="relative z-10">
+          <div class="mb-7 flex h-[72px] w-[72px] items-center justify-center border border-brand-border bg-brand-bg">
+            <span class="font-display text-3xl font-black text-brand-orange">05</span>
+          </div>
+          <h3 class="font-display text-xl font-black uppercase text-white">Delivery & POD</h3>
+          <p class="mt-2 text-sm leading-7 text-slate-500">Proof of delivery is sent instantly after arrival.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contact" class="relative flex min-h-[500px] items-center overflow-hidden px-6 py-20 lg:px-12">
+    <img class="absolute inset-0 h-full w-full object-cover brightness-[.3] saturate-50"
+      src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=2400&q=90"
+      alt="Transport highway at dusk" />
+    <div class="absolute inset-0 bg-gradient-to-r from-brand-bg via-brand-bg/90 to-brand-bg/50"></div>
+    <div class="relative z-10 mx-auto grid w-full max-w-7xl gap-14 lg:grid-cols-[1fr_auto] lg:items-center">
+      <div data-aos="fade-up">
+        <div
+          class="section-label mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[.2em] text-brand-orange">
+          Ready to Move?</div>
+        <h2 class="font-display text-[clamp(48px,5vw,80px)] font-black uppercase leading-[.95] text-white">Get
+          Your<br /><span class="text-brand-orange">Quote</span><br />in 2 Hours.</h2>
+        <p class="mt-5 max-w-[480px] text-[17px] leading-8 text-slate-500">Your enquiry goes directly to a logistics
+          specialist who knows the lane, the load, and the timeline.</p>
+      </div>
+      <div data-aos="fade-up" class="flex min-w-[260px] flex-col gap-4"><a href="tel:+31104567890"
+          class="bg-brand-orange px-7 py-4 text-center text-sm font-black uppercase tracking-widest text-white transition hover:-translate-y-0.5 hover:bg-orange-600">📞
+          Call Now: +31 (0)10 456 7890</a>
+        <div class="flex flex-col gap-5 border border-brand-border bg-brand-card/90 p-7">
+          <div><span class="block text-xs font-bold uppercase tracking-widest text-slate-600">✉ Email</span><a
+              href="mailto:info@wktransport.nl"
+              class="mt-1 block font-display text-xl font-bold text-slate-200 hover:text-brand-orange">info@wktransport.nl</a>
+          </div>
+          <hr class="border-brand-border" />
+          <div><span class="block text-xs font-bold uppercase tracking-widest text-slate-600">📍 Head Office</span><span
+              class="mt-1 block font-display text-xl font-bold text-slate-400">Waalhaven O.Z. 81<br />3087 BM Rotterdam,
+              NL</span></div>
+          <hr class="border-brand-border" />
+          <div><span class="block text-xs font-bold uppercase tracking-widest text-slate-600">🕐 Response
+              Time</span><span class="mt-1 block font-display text-lg font-bold text-slate-400">Within 2 Business
+              Hours</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-brand-border bg-[#0d0d0d] px-6 py-16 lg:px-12">
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div>
+          <h5 class="mb-5 text-sm font-bold uppercase tracking-widest text-white">Navigation</h5>
+          <div class="flex flex-col gap-3"><a href="#"
+              class="text-sm text-slate-400 transition hover:text-brand-orange">Home</a><a href="#"
+              class="text-sm text-slate-400 transition hover:text-brand-orange">About Us</a><a href="#services-detail"
+              class="text-sm text-slate-400 transition hover:text-brand-orange">Services</a><a href="#"
+              class="text-sm text-slate-400 transition hover:text-brand-orange">Pricing</a><a href="#"
+              class="text-sm text-slate-400 transition hover:text-brand-orange">Career</a></div>
+        </div>
+        <div>
+          <h5 class="mb-5 text-sm font-bold uppercase tracking-widest text-white">Address</h5>
+          <p class="mb-6 text-sm text-slate-400">Waalhaven O.Z. 81, 3087 BM Rotterdam, Netherlands</p>
+          <h5 class="mb-3 text-sm font-bold uppercase tracking-widest text-white">Contact</h5>
+          <p class="mb-2 text-sm text-slate-400">info@wktransport.nl</p>
+          <p class="text-sm text-slate-400">+31 (0)10 456 7890</p>
+        </div>
+        <div>
+          <div class="mb-3 flex items-center gap-2"><span
+              class="rounded-lg bg-brand-orange px-2.5 py-1 text-lg font-black text-white">WK</span><span
+              class="font-display text-2xl font-black text-white">WKTransport</span></div>
+          <p class="mb-5 text-sm leading-7 text-slate-400">Reliable logistics solutions, ensuring your cargo reaches its
+            destination safely and efficiently.</p>
+          <div class="flex flex-wrap gap-2"><a
+              class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-brand-orange hover:bg-brand-orange hover:text-white"
+              href="#">f</a><a
+              class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-brand-orange hover:bg-brand-orange hover:text-white"
+              href="#">𝕏</a><a
+              class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-brand-orange hover:bg-brand-orange hover:text-white"
+              href="#">ig</a><a
+              class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-brand-orange hover:bg-brand-orange hover:text-white"
+              href="#">in</a></div>
+        </div>
+      </div>
+      <div class="flex flex-col items-center justify-between gap-4 border-t border-brand-border pt-6 sm:flex-row">
+        <p class="text-xs text-slate-500">© 2026 WKTransport. All rights reserved.</p>
+        <p class="text-xs text-slate-500">Designed with precision for reliable logistics.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="languageSwitcher.js"></script>
+  <script src="js.js"></script>
+  <script>
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('nav');
+      if (nav) {
+        nav.classList.toggle('bg-black', window.scrollY > 60);
+        nav.classList.toggle('bg-black/85', window.scrollY <= 60);
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -16,7 +16,7 @@ function toggleMenu() {
     title: 'Ocean Freight',
     desc: 'Optimized ocean transport solutions for regional and cross-border deliveries. Smart routing and reliable fleet operations keep your cargo on schedule.',
     bullets: ['Regional And Cross-Border Coverage', 'Flexible FTL And LTL Options', 'Optimized Routes For Faster Delivery'],
-    img: 'https://images.unsplash.com/photo-1494412519320-aa613dfb7738?auto=format&fit=crop&q=80'
+    img: 'assets/images/692554.jpg'
   },
   {
     label: 'Container',
@@ -46,23 +46,24 @@ let current = 0;
  
 // ── Build waypoints ──
 const wpContainer = document.getElementById('waypoints');
-const wpLabels = document.getElementById('wp-labels');
-SERVICES.forEach((s, i) => {
-  const pct = i / (N - 1) * 100;
-  const dot = document.createElement('div');
-  dot.className = 'waypoint inactive';
-  dot.style.left = pct + '%';
-  dot.dataset.index = i;
-  dot.onclick = () => goTo(i);
-  wpContainer.appendChild(dot);
- 
-  const lbl = document.createElement('span');
-  lbl.textContent = s.label;
-  lbl.dataset.li = i;
-  lbl.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#4b5563;transition:color 0.3s;cursor:pointer;';
-  lbl.onclick = () => goTo(i);
-  wpLabels.appendChild(lbl);
-});
+if (wpContainer) {
+  const wpLabels = document.getElementById('wp-labels');
+  SERVICES.forEach((s, i) => {
+    const pct = i / (N - 1) * 100;
+    const dot = document.createElement('div');
+    dot.className = 'waypoint inactive';
+    dot.style.left = pct + '%';
+    dot.dataset.index = i;
+    dot.onclick = () => goTo(i);
+    wpContainer.appendChild(dot);
+   
+    const lbl = document.createElement('span');
+    lbl.textContent = s.label;
+    lbl.dataset.li = i;
+    lbl.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#4b5563;transition:color 0.3s;cursor:pointer;';
+    lbl.onclick = () => goTo(i);
+    wpLabels.appendChild(lbl);
+  });
  
 // ── Build cards ──
 const slider = document.getElementById('slider-wrap');
@@ -179,27 +180,32 @@ document.getElementById('track-rail').addEventListener('click', e => {
 update(0);
 
 // ── Smooth Mouse Wheel Scroller ──
-const sliderWrap = document.getElementById('slider-wrap');
+  const sliderWrap = document.getElementById('slider-wrap');
+  
+  if (sliderWrap) {
+    sliderWrap.addEventListener('wheel', (e) => {
+      // Prevent the default vertical page scroll
+      e.preventDefault();
+  
+      // 'deltaY' is the vertical scroll amount. 
+      // We apply it to 'scrollLeft' to move horizontally.
+      sliderWrap.scrollBy({
+        left: e.deltaY * 1.5, // Multiply by 1.5 for a "snappier" feel
+        behavior: 'auto'      // Using 'auto' here prevents conflict with smooth scroll CSS
+      });
+    }, { passive: false });
+  }
+}
 
-sliderWrap.addEventListener('wheel', (e) => {
-  // Prevent the default vertical page scroll
-  e.preventDefault();
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenuElement = document.getElementById("mobileMenu");
 
-  // 'deltaY' is the vertical scroll amount. 
-  // We apply it to 'scrollLeft' to move horizontally.
-  sliderWrap.scrollBy({
-    left: e.deltaY * 1.5, // Multiply by 1.5 for a "snappier" feel
-    behavior: 'auto'      // Using 'auto' here prevents conflict with smooth scroll CSS
-  });
-}, { passive: false });
-
-const menuBtn = document.getElementById("menuBtn");
-    const mobileMenu = document.getElementById("mobileMenu");
-
-    menuBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
-      menuBtn.textContent = mobileMenu.classList.contains("hidden") ? "☰" : "×";
-    });
+    if (menuBtn && mobileMenuElement) {
+      menuBtn.addEventListener("click", () => {
+        mobileMenuElement.classList.toggle("hidden");
+        menuBtn.textContent = mobileMenuElement.classList.contains("hidden") ? "☰" : "×";
+      });
+    }
 
     /* REVEAL ANIMATION */
     const revealElements = document.querySelectorAll(".rv");
@@ -244,7 +250,135 @@ const menuBtn = document.getElementById("menuBtn");
       }).addTo(map);
     }
 
+(function() {
+      // --- Mobile Menu toggle and animations with glass consistency
+      const hamburger = document.getElementById('hamburger');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const body = document.body;
 
+      function toggleMobileMenu() {
+        if (mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.remove('hidden');
+          hamburger.classList.add('hamburger-active');
+          body.classList.add('menu-open');
+          // Optional: add small animation
+          mobileMenu.style.animation = 'slideDown 0.3s ease forwards';
+        } else {
+          mobileMenu.classList.add('hidden');
+          hamburger.classList.remove('hamburger-active');
+          body.classList.remove('menu-open');
+          mobileMenu.style.animation = '';
+        }
+      }
 
+      // Add keyframe for slideDown if not already
+      if (!document.querySelector('#dynamic-styles')) {
+        const style = document.createElement('style');
+        style.id = 'dynamic-styles';
+        style.textContent = `
+          @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .mobile-nav-toggle svg {
+            transition: transform 0.2s;
+          }
+          .mobile-nav-toggle.open svg {
+            transform: rotate(180deg);
+          }
+        `;
+        document.head.appendChild(style);
+      }
 
-    
+      if (hamburger) {
+        hamburger.addEventListener('click', toggleMobileMenu);
+      }
+
+      // Submenu toggle for mobile (accordion style)
+      const toggleButtons = document.querySelectorAll('.mobile-nav-toggle');
+      toggleButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const targetId = this.getAttribute('data-target');
+          // Find the next sibling submenu div (since structure is button + div.submenu)
+          const parentLi = this.closest('li');
+          if (!parentLi) return;
+          const submenuDiv = parentLi.querySelector('.submenu');
+          if (submenuDiv) {
+            // Toggle current submenu
+            const isOpen = submenuDiv.classList.contains('!block') || (!submenuDiv.classList.contains('hidden') && getComputedStyle(submenuDiv).display !== 'none');
+            if (isOpen) {
+              submenuDiv.classList.add('hidden');
+              this.classList.remove('open');
+            } else {
+              // close others first? better UX: close other open submenus
+              document.querySelectorAll('.submenu').forEach(sub => {
+                if (sub !== submenuDiv) {
+                  sub.classList.add('hidden');
+                  const prevBtn = sub.closest('li')?.querySelector('.mobile-nav-toggle');
+                  if (prevBtn) prevBtn.classList.remove('open');
+                }
+              });
+              submenuDiv.classList.remove('hidden');
+              this.classList.add('open');
+            }
+          }
+        });
+      });
+
+      // Ensure that submenu starts hidden
+      document.querySelectorAll('.submenu').forEach(sub => {
+        sub.classList.add('hidden');
+      });
+
+      // Close mobile menu on window resize if screen becomes lg (avoid layout glitch)
+      function handleResize() {
+        if (window.innerWidth >= 1024) {
+          if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            if (hamburger) hamburger.classList.remove('hamburger-active');
+            body.classList.remove('menu-open');
+          }
+        }
+      }
+      window.addEventListener('resize', handleResize);
+
+      // Optional: Click outside mobile menu to close? improve UX
+      document.addEventListener('click', function(event) {
+        if (window.innerWidth < 1024 && mobileMenu && !mobileMenu.classList.contains('hidden')) {
+          // if click is not inside nav and not on hamburger button
+          const isClickInsideNav = mobileMenu.contains(event.target) || (hamburger && hamburger.contains(event.target));
+          if (!isClickInsideNav) {
+            mobileMenu.classList.add('hidden');
+            if (hamburger) hamburger.classList.remove('hamburger-active');
+            body.classList.remove('menu-open');
+          }
+        }
+      });
+
+      // Ensure video plays even in some browsers (safari)
+      const heroVideo = document.querySelector('video');
+      if (heroVideo) {
+        heroVideo.play().catch(e => console.log("Autoplay prevented: ", e));
+      }
+
+      // Add glass effect on scroll intensity (optional: slight background darkening)
+      const nav = document.querySelector('nav');
+      window.addEventListener('scroll', () => {
+        if (nav) {
+          if (window.scrollY > 10) {
+            nav.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
+            nav.style.backdropFilter = 'blur(16px)';
+          } else {
+            nav.style.backgroundColor = 'rgba(0, 0, 0, 0.25)';
+            nav.style.backdropFilter = 'blur(12px)';
+          }
+        }
+      });
+    })();
+// Initialize the animation library
+  AOS.init({
+    duration: 1000,
+    once: true,
+    offset: 200
+  });
