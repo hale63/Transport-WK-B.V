@@ -12,25 +12,60 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
- <style>
-      :root {
-    --orange: #E8511A;
-    --orange-dim: rgba(232, 81, 26, 0.15);
-    --dark: #0E0E0E;
-    --dark2: #141414;
-    --dark3: #1A1A1A;
-    --border: #252525;
-    --muted: #888;
-  }
+  <style>
+    :root {
+      --orange: #E8511A;
+      --orange-dim: rgba(232, 81, 26, 0.15);
+      --dark: #0E0E0E;
+      --dark2: #141414;
+      --dark3: #1A1A1A;
+      --border: #252525;
+      --muted: #888;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { overflow-x: hidden; background: var(--dark); color: #fff; font-family: 'Barlow', sans-serif; }
-  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow Condensed', sans-serif; letter-spacing: -0.01em; }
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--dark); }
-  ::-webkit-scrollbar-thumb { border-radius: 10px; background: var(--orange); }
-  [x-cloak] { display: none !important; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      overflow-x: hidden;
+      background: var(--dark);
+      color: #fff;
+      font-family: 'Barlow', sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: -0.01em;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background: var(--orange);
+    }
+
+    [x-cloak] {
+      display: none !important;
+    }
 
     @keyframes float {
 
@@ -47,47 +82,48 @@
     .animate-float {
       animation: float 4s ease-in-out infinite;
     }
-    
 
 
 
-     * {
+
+    * {
       font-family: 'Inter', sans-serif;
     }
- 
+
     .logo-text {
       font-family: 'Syne', sans-serif;
       font-weight: 700;
       letter-spacing: -0.5px;
     }
- 
+
     /* Smooth scroll behavior */
     html {
       scroll-behavior: smooth;
     }
- 
+
     /* Navigation animations */
     nav {
       animation: slideDown 0.6s ease-out;
     }
- 
+
     @keyframes slideDown {
       from {
         transform: translateY(-100%);
         opacity: 0;
       }
+
       to {
         transform: translateY(0);
         opacity: 1;
       }
     }
- 
+
     /* Hover effects for nav links */
     .nav-link {
       position: relative;
       overflow: hidden;
     }
- 
+
     .nav-link::after {
       content: '';
       position: absolute;
@@ -100,47 +136,48 @@
       transform-origin: right;
       transition: transform 0.3s ease;
     }
- 
+
     .nav-link:hover::after {
       transform: scaleX(1);
       transform-origin: left;
     }
- 
+
     /* Mobile menu animation */
     #mobileMenu.active {
       animation: slideIn 0.3s ease-out;
     }
- 
+
     @keyframes slideIn {
       from {
         max-height: 0;
         opacity: 0;
       }
+
       to {
         max-height: calc(100vh - 60px);
         opacity: 1;
       }
     }
- 
+
     /* Hamburger animation */
     .hamburger.active #line1 {
       transform: rotate(45deg) translateY(10px);
     }
- 
+
     .hamburger.active #line2 {
       opacity: 0;
     }
- 
+
     .hamburger.active #line3 {
       transform: rotate(-45deg) translateY(-10px);
     }
- 
+
     /* Button hover effect */
     .btn-hover {
       position: relative;
       overflow: hidden;
     }
- 
+
     .btn-hover::before {
       content: '';
       position: absolute;
@@ -151,92 +188,136 @@
       background: rgba(255, 126, 21, 0.892);
       transition: left 0.3s ease;
     }
- 
+
     .btn-hover:hover::before {
       left: 100%;
     }
- 
+
     /* Submenu animation */
     .submenu.active {
       display: block !important;
       animation: fadeIn 0.2s ease-out;
     }
- 
+
     @keyframes fadeIn {
       from {
         opacity: 0;
         transform: translateY(-5px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-  /* ── MARQUEE ── */
-  .marquee-wrap {
-    overflow: hidden;
-    background: rgba(255, 94, 20, 0.06);
-    border-top: 1px solid rgba(255, 94, 20, 0.12);
-    border-bottom: 1px solid rgba(255, 94, 20, 0.12);
-    padding: .7rem 0;
-  }
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      overflow: hidden;
+      background: rgba(255, 94, 20, 0.06);
+      border-top: 1px solid rgba(255, 94, 20, 0.12);
+      border-bottom: 1px solid rgba(255, 94, 20, 0.12);
+      padding: .7rem 0;
+    }
 
-  .marquee-inner {
-    display: flex;
-    gap: 3rem;
-    animation: marquee 25s linear infinite;
-    white-space: nowrap;
-  }
+    .marquee-inner {
+      display: flex;
+      gap: 3rem;
+      animation: marquee 25s linear infinite;
+      white-space: nowrap;
+    }
 
-  .marquee-inner:hover { animation-play-state: paused; }
+    .marquee-inner:hover {
+      animation-play-state: paused;
+    }
 
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
 
-  .marquee-item {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-    font-size: .75rem;
-    font-weight: 600;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.35);
-  }
+      to {
+        transform: translateX(-50%);
+      }
+    }
 
-  .marquee-item span { color: #ff5e14; }
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+    }
 
-  .rv {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.75s ease, transform 0.75s ease;
-  }
+    .marquee-item span {
+      color: #ff5e14;
+    }
 
-  .rv.on {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    .rv {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
 
-  .rv.d1 { transition-delay: 0.1s; }
-  .rv.d2 { transition-delay: 0.2s; }
-  .rv.d3 { transition-delay: 0.3s; }
-  .rv.d4 { transition-delay: 0.4s; }
-  .rv.d5 { transition-delay: 0.5s; }
-  .rv.d6 { transition-delay: 0.6s; }
+    .rv.on {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-  @keyframes soft-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-30px); }
-  }
+    .rv.d1 {
+      transition-delay: 0.1s;
+    }
 
-  @keyframes shadow-pulse {
-    0%, 100% { transform: scaleX(1.25); opacity: 0.4; filter: blur(0); }
-    50% { transform: scaleX(1); opacity: 0.2; filter: blur(30px); }
-  }
-    
+    .rv.d2 {
+      transition-delay: 0.2s;
+    }
+
+    .rv.d3 {
+      transition-delay: 0.3s;
+    }
+
+    .rv.d4 {
+      transition-delay: 0.4s;
+    }
+
+    .rv.d5 {
+      transition-delay: 0.5s;
+    }
+
+    .rv.d6 {
+      transition-delay: 0.6s;
+    }
+
+    @keyframes soft-float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-30px);
+      }
+    }
+
+    @keyframes shadow-pulse {
+
+      0%,
+      100% {
+        transform: scaleX(1.25);
+        opacity: 0.4;
+        filter: blur(0);
+      }
+
+      50% {
+        transform: scaleX(1);
+        opacity: 0.2;
+        filter: blur(30px);
+      }
+    }
   </style>
 </head>
 
@@ -245,115 +326,172 @@
   <div class="cur-dot" id="cd"></div>
   <div class="cur-ring" id="cr"></div>
 
-  
-   <!-- Navbar -->
-<header id="nav" class="w-full bg-black font-sans relative z-50 border-b border-[#E8511A]/30">
-  
-  <div class="hidden lg:flex w-full h-[100px]">
-    
-    <div class="flex items-center justify-center w-[300px] bg-black h-full relative z-20 px-6 shadow-lg border-r border-[#E8511A]/30">
-      <a href="index.html">
-      <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="AA-SİRKO Logo" class="h-24 w-auto object-contain" />
-    </a>
-      
-      <div class="absolute right-[-20px] top-1/2 transform -translate-y-1/2 w-[30px] h-[40px] bg-[#E8511A] shadow-lg z-30 hover:shadow-[0_0_20px_rgba(232,81,26,0.5)] transition-shadow" 
-           style="clip-path: polygon(0 0, 65% 0, 100% 50%, 65% 100%, 0 100%, 35% 50%);">
-      </div>
-    </div>
 
-    <div class="flex-1 flex flex-col h-full w-full bg-black">
-      
-      <div class="bg-gradient-to-r from-black to-[#1a1a1a] h-[50px] w-full flex items-center justify-between text-white text-xs px-8 relative z-10 border-b-2 border-[#E8511A] shadow-lg" 
-           style="clip-path: polygon(15px 0, 100% 0, 100% 100%, 0 100%); margin-left: -15px; padding-left: 35px;">
-        
-        <div class="flex items-center gap-5">
-          <div class="flex items-center gap-4">
-            <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg></a>
-            <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/></svg></a>
-            <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
-          </div>
-          
-          <div class="h-4 w-[1px] bg-[#E8511A]/40"></div>
-          
-          
-        </div>
+  <!-- Navbar -->
+  <header id="nav" class="w-full bg-black font-sans relative z-50 border-b border-[#E8511A]/30">
 
-        <div class="flex items-center gap-6">
-          <div class="flex items-center gap-2 font-bold tracking-wider text-xs group cursor-pointer hover:text-[#E8511A] transition-colors duration-300">
-            <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z"/></svg>
-            <span>+31 6 8611 0373</span>
-          </div>
-          <div class="h-4 w-[1px] bg-[#E8511A]/40"></div>
-          <div class="flex items-center gap-2 font-bold tracking-wider text-xs group cursor-pointer hover:text-[#E8511A] transition-colors duration-300">
-            <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/></svg>
-            <span>info@assirko.com</span>
-          </div>
-        </div>
-      </div>
+    <div class="hidden lg:flex w-full h-[100px]">
 
-      <div class="flex-1 flex items-center justify-between px-8 bg-black to-orange-900 py-0 shadow-lg border-b border-[#E8511A]/20">
-        
-        <a href="getaquote.html" class="flex items-center gap-2 text-white font-bold text-sm group hover:text-[#E8511A] transition-all duration-300 px-4 py-2 rounded-lg hover:bg-[#E8511A]/10">
-          <svg class="w-5 h-5 text-[#E8511A] group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-          Get A Quote
-          <svg class="w-3 h-3 text-gray-400 group-hover:text-[#E8511A] transition-colors group-hover:translate-x-1 transition-transform ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+      <div
+        class="flex items-center justify-center w-[300px] bg-black h-full relative z-20 px-6 shadow-lg border-r border-[#E8511A]/30">
+        <a href="index.html">
+          <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="AA-SİRKO Logo"
+            class="h-24 w-auto object-contain" />
         </a>
 
-        <nav class="flex items-center gap-8 text-[13px] font-bold text-white">
-          <a href="index.html" class="text-[#E8511A] relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-full before:h-0.5 before:bg-[#E8511A]">[ Home ]</a>
-          <a href="aboutus.html" class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">About</a>
-          <a href="Services.html" class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Services</a>
-          <a href="career.html" class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Careers</a>
-          <a href="contact.html" class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Contact</a>
-          
-          <div class="h-5 w-0.5 bg-[#E8511A]/40 mx-3"></div>
-          
-          <div class="flex items-center gap-4">
-            <button onclick="switchLanguage('en')" class="hover:text-[#E8511A] transition-colors duration-300 font-bold px-2 py-1">EN</button>
-            <button onclick="switchLanguage('nl')" class="text-gray-500 hover:text-[#E8511A] transition-colors duration-300 font-bold px-2 py-1">NL</button>
+        <div
+          class="absolute right-[-20px] top-1/2 transform -translate-y-1/2 w-[30px] h-[40px] bg-[#E8511A] shadow-lg z-30 hover:shadow-[0_0_20px_rgba(232,81,26,0.5)] transition-shadow"
+          style="clip-path: polygon(0 0, 65% 0, 100% 50%, 65% 100%, 0 100%, 35% 50%);">
+        </div>
+      </div>
+
+      <div class="flex-1 flex flex-col h-full w-full bg-black">
+
+        <div
+          class="bg-gradient-to-r from-black to-[#1a1a1a] h-[50px] w-full flex items-center justify-between text-white text-xs px-8 relative z-10 border-b-2 border-[#E8511A] shadow-lg"
+          style="clip-path: polygon(15px 0, 100% 0, 100% 100%, 0 100%); margin-left: -15px; padding-left: 35px;">
+
+          <div class="flex items-center gap-5">
+            <div class="flex items-center gap-4">
+              <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg
+                  class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                </svg></a>
+              <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg
+                  class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
+                </svg></a>
+              <a href="#" class="hover:text-[#E8511A] transition-colors duration-300 p-1 rounded hover:bg-white/5"><svg
+                  class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                </svg></a>
+            </div>
+
+            <div class="h-4 w-[1px] bg-[#E8511A]/40"></div>
+
+
           </div>
-        </nav>
-      </div>
-    </div>
-  </div>
 
-  <div class="lg:hidden flex items-center justify-between p-4 bg-black border-b border-[#E8511A]/30 shadow-lg">
-    <a href="index.html" class="flex items-center gap-2 group">
-      <img src="assets/images/carlogo.png" alt="AA-SİRKO Logo" class="h-10 w-auto object-contain brightness-0 invert group-hover:scale-110 transition-transform" />
-    </a>
-    <button onclick="toggleMenu()" class="text-white p-2 focus:outline-none hover:text-[#E8511A] transition-colors">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
-    </button>
-  </div>
+          <div class="flex items-center gap-6">
+            <div
+              class="flex items-center gap-2 font-bold tracking-wider text-xs group cursor-pointer hover:text-[#E8511A] transition-colors duration-300">
+              <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z" />
+              </svg>
+              <span>+31 6 8611 0373</span>
+            </div>
+            <div class="h-4 w-[1px] bg-[#E8511A]/40"></div>
+            <div
+              class="flex items-center gap-2 font-bold tracking-wider text-xs group cursor-pointer hover:text-[#E8511A] transition-colors duration-300">
+              <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
+              </svg>
+              <span>info@nltransportwk.nl</span>
+            </div>
+          </div>
+        </div>
 
-  <div id="mobileMenu" class="hidden lg:hidden flex-col bg-[#0f0f0f] text-white absolute w-full left-0 top-full shadow-lg border-b border-[#E8511A]/30">
-    <div class="flex flex-col gap-2 p-4 bg-black text-xs font-bold border-b border-[#E8511A]/30">
-      <div class="flex items-center gap-2 text-[#E8511A]">
-        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z"/></svg>
-        <span>+31 6 8611 0373</span>
-      </div>
-      <div class="flex items-center gap-2 text-[#E8511A]">
-        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/></svg>
-        <span>info@assirko.com</span>
+        <div
+          class="flex-1 flex items-center justify-between px-8 bg-black to-orange-900 py-0 shadow-lg border-b border-[#E8511A]/20">
+
+          <a href="getaquote.html"
+            class="flex items-center gap-2 text-[#E8511A] font-bold text-sm group  transition-all duration-300 px-4 py-2 rounded-lg hover:bg-[#E8511A]/10">
+            <svg class="w-5 h-5 text-[#E8511A] group-hover:scale-110 transition-transform" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+              </path>
+            </svg>
+            Get A Quote
+           
+           
+          </a>
+
+          <nav class="flex items-center gap-8 text-[13px] font-bold text-white">
+            <a href="index.html"
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">[
+              Home ]</a>
+            <a href="aboutus.html"
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">About</a>
+            <a href="Services.html"
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Services</a>
+            <a href="career.html"
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Careers</a>
+            <a href="contact.html"
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Contact</a>
+
+            <div class="h-5 w-0.5 bg-[#E8511A]/40 mx-3"></div>
+
+            <div class="flex items-center gap-4">
+              <button onclick="switchLanguage('en')"
+                class="hover:text-[#E8511A] transition-colors duration-300 font-bold px-2 py-1">EN</button>
+              <button onclick="switchLanguage('nl')"
+                class="text-gray-500 hover:text-[#E8511A] transition-colors duration-300 font-bold px-2 py-1">NL</button>
+            </div>
+          </nav>
+        </div>
       </div>
     </div>
-    
-    <div class="flex flex-col">
-      <a href="index.html" class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 text-[#E8511A] hover:bg-[#E8511A]/10 transition-colors">Home</a>
-      <a href="aboutus.html" class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">About</a>
-      <a href="Services.html" class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Services</a>
-      <a href="career.html" class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">career</a>
-      <a href="getaquote.html" class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Get A Quote</a>
-      <a href="contact.html" class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Contact</a>
-      <div class="px-6 py-4 flex gap-4 border-t border-[#E8511A]/20">
-        <button onclick="switchLanguage('en')" class="text-sm font-bold hover:text-[#E8511A] transition-colors">EN</button>
-        <button onclick="switchLanguage('nl')" class="text-sm font-bold text-gray-500 hover:text-[#E8511A] transition-colors">NL</button>
+
+    <div class="lg:hidden flex items-center justify-between p-4 bg-black border-b border-[#E8511A]/30 shadow-lg">
+      <a href="index.html" class="flex items-center gap-2 group">
+        <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="AA-SİRKO Logo"
+          class="h-14 w-auto object-contain group-hover:scale-110 transition-transform" />
+      </a>
+      <button id="hamburger" class="text-white p-2 focus:outline-none hover:text-[#E8511A] transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu"
+      class="hidden lg:hidden flex-col bg-[#0f0f0f] text-white absolute w-full left-0 top-full shadow-lg border-b border-[#E8511A]/30">
+      <div class="flex flex-col gap-2 p-4 bg-black text-xs font-bold border-b border-[#E8511A]/30">
+        <div class="flex items-center gap-2 text-[#E8511A]">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M20 22.621l-3.521-6.795c-.008.004-1.974.97-2.064 1.011-2.24 1.086-6.799-7.82-4.609-8.994l2.083-1.026-3.493-6.817-2.106 1.039c-7.202 3.755 4.233 25.982 11.6 22.615.121-.055 2.102-1.029 2.11-1.033z" />
+          </svg>
+          <span>+31 6 8611 0373</span>
+        </div>
+        <div class="flex items-center gap-2 text-[#E8511A]">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
+          </svg>
+          <span>info@nltransportwk.nl</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <a href="index.html"
+        class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Home
+        <a href="aboutus.html"
+        class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">About</a>
+        <a href="Services.html"
+        class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Services</a>
+        <a href="career.html"
+        class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Career</a>
+        <a href="getaquote.html"
+        class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 text-[#E8511A] hover:bg-[#E8511A]/10 transition-colors">Get
+          A Quote</a>
+        <a href="contact.html"
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Contact</a>
+        <div class="px-6 py-4 flex gap-4 border-t border-[#E8511A]/20">
+          <button onclick="switchLanguage('en')"
+            class="text-sm font-bold hover:text-[#E8511A] transition-colors">EN</button>
+          <button onclick="switchLanguage('nl')"
+            class="text-sm font-bold text-gray-500 hover:text-[#E8511A] transition-colors">NL</button>
+        </div>
       </div>
     </div>
-  </div>
-</header>
+  </header>
   <!-- HERO SECTION -->
   <section class="relative h-[60vh] min-h-[750px] w-full flex items-center justify-center overflow-hidden">
 
@@ -376,351 +514,394 @@
   <!-- ══════════════════════════════════════════════
      wanted jobs
 ══════════════════════════════════════════════ -->
-<section class="bg-[#0a0c10] py-24 px-6 md:px-12 relative overflow-hidden font-['Inter'] rv up">
-  
-  <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#e85d04 1px, transparent 1px); background-size: 40px 40px;"></div>
+  <section class="bg-[#0a0c10] py-24 px-6 md:px-12 relative overflow-hidden font-['Inter'] rv up">
 
-  <div class="max-w-7xl mx-auto relative z-10">
-    
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-      <div class="max-w-2xl">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="w-12 h-[1px] bg-[#e85d04]"></span>
-          <span class="text-[#e85d04] text-[10px] font-bold uppercase tracking-[0.3em] font-['Oswald']" data-i18n="getaquote.courier_tag">
-            Logistics Solutions
-          </span>
-        </div>
-        <h2 class="text-5xl md:text-7xl font-bold text-white tracking-tighter font-['Oswald'] uppercase leading-[0.9]">
-          Fast booking <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#e85d04] to-orange-400">in minutes</span>
-        </h2>
-      </div>
-      <p class="text-gray-400 text-lg font-light max-w-sm border-l border-white/10 pl-6" data-i18n="getaquote.courier_desc">
-        Choose your courier service and book in just a few clicks. Available across Benelux and Germany.
-      </p>
-    </div>
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none"
+      style="background-image: radial-gradient(#e85d04 1px, transparent 1px); background-size: 40px 40px;"></div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-1">
-      
-      <div class="group relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 bg-[#111318] hover:bg-[#e85d04] transition-all duration-500 overflow-hidden">
-        
-        <div class="p-10 relative z-10">
-          <div class="flex items-center gap-3 mb-8">
-            <div class="relative flex h-3 w-3">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#e85d04] group-hover:bg-white opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-3 w-3 bg-[#e85d04] group-hover:bg-white"></span>
-            </div>
-            <span class="text-[#e85d04] group-hover:text-white text-xs font-black uppercase tracking-widest font-['Oswald']" data-i18n="getaquote.courier_same_day_label">Same Day</span>
+    <div class="max-w-7xl mx-auto relative z-10">
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div class="max-w-2xl">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="w-12 h-[1px] bg-[#e85d04]"></span>
+            <span class="text-[#e85d04] text-[10px] font-bold uppercase tracking-[0.3em] font-['Oswald']"
+              data-i18n="getaquote.courier_tag">
+              Logistics Solutions
+            </span>
           </div>
-          
-          <h3 class="text-3xl font-bold text-white mb-4 font-['Oswald'] uppercase tracking-tight group-hover:text-black transition-colors" data-i18n="getaquote.courier_same_day_title">Urgent Delivery</h3>
-          <p class="text-gray-500 group-hover:text-black/80 text-sm leading-relaxed mb-10 transition-colors" data-i18n="getaquote.courier_same_day_desc">
-            Shipments collected and delivered on the same working day. Local and regional speed.
-          </p>
-          
-          <a href="#transport-form" class="inline-flex items-center gap-3 text-white group-hover:text-black font-black uppercase text-xs tracking-widest border-b-2 border-[#e85d04] group-hover:border-black pb-2 transition-all">
-            <span data-i18n="getaquote.courier_book_now">Book Courier</span>
-            <svg class="w-4 h-4 translate-x-0 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-          </a>
+          <h2
+            class="text-5xl md:text-7xl font-bold text-white tracking-tighter font-['Oswald'] uppercase leading-[0.9]">
+            Fast booking <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#e85d04] to-orange-400">in
+              minutes</span>
+          </h2>
         </div>
-
-        <div class="relative h-60 md:h-full lg:h-60 overflow-hidden">
-          <img src="assets/images/1 (1).jpg" 
-               alt="Urgent delivery van" 
-               class="w-full h-full object-cover  brightness-50 transition-all duration-1000 group-hover:grayscale group-hover:brightness-90 group-hover:scale-105" />
-          <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l lg:bg-gradient-to-t from-[#111318] via-[#111328]/20 to-transparent group-hover:from-[#e85d04]/10"></div>
-        </div>
-      </div>
-
-      <div class="group relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 bg-[#0c0e12] hover:bg-[#e85d04] transition-all duration-500 overflow-hidden border-x border-white/5">
-        
-        <div class="p-10 relative z-10 order-1 md:order-2 lg:order-1">
-          <div class="flex items-center gap-3 mb-8">
-            <div class="w-3 h-3 bg-white/20 group-hover:bg-white rounded-full"></div>
-            <span class="text-gray-500 group-hover:text-white text-xs font-black uppercase tracking-widest font-['Oswald']" data-i18n="getaquote.courier_express_label">Next Day</span>
-          </div>
-          
-          <h3 class="text-3xl font-bold text-white mb-4 font-['Oswald'] uppercase tracking-tight group-hover:text-black transition-colors" data-i18n="getaquote.courier_express_title">Express Transit</h3>
-          <p class="text-gray-500 group-hover:text-black/80 text-sm leading-relaxed mb-10 transition-colors" data-i18n="getaquote.courier_express_desc">
-            Guaranteed next-business-day delivery across Benelux and Germany with priority tracking.
-          </p>
-          
-          <a href="#transport-form" class="inline-flex items-center gap-3 text-white group-hover:text-black font-black uppercase text-xs tracking-widest border-b-2 border-white/10 group-hover:border-black pb-2 transition-all">
-            <span data-i18n="getaquote.courier_book_now">Book Express</span>
-            <svg class="w-4 h-4 translate-x-0 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-          </a>
-        </div>
-
-        <div class="relative h-60 md:h-full lg:h-60 overflow-hidden order-2 md:order-1 lg:order-2">
-          <img src="assets/images/3.jpg" 
-               alt="Express shipping plane" 
-               class="w-full h-full object-cover  brightness-50 transition-all duration-1000 group-hover:grayscale group-hover:brightness-90 group-hover:scale-105" />
-          <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r lg:bg-gradient-to-t from-[#0c0e12] via-[#0c0e12]/20 to-transparent group-hover:from-[#e85d04]/10"></div>
-        </div>
-      </div>
-
-      <div class="group relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 bg-[#111318] hover:bg-[#e85d04] transition-all duration-500 overflow-hidden">
-        
-        <div class="p-10 relative z-10">
-          <div class="flex items-center gap-3 mb-8">
-            <div class="w-3 h-3 bg-white/20 group-hover:bg-white rounded-full"></div>
-            <span class="text-gray-500 group-hover:text-white text-xs font-black uppercase tracking-widest font-['Oswald']" data-i18n="getaquote.courier_economy_label">Standard</span>
-          </div>
-          
-          <h3 class="text-3xl font-bold text-white mb-4 font-['Oswald'] uppercase tracking-tight group-hover:text-black transition-colors" data-i18n="getaquote.courier_economy_title">Economy Parcel</h3>
-          <p class="text-gray-500 group-hover:text-black/80 text-sm leading-relaxed mb-10 transition-colors" data-i18n="getaquote.courier_economy_desc">
-            Cost-effective delivery in 3–5 working days. Perfect for bulk or non-urgent freight.
-          </p>
-          
-          <a href="#transport-form" class="inline-flex items-center gap-3 text-white group-hover:text-black font-black uppercase text-xs tracking-widest border-b-2 border-white/10 group-hover:border-black pb-2 transition-all">
-            <span data-i18n="getaquote.courier_book_now">Book Economy</span>
-            <svg class="w-4 h-4 translate-x-0 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-          </a>
-        </div>
-
-        <div class="relative h-60 md:h-full lg:h-60 overflow-hidden">
-          <img src="assets/images/2.jpg" 
-               alt="Economy shipping boxes" 
-               class="w-full h-full object-cover  brightness-50 transition-all duration-1000 group-hover:grayscale group-hover:brightness-50 group-hover:scale-105" />
-          <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l lg:bg-gradient-to-t  group-hover:from-[#e85d04]/10"></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section class="bg-[#0a0c10] py-24 px-6 md:px-12 relative overflow-hidden font-['Oswald']">
-  
-  <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-    <div class="absolute top-1/4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#e85d04] to-transparent"></div>
-    <div class="absolute top-3/4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#e85d04] to-transparent"></div>
-  </div>
-
-  <div class="max-w-7xl mx-auto relative z-10">
-    
-    <div class="text-center mb-20">
-      <h2 class="text-xs font-bold uppercase tracking-[0.6em] text-[#e85d04] mb-4 font-['Oswald']" data-i18n="getaquote.how_tag">Operational Protocol</h2>
-      <p class="text-4xl md:text-6xl font-bold text-white tracking-tighter uppercase font-['Oswald']">
-        From Request to <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#e85d04] to-orange-500">Real-Time Delivery</span>
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-16">
-      
-      <div class="group relative p-8 bg-zinc-900/40 border border-white/5 hover:border-[#e85d04]/50 transition-all duration-500 rounded-sm rv up d1">
-        <div class="flex items-center justify-between mb-6">
-          <span class="text-4xl font-black text-white/10 group-hover:text-[#e85d04]/20 font-['Oswald'] transition-colors">01</span>
-          <div class="h-2 w-2 bg-[#e85d04] rounded-full animate-pulse"></div>
-        </div>
-        <h4 class="text-white font-bold uppercase tracking-widest text-sm mb-3 font-['Oswald']" data-i18n="getaquote.step_1_title">Initiation</h4>
-        <p class="text-gray-500 text-xs leading-relaxed font-light" data-i18n="getaquote.step_1_desc">Digital submission of cargo specs and routing requirements via our API-linked portal.</p>
-      </div>
-
-      <div class="group relative p-8 bg-zinc-900/40 border border-white/5 hover:border-[#e85d04]/50 transition-all duration-500 rounded-sm rv up d2">
-        <div class="flex items-center justify-between mb-6">
-          <span class="text-4xl font-black text-white/10 group-hover:text-[#e85d04]/20 font-['Oswald'] transition-colors">02</span>
-          <div class="h-px flex-1 bg-white/10 mx-4"></div>
-        </div>
-        <h4 class="text-white font-bold uppercase tracking-widest text-sm mb-3 font-['Oswald']" data-i18n="getaquote.step_2_title">Analysis</h4>
-        <p class="text-gray-500 text-xs leading-relaxed font-light" data-i18n="getaquote.step_2_desc">Automated route optimization paired with human expert oversight for cost efficiency.</p>
-      </div>
-
-      <div class="group relative p-8 bg-zinc-900/40 border border-white/5 hover:border-[#e85d04]/50 transition-all duration-500 rounded-sm rv up d3">
-        <div class="flex items-center justify-between mb-6">
-          <span class="text-4xl font-black text-white/10 group-hover:text-[#e85d04]/20 font-['Oswald'] transition-colors">03</span>
-          <div class="h-px flex-1 bg-white/10 mx-4"></div>
-        </div>
-        <h4 class="text-white font-bold uppercase tracking-widest text-sm mb-3 font-['Oswald']" data-i18n="getaquote.step_3_title">Activation</h4>
-        <p class="text-gray-500 text-xs leading-relaxed font-light" data-i18n="getaquote.step_3_desc">Digital confirmation triggers immediate fleet dispatch and terminal priority booking.</p>
-      </div>
-
-      <div class="group relative p-8 bg-zinc-900/40 border border-white/5 hover:border-[#e85d04]/50 transition-all duration-500 rounded-sm rv up d4">
-        <div class="flex items-center justify-between mb-6">
-          <span class="text-4xl font-black text-white/10 group-hover:text-[#e85d04]/20 font-['Oswald'] transition-colors">04</span>
-          <svg class="w-5 h-5 text-[#e85d04]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        </div>
-        <h4 class="text-white font-bold uppercase tracking-widest text-sm mb-3 font-['Oswald']" data-i18n="getaquote.step_4_title">Tracking</h4>
-        <p class="text-gray-500 text-xs leading-relaxed font-light" data-i18n="getaquote.step_4_desc">Continuous telemetry stream from pickup to delivery signature with live dashboard access.</p>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-[450px]">
-      
-      <div class="relative rounded-sm overflow-hidden group">
-        <img src="assets/images/4.jpg" 
-             alt="Smart Warehouse" 
-             class="w-full h-full object-cover  brightness-50 group-hover:grayscale transition-all duration-1000 scale-105 group-hover:scale-100" />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-transparent to-transparent"></div>
-        <div class="absolute bottom-6 left-6">
-          <p class="text-white font-bold uppercase tracking-tighter text-xl font-['Oswald']">Intelligent Warehousing</p>
-          <p class="text-[#e85d04] text-[10px] font-bold tracking-[0.2em] uppercase">Phase 01-02 Deployment</p>
-        </div>
-      </div>
-
-      <div class="relative rounded-sm overflow-hidden group">
-        <img src="assets/images/5.jpg" 
-             alt="Global Logistics" 
-             class="w-full h-full object-cover  brightness-50 group-hover:grayscale transition-all duration-1000 scale-105 group-hover:scale-100" />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-transparent to-transparent"></div>
-        <div class="absolute bottom-6 left-6">
-          <p class="text-white font-bold uppercase tracking-tighter text-xl font-['Oswald']">Network Infrastructure</p>
-          <p class="text-[#e85d04] text-[10px] font-bold tracking-[0.2em] uppercase">Phase 03-04 Fulfillment</p>
-        </div>
-        
-        <div class="absolute top-6 right-6 border border-white/20 px-3 py-1 backdrop-blur-md">
-          <span class="text-white font-mono text-[10px] uppercase tracking-widest">System: Online</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section class="relative bg-zinc-950 py-0 overflow-hidden font-['Oswald'] rv up d1">
-  <div class="flex flex-col lg:flex-row min-h-[400px]">
-    
-    <div class="flex-1 bg-[#111318] p-12 md:p-6 relative flex flex-col justify-center">
-      <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-[#e85d04] to-transparent"></div>
-      
-      <div class="relative z-10">
-        <h2 class="text-4xl md:text-6xl font-bold text-white tracking-tighter font-['Oswald'] uppercase mb-6 leading-none">
-          Ready to ship <br/> <span class="text-[#e85d04]">with us?</span>
-        </h2>
-        <p class="text-gray-400 text-lg font-light max-w-md leading-relaxed" data-i18n="getaquote.cta_desc">
-          Join hundreds of companies across Europe relying on our precision logistics. Start your journey today.
+        <p class="text-gray-400 text-lg font-light max-w-sm border-l border-white/10 pl-6"
+          data-i18n="getaquote.courier_desc">
+          Choose your courier service and book in just a few clicks. Available across Benelux and Germany.
         </p>
       </div>
 
-      <div class="absolute bottom-8 left-12 flex gap-8 opacity-20">
-        <div>
-          <p class="text-[10px] text-white font-mono uppercase tracking-tighter">Availability</p>
-          <p class="text-xs text-white font-bold font-mono">24/7 ACTIVE</p>
-        </div>
-        <div>
-          <p class="text-[10px] text-white font-mono uppercase tracking-tighter">Regional Coverage</p>
-          <p class="text-xs text-white font-bold font-mono">BENELUX / DACH</p>
-        </div>
-      </div>
-    </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-1">
 
-    <div class="w-full lg:w-[45%] bg-[#e85d04] p-12 md:p-20 flex flex-col justify-center items-start lg:items-center relative">
-      <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 0, transparent 50%); background-size: 10px 10px;"></div>
-      
-      <div class="relative z-10 w-full max-w-xs space-y-4">
-        <a href="#calculator" class="group flex items-center justify-between w-full bg-black text-white p-6 rounded-sm font-['Oswald'] uppercase tracking-[0.2em] transition-all hover:bg-white hover:text-black">
-          <span data-i18n="getaquote.cta_btn_quote">Get Instant Quote</span>
-          <svg class="w-6 h-6 transition-transform group-hover:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
+        <div
+          class="group relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 bg-[#111318] hover:bg-[#e85d04] transition-all duration-500 overflow-hidden">
 
-        <a href="tel:+31234876591" class="group flex items-center justify-between w-full border-2 border-black/20 text-black p-6 rounded-sm font-['Oswald'] uppercase tracking-[0.2em] transition-all hover:bg-black hover:text-white">
-          <span data-i18n="getaquote.cta_btn_call">Speak to expert</span>
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-        </a>
-      </div>
-    </div>
+          <div class="p-10 relative z-10">
+            <div class="flex items-center gap-3 mb-8">
+              <div class="relative flex h-3 w-3">
+                <span
+                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#e85d04] group-hover:bg-white opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-[#e85d04] group-hover:bg-white"></span>
+              </div>
+              <span
+                class="text-[#e85d04] group-hover:text-white text-xs font-black uppercase tracking-widest font-['Oswald']"
+                data-i18n="getaquote.courier_same_day_label">Same Day</span>
+            </div>
 
-  </div>
-</section>
+            <h3
+              class="text-3xl font-bold text-white mb-4 font-['Oswald'] uppercase tracking-tight group-hover:text-black transition-colors"
+              data-i18n="getaquote.courier_same_day_title">Urgent Delivery</h3>
+            <p class="text-gray-500 group-hover:text-black/80 text-sm leading-relaxed mb-10 transition-colors"
+              data-i18n="getaquote.courier_same_day_desc">
+              Shipments collected and delivered on the same working day. Local and regional speed.
+            </p>
 
-
-
-
-  <!-- FOOTER -->
-  <footer style="background:#0d0d0d;border-top:1px solid var(--border);">
-    <div class="max-w-7xl mx-auto px-6 py-16">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
-
-        <!-- NAVIGATION -->
-        <div>
-          <h5 class="font-bold text-sm mb-5 text-white tracking-widest uppercase">Navigation</h5>
-          <a href="#" class="footer-link">Home</a>
-          <a href="#" class="footer-link">About Us</a>
-          <a href="#services" class="footer-link">Services</a>
-          <a href="#" class="footer-link">Pricing</a>
-          <a href="#" class="footer-link">Career</a>
-        </div>
-
-
-        <!-- ADDRESS & CONTACT -->
-        <div>
-          <h5 class="font-bold text-sm mb-5 text-white tracking-widest uppercase">Address</h5>
-          <p class="text-gray-400 text-sm mb-6">123 Logistic Drive San Francisco, CA 94105</p>
-          <h5 class="font-bold text-sm mb-3 text-white tracking-widest uppercase">Contact</h5>
-          <p class="text-gray-400 text-sm mb-2">info@voyagologistic.com</p>
-          <p class="text-gray-400 text-sm">+1 (800) 555-6789</p>
-        </div>
-
-        <!-- BRAND + SOCIALS -->
-        <div>
-          <div class="flex items-center gap-2 mb-3">
-            <span
-              style="background:var(--orange);color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;padding:5px 9px;border-radius:8px;">V</span>
-            <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;">Voyago</span>
+            <a href="#transport-form"
+              class="inline-flex items-center gap-3 text-white group-hover:text-black font-black uppercase text-xs tracking-widest border-b-2 border-[#e85d04] group-hover:border-black pb-2 transition-all">
+              <span data-i18n="getaquote.courier_book_now">Book Courier</span>
+              <svg class="w-4 h-4 translate-x-0 group-hover:translate-x-2 transition-transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
           </div>
-          <p class="text-gray-400 text-sm mb-5 leading-relaxed">Reliable logistics solutions, ensuring your cargo
-            reaches its destination safely &amp; efficiently.</p>
-          <div class="flex gap-2 flex-wrap" style="margin-top:4px;">
-            <!-- Facebook -->
-            <a href="#" class="fsi" title="Facebook"
-              style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;transition:all .25s;text-decoration:none;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+
+          <div class="relative h-60 md:h-full lg:h-60 overflow-hidden">
+            <img src="assets/images/1 (1).jpg" alt="Urgent delivery van"
+              class="w-full h-full object-cover  brightness-50 transition-all duration-1000 group-hover:grayscale group-hover:brightness-90 group-hover:scale-105" />
+            <div
+              class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l lg:bg-gradient-to-t from-[#111318] via-[#111328]/20 to-transparent group-hover:from-[#e85d04]/10">
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="group relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 bg-[#0c0e12] hover:bg-[#e85d04] transition-all duration-500 overflow-hidden border-x border-white/5">
+
+          <div class="p-10 relative z-10 order-1 md:order-2 lg:order-1">
+            <div class="flex items-center gap-3 mb-8">
+              <div class="w-3 h-3 bg-white/20 group-hover:bg-white rounded-full"></div>
+              <span
+                class="text-gray-500 group-hover:text-white text-xs font-black uppercase tracking-widest font-['Oswald']"
+                data-i18n="getaquote.courier_express_label">Next Day</span>
+            </div>
+
+            <h3
+              class="text-3xl font-bold text-white mb-4 font-['Oswald'] uppercase tracking-tight group-hover:text-black transition-colors"
+              data-i18n="getaquote.courier_express_title">Express Transit</h3>
+            <p class="text-gray-500 group-hover:text-black/80 text-sm leading-relaxed mb-10 transition-colors"
+              data-i18n="getaquote.courier_express_desc">
+              Guaranteed next-business-day delivery across Benelux and Germany with priority tracking.
+            </p>
+
+            <a href="#transport-form"
+              class="inline-flex items-center gap-3 text-white group-hover:text-black font-black uppercase text-xs tracking-widest border-b-2 border-white/10 group-hover:border-black pb-2 transition-all">
+              <span data-i18n="getaquote.courier_book_now">Book Express</span>
+              <svg class="w-4 h-4 translate-x-0 group-hover:translate-x-2 transition-transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+
+          <div class="relative h-60 md:h-full lg:h-60 overflow-hidden order-2 md:order-1 lg:order-2">
+            <img src="assets/images/3.jpg" alt="Express shipping plane"
+              class="w-full h-full object-cover  brightness-50 transition-all duration-1000 group-hover:grayscale group-hover:brightness-90 group-hover:scale-105" />
+            <div
+              class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r lg:bg-gradient-to-t from-[#0c0e12] via-[#0c0e12]/20 to-transparent group-hover:from-[#e85d04]/10">
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="group relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 bg-[#111318] hover:bg-[#e85d04] transition-all duration-500 overflow-hidden">
+
+          <div class="p-10 relative z-10">
+            <div class="flex items-center gap-3 mb-8">
+              <div class="w-3 h-3 bg-white/20 group-hover:bg-white rounded-full"></div>
+              <span
+                class="text-gray-500 group-hover:text-white text-xs font-black uppercase tracking-widest font-['Oswald']"
+                data-i18n="getaquote.courier_economy_label">Standard</span>
+            </div>
+
+            <h3
+              class="text-3xl font-bold text-white mb-4 font-['Oswald'] uppercase tracking-tight group-hover:text-black transition-colors"
+              data-i18n="getaquote.courier_economy_title">Economy Parcel</h3>
+            <p class="text-gray-500 group-hover:text-black/80 text-sm leading-relaxed mb-10 transition-colors"
+              data-i18n="getaquote.courier_economy_desc">
+              Cost-effective delivery in 3–5 working days. Perfect for bulk or non-urgent freight.
+            </p>
+
+            <a href="#transport-form"
+              class="inline-flex items-center gap-3 text-white group-hover:text-black font-black uppercase text-xs tracking-widest border-b-2 border-white/10 group-hover:border-black pb-2 transition-all">
+              <span data-i18n="getaquote.courier_book_now">Book Economy</span>
+              <svg class="w-4 h-4 translate-x-0 group-hover:translate-x-2 transition-transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+
+          <div class="relative h-60 md:h-full lg:h-60 overflow-hidden">
+            <img src="assets/images/2.jpg" alt="Economy shipping boxes"
+              class="w-full h-full object-cover  brightness-50 transition-all duration-1000 group-hover:grayscale group-hover:brightness-50 group-hover:scale-105" />
+            <div
+              class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l lg:bg-gradient-to-t  group-hover:from-[#e85d04]/10">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#0a0c10] py-24 px-6 md:px-12 relative overflow-hidden font-['Oswald']">
+
+    <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+      <div
+        class="absolute top-1/4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#e85d04] to-transparent">
+      </div>
+      <div
+        class="absolute top-3/4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#e85d04] to-transparent">
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+
+      <div class="text-center mb-20">
+        <h2 class="text-xs font-bold uppercase tracking-[0.6em] text-[#e85d04] mb-4 font-['Oswald']"
+          data-i18n="getaquote.how_tag">Operational Protocol</h2>
+        <p class="text-4xl md:text-6xl font-bold text-white tracking-tighter uppercase font-['Oswald']">
+          From Request to <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-[#e85d04] to-orange-500">Real-Time
+            Delivery</span>
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-16">
+
+        <div
+          class="group relative p-8 bg-zinc-900/40 border border-white/5 hover:border-[#e85d04]/50 transition-all duration-500 rounded-sm rv up d1">
+          <div class="flex items-center justify-between mb-6">
+            <span
+              class="text-4xl font-black text-white/10 group-hover:text-[#e85d04]/20 font-['Oswald'] transition-colors">01</span>
+            <div class="h-2 w-2 bg-[#e85d04] rounded-full animate-pulse"></div>
+          </div>
+          <h4 class="text-white font-bold uppercase tracking-widest text-sm mb-3 font-['Oswald']"
+            data-i18n="getaquote.step_1_title">Initiation</h4>
+          <p class="text-gray-500 text-xs leading-relaxed font-light" data-i18n="getaquote.step_1_desc">Digital
+            submission of cargo specs and routing requirements via our API-linked portal.</p>
+        </div>
+
+        <div
+          class="group relative p-8 bg-zinc-900/40 border border-white/5 hover:border-[#e85d04]/50 transition-all duration-500 rounded-sm rv up d2">
+          <div class="flex items-center justify-between mb-6">
+            <span
+              class="text-4xl font-black text-white/10 group-hover:text-[#e85d04]/20 font-['Oswald'] transition-colors">02</span>
+            <div class="h-px flex-1 bg-white/10 mx-4"></div>
+          </div>
+          <h4 class="text-white font-bold uppercase tracking-widest text-sm mb-3 font-['Oswald']"
+            data-i18n="getaquote.step_2_title">Analysis</h4>
+          <p class="text-gray-500 text-xs leading-relaxed font-light" data-i18n="getaquote.step_2_desc">Automated route
+            optimization paired with human expert oversight for cost efficiency.</p>
+        </div>
+
+        <div
+          class="group relative p-8 bg-zinc-900/40 border border-white/5 hover:border-[#e85d04]/50 transition-all duration-500 rounded-sm rv up d3">
+          <div class="flex items-center justify-between mb-6">
+            <span
+              class="text-4xl font-black text-white/10 group-hover:text-[#e85d04]/20 font-['Oswald'] transition-colors">03</span>
+            <div class="h-px flex-1 bg-white/10 mx-4"></div>
+          </div>
+          <h4 class="text-white font-bold uppercase tracking-widest text-sm mb-3 font-['Oswald']"
+            data-i18n="getaquote.step_3_title">Activation</h4>
+          <p class="text-gray-500 text-xs leading-relaxed font-light" data-i18n="getaquote.step_3_desc">Digital
+            confirmation triggers immediate fleet dispatch and terminal priority booking.</p>
+        </div>
+
+        <div
+          class="group relative p-8 bg-zinc-900/40 border border-white/5 hover:border-[#e85d04]/50 transition-all duration-500 rounded-sm rv up d4">
+          <div class="flex items-center justify-between mb-6">
+            <span
+              class="text-4xl font-black text-white/10 group-hover:text-[#e85d04]/20 font-['Oswald'] transition-colors">04</span>
+            <svg class="w-5 h-5 text-[#e85d04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h4 class="text-white font-bold uppercase tracking-widest text-sm mb-3 font-['Oswald']"
+            data-i18n="getaquote.step_4_title">Tracking</h4>
+          <p class="text-gray-500 text-xs leading-relaxed font-light" data-i18n="getaquote.step_4_desc">Continuous
+            telemetry stream from pickup to delivery signature with live dashboard access.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-[450px]">
+
+        <div class="relative rounded-sm overflow-hidden group">
+          <img src="assets/images/4.jpg" alt="Smart Warehouse"
+            class="w-full h-full object-cover  brightness-50 group-hover:grayscale transition-all duration-1000 scale-105 group-hover:scale-100" />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6">
+            <p class="text-white font-bold uppercase tracking-tighter text-xl font-['Oswald']">Intelligent Warehousing
+            </p>
+            <p class="text-[#e85d04] text-[10px] font-bold tracking-[0.2em] uppercase">Phase 01-02 Deployment</p>
+          </div>
+        </div>
+
+        <div class="relative rounded-sm overflow-hidden group">
+          <img src="assets/images/5.jpg" alt="Global Logistics"
+            class="w-full h-full object-cover  brightness-50 group-hover:grayscale transition-all duration-1000 scale-105 group-hover:scale-100" />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0a0c10] via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6">
+            <p class="text-white font-bold uppercase tracking-tighter text-xl font-['Oswald']">Network Infrastructure
+            </p>
+            <p class="text-[#e85d04] text-[10px] font-bold tracking-[0.2em] uppercase">Phase 03-04 Fulfillment</p>
+          </div>
+
+          <div class="absolute top-6 right-6 border border-white/20 px-3 py-1 backdrop-blur-md">
+            <span class="text-white font-mono text-[10px] uppercase tracking-widest">System: Online</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="relative bg-zinc-950 py-0 overflow-hidden font-['Oswald'] rv up d1">
+    <div class="flex flex-col lg:flex-row min-h-[400px]">
+
+      <div class="flex-1 bg-[#111318] p-12 md:p-6 relative flex flex-col justify-center">
+        <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-[#e85d04] to-transparent"></div>
+
+        <div class="relative z-10">
+          <h2
+            class="text-4xl md:text-6xl font-bold text-white tracking-tighter font-['Oswald'] uppercase mb-6 leading-none">
+            Ready to ship <br /> <span class="text-[#e85d04]">with us?</span>
+          </h2>
+          <p class="text-gray-400 text-lg font-light max-w-md leading-relaxed" data-i18n="getaquote.cta_desc">
+            Join hundreds of companies across Europe relying on our precision logistics. Start your journey today.
+          </p>
+        </div>
+
+        <div class="absolute bottom-8 left-12 flex gap-8 opacity-20">
+          <div>
+            <p class="text-[10px] text-white font-mono uppercase tracking-tighter">Availability</p>
+            <p class="text-xs text-white font-bold font-mono">24/7 ACTIVE</p>
+          </div>
+          <div>
+            <p class="text-[10px] text-white font-mono uppercase tracking-tighter">Regional Coverage</p>
+            <p class="text-xs text-white font-bold font-mono">BENELUX / DACH</p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="w-full lg:w-[45%] bg-[#e85d04] p-12 md:p-20 flex flex-col justify-center items-start lg:items-center relative">
+        <div class="absolute inset-0 opacity-10 pointer-events-none"
+          style="background-image: repeating-linear-gradient(45deg, #000 0, #000 1px, transparent 0, transparent 50%); background-size: 10px 10px;">
+        </div>
+
+        <div class="relative z-10 w-full max-w-xs space-y-4">
+          <a href="#calculator"
+            class="group flex items-center justify-between w-full bg-black text-white p-6 rounded-sm font-['Oswald'] uppercase tracking-[0.2em] transition-all hover:bg-white hover:text-black">
+            <span data-i18n="getaquote.cta_btn_quote">Get Instant Quote</span>
+            <svg class="w-6 h-6 transition-transform group-hover:translate-x-2" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+
+          <a href="tel:+31234876591"
+            class="group flex items-center justify-between w-full border-2 border-black/20 text-black p-6 rounded-sm font-['Oswald'] uppercase tracking-[0.2em] transition-all hover:bg-black hover:text-white">
+            <span data-i18n="getaquote.cta_btn_call">Speak to expert</span>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+<!-- ══════════════════════ FOOTER -->
+  <footer class="border-t border-[#252525] bg-[#0d0d0d] px-6 py-16 lg:px-12">
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div>
+          <h5 class="mb-5 text-sm font-bold uppercase tracking-widest text-white">Navigation</h5>
+          <div class="flex flex-col gap-3">
+            <a href="index.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Home</a>
+            <a href="aboutus.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">About Us</a>
+            <a href="services.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Services</a>
+            <a href="career.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Careers</a>
+            <a href="contact.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h5 class="mb-5 text-sm font-bold uppercase tracking-widest text-white">Address</h5>
+          <p class="mb-6 text-sm text-slate-400">Waalhaven O.Z. 81, 3087 BM Rotterdam, Netherlands</p>
+          <h5 class="mb-3 text-sm font-bold uppercase tracking-widest text-white">Contact</h5>
+          <p class="mb-2 text-sm text-slate-400">info@nltransportwk.nl</p>
+          <p class="text-sm text-slate-400">+31 (0)10 456 7890</p>
+        </div>
+        <div>
+          <a href="index.html" class="inline-block mb-4">
+            <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="WK Transport Logo"
+              class="h-32 w-auto object-contain" />
+          </a>
+          <p class="mb-5 text-sm leading-7 text-slate-400">Reliable logistics solutions, ensuring your cargo reaches its
+            destination safely and efficiently.</p>
+          <div class="flex flex-wrap gap-2">
+            <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
+              href="#" aria-label="Facebook">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
               </svg>
             </a>
-            <!-- X / Twitter -->
-            <a href="#" class="fsi" title="X / Twitter"
-              style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;transition:all .25s;text-decoration:none;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M4 4l16 16M20 4 4 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-                  fill="none" />
+            <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
+              href="#" aria-label="X (Twitter)">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
               </svg>
             </a>
-            <!-- Instagram -->
-            <a href="#" class="fsi" title="Instagram"
-              style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;transition:all .25s;text-decoration:none;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
+              href="#" aria-label="Instagram">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
               </svg>
             </a>
-            <!-- LinkedIn -->
-            <a href="#" class="fsi" title="LinkedIn"
-              style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;transition:all .25s;text-decoration:none;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
+              href="#" aria-label="LinkedIn">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                 <rect x="2" y="9" width="4" height="12" />
                 <circle cx="4" cy="4" r="2" />
               </svg>
             </a>
-            <!-- YouTube -->
-            <a href="#" class="fsi" title="YouTube"
-              style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#aaa;transition:all .25s;text-decoration:none;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
-                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#1a1a1a" />
-              </svg>
-            </a>
           </div>
-          <style>
-            .fsi:hover {
-              background: var(--orange) !important;
-              border-color: var(--orange) !important;
-              color: #fff !important;
-              transform: translateY(-3px);
-              box-shadow: 0 6px 20px rgba(255, 102, 0, .35);
-            }
-          </style>
         </div>
       </div>
-
-      <!-- COPYRIGHT -->
-      <div style="border-top:1px solid var(--border);margin-top:40px;padding-top:24px;"
-        class="flex flex-col sm:flex-row justify-between items-center gap-4">
-        <p class="text-gray-500 text-xs">© 2025 Voyago. All rights reserved.</p>
-        <p class="text-gray-500 text-xs">Designed with precision for reliable logistics.</p>
+      <div class="flex flex-col items-center justify-between gap-4 border-t border-[#252525] pt-6 sm:flex-row">
+        <p class="text-xs text-slate-500">© 2026 WKTransport. All rights reserved.</p>
+        <p class="text-xs text-slate-500">Designed with precision for reliable logistics.</p>
       </div>
     </div>
   </footer>

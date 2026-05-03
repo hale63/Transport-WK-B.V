@@ -20,8 +20,8 @@
           },
           fontFamily: {
             nav: ['Barlow', 'sans-serif'],
-            body: ['Oswald'],
-            display: ['Oswald'],
+            body: ['Inter','sans-serif'],
+            display: ['Inter','sans-serif'],
           }
         }
       }
@@ -130,7 +130,7 @@
                 <path
                   d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
               </svg>
-              <span>info@assirko.com</span>
+              <span>info@nltransportwk.nl</span>
             </div>
           </div>
         </div>
@@ -156,13 +156,14 @@
 
           <nav class="flex items-center gap-8 text-[13px] font-bold text-white">
             <a href="index.html"
-              class="text-[#E8511A] relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-full before:h-0.5 before:bg-[#E8511A]">[
-              Home ]</a>
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">
+              Home </a>
             <a href="aboutus.html"
               class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">About</a>
-            <a href="Services.html"
-              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Services</a>
-            <a href="career.html"
+            <a href="services.html"
+              class="text-[#E8511A] relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-full before:h-0.5 before:bg-[#E8511A]">
+              [ Services ]
+            </a> <a href="career.html"
               class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Careers</a>
             <a href="contact.html"
               class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Contact</a>
@@ -182,10 +183,10 @@
 
     <div class="lg:hidden flex items-center justify-between p-4 bg-black border-b border-[#E8511A]/30 shadow-lg">
       <a href="index.html" class="flex items-center gap-2 group">
-        <img src="assets/images/carlogo.png" alt="AA-SİRKO Logo"
-          class="h-10 w-auto object-contain brightness-0 invert group-hover:scale-110 transition-transform" />
+        <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="AA-SİRKO Logo"
+          class="h-14 w-auto object-contain group-hover:scale-110 transition-transform" />
       </a>
-      <button onclick="toggleMenu()" class="text-white p-2 focus:outline-none hover:text-[#E8511A] transition-colors">
+      <button id="hamburger" class="text-white p-2 focus:outline-none hover:text-[#E8511A] transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
@@ -207,19 +208,19 @@
             <path
               d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
           </svg>
-          <span>info@assirko.com</span>
+          <span>info@nltransportwk.nl</span>
         </div>
       </div>
 
       <div class="flex flex-col">
         <a href="index.html"
-          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 text-[#E8511A] hover:bg-[#E8511A]/10 transition-colors">Home</a>
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Home</a>
         <a href="aboutus.html"
           class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">About</a>
-        <a href="Services.html"
-          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Services</a>
+        <a href="services.html"
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 text-[#E8511A] hover:bg-[#E8511A]/10 transition-colors">Services</a>
         <a href="career.html"
-          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">career</a>
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Career</a>
         <a href="getaquote.html"
           class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Get
           A Quote</a>
@@ -247,7 +248,7 @@
     <div class="relative z-10 container mx-auto px-6 text-center rv from-left d1">
       <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
         <span class="block text-white">
-          <span class="text-[#e85d04]"><span data-i18n="career.hero_title_1">Services</span></span>
+          <span class="text-[#e85d04]"><span data-i18n="services.hero_title">SERVICES</span></span>
         </span>
       </h2>
     </div>
@@ -309,8 +310,7 @@
       <section id="shipment-management" data-aos="fade-up"
         class="service-detail grid gap-10 border-b border-brand-border py-16 lg:grid-cols-2 lg:items-center lg:gap-20">
         <div class="relative h-80 lg:order-2 lg:h-[440px]"><img
-            class="h-full w-full object-cover brightness-75 saturate-[.85]"
-            src="assets/images/4.jpg"
+            class="h-full w-full object-cover brightness-75 saturate-[.85]" src="assets/images/4.jpg"
             alt="Shipment Management" />
           <div class="absolute bottom-0 right-0 bg-brand-orange px-7 py-6 lg:-bottom-5 lg:-right-5">
             <div class="font-display text-5xl font-black text-white">360°</div>
@@ -397,8 +397,7 @@
       <section id="same-day-delivery" data-aos="fade-up"
         class="service-detail grid gap-10 border-b border-brand-border py-16 lg:grid-cols-2 lg:items-center lg:gap-20">
         <div class="relative h-80 lg:order-2 lg:h-[440px]"><img
-            class="h-full w-full object-cover brightness-75 saturate-[.85]"
-            src="assets/images/2.jpg"
+            class="h-full w-full object-cover brightness-75 saturate-[.85]" src="assets/images/2.jpg"
             alt="Express delivery van" />
           <div class="absolute bottom-0 right-0 bg-brand-orange px-7 py-6 lg:-bottom-5 lg:-right-5">
             <div class="font-display text-5xl font-black text-white">2h</div>
@@ -561,8 +560,8 @@
           Call Now: +31 (0)10 456 7890</a>
         <div class="flex flex-col gap-5 border border-brand-border bg-brand-card/90 p-7">
           <div><span class="block text-xs font-bold uppercase tracking-widest text-slate-600">✉ Email</span><a
-              href="mailto:info@wktransport.nl"
-              class="mt-1 block font-display text-xl font-bold text-slate-200 hover:text-brand-orange">info@wktransport.nl</a>
+              href="mailto:info@nltransportwk.nl"
+              class="mt-1 block font-display text-xl font-bold text-slate-200 hover:text-brand-orange">info@nltransportwk.nl</a>
           </div>
           <hr class="border-brand-border" />
           <div><span class="block text-xs font-bold uppercase tracking-widest text-slate-600">📍 Head Office</span><span
@@ -577,50 +576,74 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="border-t border-brand-border bg-[#0d0d0d] px-6 py-16 lg:px-12">
+<!-- ══════════════════════ FOOTER -->
+  <footer class="border-t border-[#252525] bg-[#0d0d0d] px-6 py-16 lg:px-12">
     <div class="mx-auto max-w-7xl">
       <div class="mb-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
         <div>
           <h5 class="mb-5 text-sm font-bold uppercase tracking-widest text-white">Navigation</h5>
-          <div class="flex flex-col gap-3"><a href="#"
-              class="text-sm text-slate-400 transition hover:text-brand-orange">Home</a><a href="#"
-              class="text-sm text-slate-400 transition hover:text-brand-orange">About Us</a><a href="#services-detail"
-              class="text-sm text-slate-400 transition hover:text-brand-orange">Services</a><a href="#"
-              class="text-sm text-slate-400 transition hover:text-brand-orange">Pricing</a><a href="#"
-              class="text-sm text-slate-400 transition hover:text-brand-orange">Career</a></div>
+          <div class="flex flex-col gap-3">
+            <a href="index.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Home</a>
+            <a href="aboutus.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">About Us</a>
+            <a href="services.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Services</a>
+            <a href="career.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Careers</a>
+            <a href="contact.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Contact</a>
+          </div>
         </div>
         <div>
           <h5 class="mb-5 text-sm font-bold uppercase tracking-widest text-white">Address</h5>
           <p class="mb-6 text-sm text-slate-400">Waalhaven O.Z. 81, 3087 BM Rotterdam, Netherlands</p>
           <h5 class="mb-3 text-sm font-bold uppercase tracking-widest text-white">Contact</h5>
-          <p class="mb-2 text-sm text-slate-400">info@wktransport.nl</p>
+          <p class="mb-2 text-sm text-slate-400">info@nltransportwk.nl</p>
           <p class="text-sm text-slate-400">+31 (0)10 456 7890</p>
         </div>
         <div>
-          <div class="mb-3 flex items-center gap-2"><span
-              class="rounded-lg bg-brand-orange px-2.5 py-1 text-lg font-black text-white">WK</span><span
-              class="font-display text-2xl font-black text-white">WKTransport</span></div>
+          <a href="index.html" class="inline-block mb-4">
+            <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="WK Transport Logo"
+              class="h-32 w-auto object-contain" />
+          </a>
           <p class="mb-5 text-sm leading-7 text-slate-400">Reliable logistics solutions, ensuring your cargo reaches its
             destination safely and efficiently.</p>
-          <div class="flex flex-wrap gap-2"><a
-              class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-brand-orange hover:bg-brand-orange hover:text-white"
-              href="#">f</a><a
-              class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-brand-orange hover:bg-brand-orange hover:text-white"
-              href="#">𝕏</a><a
-              class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-brand-orange hover:bg-brand-orange hover:text-white"
-              href="#">ig</a><a
-              class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-brand-orange hover:bg-brand-orange hover:text-white"
-              href="#">in</a></div>
+          <div class="flex flex-wrap gap-2">
+            <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
+              href="#" aria-label="Facebook">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
+              href="#" aria-label="X (Twitter)">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+              </svg>
+            </a>
+            <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
+              href="#" aria-label="Instagram">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" viewBox="0 0 24 24">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
+              href="#" aria-label="LinkedIn">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="flex flex-col items-center justify-between gap-4 border-t border-brand-border pt-6 sm:flex-row">
+      <div class="flex flex-col items-center justify-between gap-4 border-t border-[#252525] pt-6 sm:flex-row">
         <p class="text-xs text-slate-500">© 2026 WKTransport. All rights reserved.</p>
         <p class="text-xs text-slate-500">Designed with precision for reliable logistics.</p>
       </div>
     </div>
   </footer>
-
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="languageSwitcher.js"></script>
   <script src="js.js"></script>
