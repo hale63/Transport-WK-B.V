@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WKTransport | About Us</title>
+  <title data-i18n="about_wktransport_about_us">WKTransport | About Us</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -60,6 +60,21 @@
       opacity: 1;
       transform: none;
     }
+
+    .rv {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .75s ease, transform .75s ease;
+    }
+
+    .rv.on {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .rv.d1 {
+      transition-delay: .1s;
+    }
   </style>
 </head>
 
@@ -73,7 +88,7 @@
         class="flex items-center justify-center w-[300px] bg-black h-full relative z-20 px-6 shadow-lg border-r border-[#E8511A]/30">
         <a href="index.html">
           <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="AA-SİRKO Logo"
-            class="h-24 w-auto object-contain" />
+            class="h-24 w-auto object-contain" data-i18n-alt="about_alt_aa_si_rko_logo" />
         </a>
 
         <div
@@ -128,7 +143,7 @@
                 <path
                   d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
               </svg>
-              <span>info@nltransportwk.nl</span>
+              <span data-i18n="about_info_nltransportwk_nl">info@nltransportwk.nl</span>
             </div>
           </div>
         </div>
@@ -137,7 +152,7 @@
           class="flex-1 flex items-center justify-between px-8 bg-black to-orange-900 py-0 shadow-lg border-b border-[#E8511A]/20">
 
           <a href="getaquote.html"
-            class="flex items-center gap-2 text-white font-bold text-sm group hover:text-[#E8511A] transition-all duration-300 px-4 py-2 rounded-lg hover:bg-[#E8511A]/10">
+            class="flex items-center gap-2 text-white font-bold text-sm group hover:text-[#E8511A] transition-all duration-300 px-4 py-2 rounded-lg hover:bg-[#E8511A]/10" data-i18n="nav_quote">
             <svg class="w-5 h-5 text-[#E8511A] group-hover:scale-110 transition-transform" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -154,16 +169,16 @@
 
           <nav class="flex items-center gap-8 text-[13px] font-bold text-white">
             <a href="index.html"
-              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Home</a>
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300" data-i18n="nav_home">Home</a>
             <a href="aboutus.html"
-              class="text-[#E8511A] relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-full before:h-0.5 before:bg-[#E8511A]">[
+              class="text-[#E8511A] relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-full before:h-0.5 before:bg-[#E8511A]" data-i18n="nav_about">[
               About ]</a>
             <a href="services.html"
-              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Services</a>
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300" data-i18n="nav_services">Services</a>
             <a href="career.html"
-              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Careers</a>
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300" data-i18n="nav_career">Careers</a>
             <a href="contact.html"
-              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300">Contact</a>
+              class="hover:text-[#E8511A] transition-colors duration-300 relative px-2 py-2 before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[#E8511A] hover:before:w-full before:transition-all before:duration-300" data-i18n="nav_contact">Contact</a>
 
             <div class="h-5 w-0.5 bg-[#E8511A]/40 mx-3"></div>
 
@@ -187,7 +202,7 @@
     <div class="lg:hidden flex items-center justify-between p-4 bg-black border-b border-[#E8511A]/30 shadow-lg">
       <a href="index.html" class="flex items-center gap-2 group">
         <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="AA-SİRKO Logo"
-          class="h-14 w-auto object-contain group-hover:scale-110 transition-transform" />
+          class="h-14 w-auto object-contain group-hover:scale-110 transition-transform" data-i18n-alt="about_alt_aa_si_rko_logo" />
       </a>
       <button id="hamburger" class="text-white p-2 focus:outline-none hover:text-[#E8511A] transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,24 +226,24 @@
             <path
               d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.89l5.624-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z" />
           </svg>
-          <span>info@nltransportwk.nl</span>
+          <span data-i18n="about_info_nltransportwk_nl">info@nltransportwk.nl</span>
         </div>
       </div>
 
       <div class="flex flex-col">
         <a href="index.html"
-          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Home</a>
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors" data-i18n="nav_home">Home</a>
         <a href="aboutus.html"
-          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 text-[#E8511A] hover:bg-[#E8511A]/10 transition-colors">About</a>
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 text-[#E8511A] hover:bg-[#E8511A]/10 transition-colors" data-i18n="nav_about">About</a>
         <a href="services.html"
-          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Services</a>
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors" data-i18n="nav_services">Services</a>
         <a href="career.html"
-          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Career</a>
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors" data-i18n="nav_career">Career</a>
         <a href="getaquote.html"
-          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Get
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors" data-i18n="nav_quote">Get
           A Quote</a>
         <a href="contact.html"
-          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors">Contact</a>
+          class="px-6 py-3 text-lg font-bold border-b border-[#E8511A]/20 hover:bg-[#E8511A]/10 hover:text-[#E8511A] transition-colors" data-i18n="nav_contact">Contact</a>
         <div class="px-6 py-4 flex gap-3 border-t border-[#E8511A]/20">
           <button data-lang-btn="en" onclick="switchLanguage('en')" class="text-sm font-bold hover:text-[#E8511A] transition-colors flex items-center gap-1">🇬🇧 EN</button>
           <button data-lang-btn="nl" onclick="switchLanguage('nl')" class="text-sm font-bold text-gray-500 hover:text-[#E8511A] transition-colors flex items-center gap-1">🇳🇱 NL</button>
@@ -242,14 +257,14 @@
   <section class="relative h-[60vh] min-h-[750px] w-full flex items-center justify-center overflow-hidden">
 
     <div id="hbg" class="absolute inset-0 z-0">
-      <img src="assets/images/about.jpg" alt="Transport" class="w-full h-full object-cover" />
+      <img src="assets/images/about.jpg" alt="Transport" class="w-full h-full object-cover" data-i18n-alt="about_alt_transport" />
       <div class="absolute inset-0 bg-black/70"></div>
     </div>
 
     <div class="relative z-10 container mx-auto px-6 text-center rv from-left d1">
       <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
         <span class="block text-white">
-          <span class="text-[#e85d04]"><span data-i18n="about.hero_title">ABOUT US</span></span>
+          <span class="text-[#e85d04]"><span data-i18n="about_hero_title">ABOUT US</span></span>
         </span>
       </h2>
     </div>
@@ -277,7 +292,7 @@
           <div
             class="font-display text-5xl font-black leading-none text-white max-[900px]:text-[34px] max-[640px]:text-[30px]">
             500<span class="text-brand-orange">+</span></div>
-          <div class="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-slate-500">Clients Worldwide</div>
+          <div class="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-slate-500" data-i18n="about_clients_worldwide">Clients Worldwide</div>
         </div>
       </div>
       <div
@@ -294,8 +309,8 @@
         <div>
           <div
             class="font-display text-5xl font-black leading-none text-white max-[900px]:text-[34px] max-[640px]:text-[30px]">
-            250K<span class="text-brand-orange">+</span></div>
-          <div class="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-slate-500">Packages Delivered</div>
+            <span data-i18n="about_stat_250k">250K</span><span class="text-brand-orange">+</span></div>
+          <div class="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-slate-500" data-i18n="about_packages_delivered">Packages Delivered</div>
         </div>
       </div>
       <div
@@ -314,7 +329,7 @@
           <div
             class="font-display text-5xl font-black leading-none text-white max-[900px]:text-[34px] max-[640px]:text-[30px]">
             99<span class="text-brand-orange">%</span></div>
-          <div class="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-slate-500">On-Time Delivery</div>
+          <div class="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-slate-500" data-i18n="about_on_time_delivery">On-Time Delivery</div>
         </div>
       </div>
       <div
@@ -330,7 +345,7 @@
           <div
             class="font-display text-5xl font-black leading-none text-white max-[900px]:text-[34px] max-[640px]:text-[30px]">
             100<span class="text-brand-orange">%</span></div>
-          <div class="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-slate-500">Secure Cargo Handling</div>
+          <div class="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-slate-500" data-i18n="about_secure_cargo_handling">Secure Cargo Handling</div>
         </div>
       </div>
     </div>
@@ -343,12 +358,12 @@
       
       <div class="fade-up">
         <h2 class="font-display text-[clamp(36px,5vw,52px)] font-black leading-[1.1] tracking-tight text-white mb-8">
-          Simplifying complex <br/>
-          <span class="text-brand-orange">shipping challenges</span> <br/>
-          with innovative solutions
+          <span data-i18n="about_intro_title_1">Simplifying complex</span> <br/>
+          <span class="text-brand-orange" data-i18n="about_shipping_challenges">shipping challenges</span> <br/>
+          <span data-i18n="about_intro_title_3">with innovative solutions</span>
         </h2>
         
-        <p class="text-slate-400 text-lg leading-relaxed mb-10 max-w-xl">
+        <p class="text-slate-400 text-lg leading-relaxed mb-10 max-w-xl" data-i18n="about_logistics_companies_are_essential_to_the_smooth">
           Logistics companies are essential to the smooth functioning of global supply chains. 
           We offer a range of services including transportation, warehousing, and inventory management 
           to businesses across different industries. Our role has become increasingly vital 
@@ -356,7 +371,7 @@
         </p>
 
         <div class="flex items-center gap-6">
-          <a href="services.html" class="inline-block bg-brand-orange px-8 py-4 text-sm font-bold uppercase tracking-widest text-black transition-all hover:bg-white hover:scale-105">
+          <a href="services.html" class="inline-block bg-brand-orange px-8 py-4 text-sm font-bold uppercase tracking-widest text-black transition-all hover:bg-white hover:scale-105" data-i18n="about_explore_our_services">
             Explore our services
           </a>
           
@@ -368,17 +383,17 @@
         <div class="space-y-4">
           <div class="rounded-sm overflow-hidden h-[240px]">
             <img src="assets/images/about-big.jpeg" 
-                 class="w-full h-full object-cover brightness-75" alt="Trucking">
+                 class="w-full h-full object-cover brightness-75" alt="Trucking" data-i18n-alt="about_alt_trucking">
           </div>
           <div class="rounded-sm overflow-hidden h-[240px]">
             <img src="assets/images/about-1.jpeg" 
-                 class="w-full h-full object-cover brightness-75" alt="Package delivery">
+                 class="w-full h-full object-cover brightness-75" alt="Package delivery" data-i18n-alt="about_alt_package_delivery">
           </div>
         </div>
 
         <div class="relative h-[500px] rounded-sm overflow-hidden">
           <img src="assets/images/about-2.jpeg" 
-               class="w-full h-full object-cover brightness-90" alt="Logistics expert">
+               class="w-full h-full object-cover brightness-90" alt="Logistics expert" data-i18n-alt="about_alt_logistics_expert">
           
           <div class="absolute -bottom-2 -left-6 w-24 h-32 bg-brand-orange transform -skew-x-12 z-[-1]"></div>
           
@@ -397,16 +412,16 @@
 
         <div>
           <div
-            class="mb-4 flex items-center gap-3 text-[13px] font-bold uppercase tracking-[0.2em] text-brand-orange before:h-0.5 before:w-6 before:bg-brand-orange">
+            class="mb-4 flex items-center gap-3 text-[13px] font-bold uppercase tracking-[0.2em] text-brand-orange before:h-0.5 before:w-6 before:bg-brand-orange" data-i18n="about_journey">
             Our Journey
           </div>
 
           <h2
             class="mb-5 text-[clamp(32px,5vw,56px)] font-black uppercase leading-[0.95] tracking-[-0.02em] text-white max-[640px]:text-[42px] max-[380px]:text-[36px]">
-            Built for<br />Modern Transport
+            <span data-i18n="about_journey_title_line_1">Built for</span><br /><span data-i18n="about_journey_title_line_2">Modern Transport</span>
           </h2>
 
-          <p class="max-w-[540px] text-[17px] leading-[1.75] text-slate-400">
+          <p class="max-w-[540px] text-[17px] leading-[1.75] text-slate-400" data-i18n="about_a_new_logistics_company_focused_on_speed">
             A new logistics company focused on speed, trust, and smart delivery solutions.
           </p>
         </div>
@@ -425,11 +440,11 @@
                   <polyline points="9 22 9 12 15 12 15 22" />
                 </svg>
               </div>
-              <div class="font-display text-[34px] font-black leading-none text-brand-orange max-[640px]:text-[28px]">
+              <div class="font-display text-[34px] font-black leading-none text-brand-orange max-[640px]:text-[28px]" data-i18n="about_step_01">
                 Step 01</div>
-              <div class="mt-3 mb-2 font-display text-[18px] font-bold uppercase tracking-[0.03em] text-white">Company
+              <div class="mt-3 mb-2 font-display text-[18px] font-bold uppercase tracking-[0.03em] text-white" data-i18n="about_company_launch">Company
                 Launch</div>
-              <p class="font-body text-[14px] leading-[1.8] text-slate-400">Started with one goal: reliable transport
+              <p class="font-body text-[14px] leading-[1.8] text-slate-400" data-i18n="about_started_with_one_goal_reliable_transport_services">Started with one goal: reliable transport
                 services.</p>
             </div>
 
@@ -443,11 +458,11 @@
                   <circle cx="18.5" cy="18.5" r="2.5" />
                 </svg>
               </div>
-              <div class="font-display text-[34px] font-black leading-none text-brand-orange max-[640px]:text-[28px]">
+              <div class="font-display text-[34px] font-black leading-none text-brand-orange max-[640px]:text-[28px]" data-i18n="about_step_02">
                 Step 02</div>
-              <div class="mt-3 mb-2 font-display text-[18px] font-bold uppercase tracking-[0.03em] text-white">Transport
+              <div class="mt-3 mb-2 font-display text-[18px] font-bold uppercase tracking-[0.03em] text-white" data-i18n="about_transport_network">Transport
                 Network</div>
-              <p class="font-body text-[14px] leading-[1.8] text-slate-400">Built flexible local and international
+              <p class="font-body text-[14px] leading-[1.8] text-slate-400" data-i18n="about_built_flexible_local_and_international_delivery_routes">Built flexible local and international
                 delivery routes.</p>
             </div>
 
@@ -459,11 +474,11 @@
                   <circle cx="12" cy="10" r="3" />
                 </svg>
               </div>
-              <div class="font-display text-[34px] font-black leading-none text-brand-orange max-[640px]:text-[28px]">
+              <div class="font-display text-[34px] font-black leading-none text-brand-orange max-[640px]:text-[28px]" data-i18n="about_step_03">
                 Step 03</div>
-              <div class="mt-3 mb-2 font-display text-[18px] font-bold uppercase tracking-[0.03em] text-white">Smart
+              <div class="mt-3 mb-2 font-display text-[18px] font-bold uppercase tracking-[0.03em] text-white" data-i18n="about_smart_planning">Smart
                 Planning</div>
-              <p class="font-body text-[14px] leading-[1.8] text-slate-400">Focused on safe cargo and fast route
+              <p class="font-body text-[14px] leading-[1.8] text-slate-400" data-i18n="about_focused_on_safe_cargo_and_fast_route">Focused on safe cargo and fast route
                 planning.</p>
             </div>
 
@@ -477,11 +492,11 @@
                     d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                 </svg>
               </div>
-              <div class="font-display text-[34px] font-black leading-none text-brand-orange max-[640px]:text-[28px]">
+              <div class="font-display text-[34px] font-black leading-none text-brand-orange max-[640px]:text-[28px]" data-i18n="about_step_04">
                 Step 04</div>
-              <div class="mt-3 mb-2 font-display text-[18px] font-bold uppercase tracking-[0.03em] text-white">European
+              <div class="mt-3 mb-2 font-display text-[18px] font-bold uppercase tracking-[0.03em] text-white" data-i18n="about_european_vision">European
                 Vision</div>
-              <p class="font-body text-[14px] leading-[1.8] text-slate-400">Expanding step by step across Europe.</p>
+              <p class="font-body text-[14px] leading-[1.8] text-slate-400" data-i18n="about_expanding_step_by_step_across_europe">Expanding step by step across Europe.</p>
             </div>
 
             <div class="fade-up relative flex-1 pr-7 max-[1200px]:basis-[calc(50%-18px)] max-[640px]:p-0">
@@ -491,11 +506,11 @@
                   <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
                 </svg>
               </div>
-              <div class="font-display text-[34px] font-black leading-none text-brand-orange max-[640px]:text-[28px]">
+              <div class="font-display text-[34px] font-black leading-none text-brand-orange max-[640px]:text-[28px]" data-i18n="about_now">
                 Now</div>
-              <div class="mt-3 mb-2 font-display text-[18px] font-bold uppercase tracking-[0.03em] text-white">Ready to
+              <div class="mt-3 mb-2 font-display text-[18px] font-bold uppercase tracking-[0.03em] text-white" data-i18n="about_ready_to_move">Ready to
                 Move</div>
-              <p class="font-body text-[14px] leading-[1.8] text-slate-400">Modern logistics solutions for every
+              <p class="font-body text-[14px] leading-[1.8] text-slate-400" data-i18n="about_modern_logistics_solutions_for_every_business">Modern logistics solutions for every
                 business.</p>
             </div>
 
@@ -516,37 +531,37 @@
         <div class="flex flex-col items-center">
           <div class="mb-8 overflow-hidden rounded-sm" style="height: 240px; width: 100%;">
             <img src="assets/images/mission.jpeg" alt="Mission"
-              class="w-full h-full object-cover  hover:grayscale transition-all duration-500">
+              class="w-full h-full object-cover  hover:grayscale transition-all duration-500" data-i18n-alt="about_alt_mission">
           </div>
-          <h3 class="text-2xl tracking-widest font-light mb-6" style="color: #ff9800;">MISSION</h3>
+          <h3 class="text-2xl tracking-widest font-light mb-6" style="color: #ff9800;" data-i18n="about_mission_title">MISSION</h3>
           <p class="text-sm leading-relaxed text-gray-300 px-4">
-            Act as <span class="font-bold text-white">the global leader</span> in distribution, manufacturing and
-            assembly of specialized industry solutions.
+            <span data-i18n="about_mission_desc_start">Act as</span> <span class="font-bold text-white" data-i18n="about_the_global_leader">the global leader</span> <span data-i18n="about_mission_desc_rest">in distribution, manufacturing and
+            assembly of specialized industry solutions.</span>
           </p>
         </div>
 
         <div class="flex flex-col items-center border-x-0 md:border-x border-gray-800 px-4">
           <div class="mb-8 overflow-hidden rounded-sm" style="height: 240px; width: 100%;">
             <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=600"
-              alt="Vision" class="w-full h-full object-cover  hover:grayscale transition-all duration-500">
+              alt="Vision" class="w-full h-full object-cover  hover:grayscale transition-all duration-500" data-i18n-alt="about_alt_vision">
           </div>
-          <h3 class="text-2xl tracking-widest font-light mb-6" style="color: #ff9800;">VISION</h3>
+          <h3 class="text-2xl tracking-widest font-light mb-6" style="color: #ff9800;" data-i18n="about_vision_title">VISION</h3>
           <p class="text-sm leading-relaxed text-gray-300">
-            <span class="font-bold text-white">Innovation</span>, continuous improvement, and the search for reliable
-            and cost-effective solutions are at the heart of the company's development and international success.
+            <span class="font-bold text-white" data-i18n="about_innovation">Innovation</span><span data-i18n="about_vision_desc_rest">, continuous improvement, and the search for reliable
+            and cost-effective solutions are at the heart of the company's development and international success.</span>
           </p>
         </div>
 
         <div class="flex flex-col items-center">
           <div class="mb-8 overflow-hidden rounded-sm" style="height: 240px; width: 100%;">
             <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=600"
-              alt="Values" class="w-full h-full object-cover  hover:grayscale transition-all duration-500">
+              alt="Values" class="w-full h-full object-cover  hover:grayscale transition-all duration-500" data-i18n-alt="about_alt_values">
           </div>
-          <h3 class="text-2xl tracking-widest font-light mb-6" style="color: #ff9800;">VALUES</h3>
+          <h3 class="text-2xl tracking-widest font-light mb-6" style="color: #ff9800;" data-i18n="about_values_title">VALUES</h3>
           <ul class="text-sm space-y-2 text-gray-300 font-medium">
-            <li class="hover:text-white transition-colors">Respect</li>
-            <li class="hover:text-white transition-colors">Commitment</li>
-            <li class="hover:text-white transition-colors">Rigor</li>
+            <li class="hover:text-white transition-colors" data-i18n="about_value_1">Respect</li>
+            <li class="hover:text-white transition-colors" data-i18n="about_value_2">Commitment</li>
+            <li class="hover:text-white transition-colors" data-i18n="about_value_3">Rigor</li>
           </ul>
         </div>
 
@@ -560,11 +575,11 @@
       <div class="fade-up flex items-end justify-between">
         <div>
           <div
-            class="mb-4 flex items-center gap-3 font-display text-[13px] font-bold uppercase tracking-[0.2em] text-brand-orange before:h-0.5 before:w-6 before:bg-brand-orange">
+            class="mb-4 flex items-center gap-3 font-display text-[13px] font-bold uppercase tracking-[0.2em] text-brand-orange before:h-0.5 before:w-6 before:bg-brand-orange" data-i18n="about_our_fleet">
             Our Fleet</div>
           <h2
             class="mb-5 font-display text-[clamp(32px,5vw,56px)] font-black uppercase leading-[0.95] tracking-[-0.02em] max-[640px]:text-[42px] max-[380px]:text-4xl">
-            Modern Vehicles.<br />Maintained Daily.</h2>
+            <span data-i18n="about_fleet_title_1">Modern Vehicles.</span><br /><span data-i18n="about_fleet_title_2">Maintained Daily.</span></h2>
         </div>
       </div>
 
@@ -573,7 +588,7 @@
         <div class="group relative row-span-2 overflow-hidden max-[1024px]:row-auto max-[640px]:h-60"><img
             class="block h-full w-full object-cover brightness-[0.7] saturate-[0.75] transition duration-500 group-hover:scale-[1.03] group-hover:brightness-90 group-hover:saturate-100"
             src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=85"
-            alt="Main fleet" />
+            alt="Main fleet" data-i18n-alt="about_alt_main_fleet" />
           <div
             class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-bg/90 to-transparent px-6 py-5 font-display text-base font-bold uppercase tracking-[0.06em]">
             </div>
@@ -581,7 +596,7 @@
         <div class="group relative overflow-hidden max-[640px]:h-60"><img
             class="block h-full w-full object-cover brightness-[0.7] saturate-[0.75] transition duration-500 group-hover:scale-[1.03] group-hover:brightness-90 group-hover:saturate-100"
             src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=900&q=85"
-            alt="Highway transport" />
+            alt="Highway transport" data-i18n-alt="about_alt_highway_transport" />
           <div
             class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-bg/90 to-transparent px-6 py-5 font-display text-base font-bold uppercase tracking-[0.06em]">
             </div>
@@ -589,7 +604,7 @@
         <div class="group relative overflow-hidden max-[640px]:h-60"><img
             class="block h-full w-full object-cover brightness-[0.7] saturate-[0.75] transition duration-500 group-hover:scale-[1.03] group-hover:brightness-90 group-hover:saturate-100"
             src="https://images.unsplash.com/photo-1592838064575-70ed626d3a0e?auto=format&fit=crop&w=900&q=85"
-            alt="Freight transport" />
+            alt="Freight transport" data-i18n-alt="about_alt_freight_transport" />
           <div
             class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-bg/90 to-transparent px-6 py-5 font-display text-base font-bold uppercase tracking-[0.06em]">
             </div>
@@ -597,7 +612,7 @@
         <div class="group relative overflow-hidden max-[640px]:h-60"><img
             class="block h-full w-full object-cover brightness-[0.7] saturate-[0.75] transition duration-500 group-hover:scale-[1.03] group-hover:brightness-90 group-hover:saturate-100"
             src="https://images.unsplash.com/photo-1605007493699-af65834f8a00?auto=format&fit=crop&w=900&q=85"
-            alt="Cargo loading" />
+            alt="Cargo loading" data-i18n-alt="about_alt_cargo_loading" />
           <div
             class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-bg/90 to-transparent px-6 py-5 font-display text-base font-bold uppercase tracking-[0.06em]">
             </div>
@@ -605,7 +620,7 @@
         <div class="group relative overflow-hidden max-[640px]:h-60"><img
             class="block h-full w-full object-cover brightness-[0.7] saturate-[0.75] transition duration-500 group-hover:scale-[1.03] group-hover:brightness-90 group-hover:saturate-100"
             src="https://images.unsplash.com/photo-1586528116493-a029325540fa?auto=format&fit=crop&w=900&q=85"
-            alt="Warehouse" />
+            alt="Warehouse" data-i18n-alt="about_alt_warehouse" />
           <div
             class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-bg/90 to-transparent px-6 py-5 font-display text-base font-bold uppercase tracking-[0.06em]">
            </div>
@@ -620,22 +635,22 @@
       <div class="grid grid-cols-2 items-center gap-20 max-[1024px]:grid-cols-1 max-[1024px]:gap-10">
         <div class="fade-up">
           <div
-            class="mb-4 flex items-center gap-3 font-display text-[13px] font-bold uppercase tracking-[0.2em] text-brand-orange before:h-0.5 before:w-6 before:bg-brand-orange">
+            class="mb-4 flex items-center gap-3 font-display text-[13px] font-bold uppercase tracking-[0.2em] text-brand-orange before:h-0.5 before:w-6 before:bg-brand-orange" data-i18n="about_our_network">
             Our Network</div>
           <h2
             class="mb-5 font-display text-[clamp(32px,5vw,56px)] font-black uppercase leading-[0.95] tracking-[-0.02em] max-[640px]:text-[42px] max-[380px]:text-4xl">
-            Connecting<br />Netherlands<br />& Europe</h2>
-          <p class="mb-7 max-w-[540px] text-[17px] leading-[1.75] text-slate-500">Strategic operating hubs in Rotterdam,
+            <span data-i18n="about_network_title_1">Connecting</span><br /><span data-i18n="about_network_title_2">Netherlands</span><br />& <span data-i18n="about_network_title_3">Europe</span></h2>
+          <p class="mb-7 max-w-[540px] text-[17px] leading-[1.75] text-slate-500" data-i18n="about_strategic_operating_hubs_in_rotterdam_amsterdam_and">Strategic operating hubs in Rotterdam,
             Amsterdam, and Venlo place WKTransport at the heart of European logistics flows — covering 12 countries with
             direct and partner-network lines.</p><a href="#contact"
-            class="inline-block bg-brand-orange px-7 py-3.5 font-display text-sm font-extrabold uppercase tracking-[0.12em] text-white no-underline transition hover:-translate-y-px hover:bg-[#ea6c10]">Plan
+            class="inline-block bg-brand-orange px-7 py-3.5 font-display text-sm font-extrabold uppercase tracking-[0.12em] text-white no-underline transition hover:-translate-y-px hover:bg-[#ea6c10]" data-i18n="about_plan_a_shipment">Plan
             a Shipment →</a>
         </div>
         <div class="fade-up">
           <div class="relative h-[480px] overflow-hidden max-[640px]:h-[330px]"><img
               class="h-full w-full object-cover brightness-[0.55] saturate-[0.6]"
               src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=85"
-              alt="European map coverage" />
+              alt="European map coverage" data-i18n-alt="about_alt_european_map_coverage" />
             <div
               class="absolute inset-0 border border-brand-orange/25 bg-[linear-gradient(135deg,rgba(249,115,22,0.15),transparent_60%)]">
             </div>
@@ -644,7 +659,7 @@
                 class="h-3 w-3 rounded-full bg-brand-orange shadow-[0_0_0_4px_rgba(249,115,22,0.25),0_0_0_8px_rgba(249,115,22,0.1)]">
               </div>
               <div
-                class="whitespace-nowrap bg-brand-bg/80 px-2 py-[3px] font-display text-xs font-bold uppercase tracking-[0.08em] text-white">
+                class="whitespace-nowrap bg-brand-bg/80 px-2 py-[3px] font-display text-xs font-bold uppercase tracking-[0.08em] text-white" data-i18n="about_rotterdam">
                 Rotterdam</div>
             </div>
             <div class="absolute left-[34%] top-[32%] flex flex-col items-center gap-1">
@@ -652,7 +667,7 @@
                 class="h-3 w-3 rounded-full bg-brand-orange shadow-[0_0_0_4px_rgba(249,115,22,0.25),0_0_0_8px_rgba(249,115,22,0.1)]">
               </div>
               <div
-                class="whitespace-nowrap bg-brand-bg/80 px-2 py-[3px] font-display text-xs font-bold uppercase tracking-[0.08em] text-white">
+                class="whitespace-nowrap bg-brand-bg/80 px-2 py-[3px] font-display text-xs font-bold uppercase tracking-[0.08em] text-white" data-i18n="about_amsterdam">
                 Amsterdam</div>
             </div>
             <div class="absolute left-[37%] top-[41%] flex flex-col items-center gap-1">
@@ -660,7 +675,7 @@
                 class="h-3 w-3 rounded-full bg-brand-orange shadow-[0_0_0_4px_rgba(249,115,22,0.25),0_0_0_8px_rgba(249,115,22,0.1)]">
               </div>
               <div
-                class="whitespace-nowrap bg-brand-bg/80 px-2 py-[3px] font-display text-xs font-bold uppercase tracking-[0.08em] text-white">
+                class="whitespace-nowrap bg-brand-bg/80 px-2 py-[3px] font-display text-xs font-bold uppercase tracking-[0.08em] text-white" data-i18n="about_venlo">
                 Venlo</div>
             </div>
           </div>
@@ -677,37 +692,37 @@
       class="absolute inset-0 overflow-hidden after:absolute after:inset-0 after:bg-[linear-gradient(90deg,rgba(17,17,17,0.95)_40%,rgba(17,17,17,0.55)_100%)]">
       <img class="h-full w-full object-cover brightness-[0.3] saturate-50"
         src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=2400&q=90"
-        alt="Transport highway" />
+        alt="Transport highway" data-i18n-alt="about_alt_transport_highway" />
     </div>
     <div
       class="relative z-[2] mx-auto grid w-full max-w-7xl grid-cols-[1fr_auto] items-center gap-[60px] px-12 py-20 max-[1024px]:grid-cols-1 max-[900px]:px-7 max-[900px]:py-[70px]">
       <div class="fade-up">
-        <div class="font-display text-[13px] font-bold uppercase tracking-[0.2em] text-brand-orange">Ready to Ship?
+        <div class="font-display text-[13px] font-bold uppercase tracking-[0.2em] text-brand-orange" data-i18n="about_ready_to_ship">Ready to Ship?
         </div>
         <h2
           class="font-display text-[clamp(44px,5vw,76px)] font-black uppercase leading-[0.95] tracking-[-0.02em] max-[640px]:text-[44px]">
-          Let's Move Your<br /><span class="text-brand-orange">Business</span><br />Forward.</h2>
-        <p class="mt-5 max-w-[480px] text-[17px] text-slate-500">From single shipments to full supply-chain management —
+          <span data-i18n="about_cta_title_1">Let's Move Your</span><br /><span class="text-brand-orange" data-i18n="about_business">Business</span><br /><span data-i18n="about_cta_title_3">Forward.</span></h2>
+        <p class="mt-5 max-w-[480px] text-[17px] text-slate-500" data-i18n="contact_desc">From single shipments to full supply-chain management —
           we handle it all. Contact our team today for a tailored quote within 2 hours.</p>
       </div>
       <div class="fade-up flex min-w-[260px] flex-col gap-4 max-[640px]:min-w-full">
         <div class="flex flex-col gap-[18px] border border-brand-border bg-brand-card/90 px-7 py-6">
           <div class="flex flex-col gap-1.5"><span
-              class="text-xs font-bold uppercase tracking-[0.15em] text-slate-600">📞 Phone</span><a
+              class="text-xs font-bold uppercase tracking-[0.15em] text-slate-600" data-i18n="about_phone">📞 Phone</span><a
               href="tel:+31104567890"
               class="font-display text-xl font-bold text-slate-200 no-underline hover:text-brand-orange">+31 0687888643</a>
           </div>
           
           <div class="h-px bg-brand-border"></div>
           <div class="flex flex-col gap-1.5"><span
-              class="text-xs font-bold uppercase tracking-[0.15em] text-slate-600">✉ Email</span><a
+              class="text-xs font-bold uppercase tracking-[0.15em] text-slate-600" data-i18n="about_email">✉ Email</span><a
               href="mailto:info@nltransportwk.nl"
-              class="font-display text-xl font-bold text-slate-200 no-underline hover:text-brand-orange">info@nltransportwk.nl</a>
+              class="font-display text-xl font-bold text-slate-200 no-underline hover:text-brand-orange" data-i18n="about_info_nltransportwk_nl">info@nltransportwk.nl</a>
           </div>
           <div class="h-px bg-brand-border"></div>
           <div class="flex flex-col gap-1.5"><span
-              class="text-xs font-bold uppercase tracking-[0.15em] text-slate-600">📍 Head Office</span><span
-              class="font-display text-xl font-bold text-slate-400">Hoorn 312 Post code : 2404HL <br>Alphen aan den Rijn, Netherlands</span>
+              class="text-xs font-bold uppercase tracking-[0.15em] text-slate-600" data-i18n="about_head_office">📍 Head Office</span><span
+              class="font-display text-xl font-bold text-slate-400"><span data-i18n="common_address_hoorn">Hoorn 312 Post code : 2404HL</span> <br><span data-i18n="common_address_alphen">Alphen aan den Rijn, Netherlands</span></span>
           </div>
         </div>
       </div>
@@ -719,46 +734,46 @@
     <div class="mx-auto max-w-7xl">
       <div class="mb-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
         <div>
-          <h5 class="mb-5 text-sm font-bold uppercase tracking-widest text-white">Navigation</h5>
+          <h5 class="mb-5 text-sm font-bold uppercase tracking-widest text-white" data-i18n="about_navigation">Navigation</h5>
           <div class="flex flex-col gap-3">
-            <a href="index.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Home</a>
-            <a href="aboutus.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">About Us</a>
-            <a href="services.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Services</a>
-            <a href="career.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Careers</a>
-            <a href="contact.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]">Contact</a>
+            <a href="index.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]" data-i18n="nav_home">Home</a>
+            <a href="aboutus.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]" data-i18n="nav_about">About Us</a>
+            <a href="services.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]" data-i18n="nav_services">Services</a>
+            <a href="career.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]" data-i18n="nav_career">Careers</a>
+            <a href="contact.html" class="text-sm text-slate-400 transition hover:text-[#E8511A]" data-i18n="nav_contact">Contact</a>
           </div>
         </div>
         <div>
-          <h5 class="mb-5 text-sm font-bold uppercase tracking-widest text-white">Address</h5>
-          <p class="mb-6 text-sm text-slate-400">Hoorn 312 Post code : 2404HL<br>Alphen aan den Rijn, Netherlands</p>
-          <h5 class="mb-3 text-sm font-bold uppercase tracking-widest text-white">Contact</h5>
-          <p class="mb-2 text-sm text-slate-400">info@nltransportwk.nl</p>
+          <h5 class="mb-5 text-sm font-bold uppercase tracking-widest text-white" data-i18n="about_address">Address</h5>
+          <p class="mb-6 text-sm text-slate-400"><span data-i18n="common_address_hoorn">Hoorn 312 Post code : 2404HL</span><br><span data-i18n="common_address_alphen">Alphen aan den Rijn, Netherlands</span></p>
+          <h5 class="mb-3 text-sm font-bold uppercase tracking-widest text-white" data-i18n="nav_contact">Contact</h5>
+          <p class="mb-2 text-sm text-slate-400" data-i18n="about_info_nltransportwk_nl">info@nltransportwk.nl</p>
           <p class="text-sm text-slate-400">+31687888643</p>
           <p class="text-sm text-slate-400">+31639496004</p>
         </div>
         <div>
           <a href="index.html" class="inline-block mb-4">
             <img src="assets/images/Mavi Beyaz Minimalist Lojistik Logo (1).png" alt="WK Transport Logo"
-              class="h-32 w-auto object-contain" />
+              class="h-32 w-auto object-contain" data-i18n-alt="about_alt_wk_transport_logo" />
           </a>
-          <p class="mb-5 text-sm leading-7 text-slate-400">Reliable logistics solutions, ensuring your cargo reaches its
+          <p class="mb-5 text-sm leading-7 text-slate-400" data-i18n="about_reliable_logistics_solutions_ensuring_your_cargo_reaches">Reliable logistics solutions, ensuring your cargo reaches its
             destination safely and efficiently.</p>
           <div class="flex flex-wrap gap-2">
             <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
-              href="#" aria-label="Facebook">
+              href="#" aria-label="Facebook" data-i18n-aria-label="about_aria_label_facebook">
               <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
               </svg>
             </a>
             <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
-              href="#" aria-label="X (Twitter)">
+              href="#" aria-label="X (Twitter)" data-i18n-aria-label="about_aria_label_x_twitter">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                 <path
                   d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
               </svg>
             </a>
             <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
-              href="#" aria-label="Instagram">
+              href="#" aria-label="Instagram" data-i18n-aria-label="about_aria_label_instagram">
               <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round" viewBox="0 0 24 24">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -767,7 +782,7 @@
               </svg>
             </a>
             <a class="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-400 transition hover:-translate-y-1 hover:border-[#E8511A] hover:bg-[#E8511A] hover:text-white"
-              href="#" aria-label="LinkedIn">
+              href="#" aria-label="LinkedIn" data-i18n-aria-label="about_aria_label_linkedin">
               <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                 <rect x="2" y="9" width="4" height="12" />
@@ -778,8 +793,8 @@
         </div>
       </div>
       <div class="flex flex-col items-center justify-between gap-4 border-t border-[#252525] pt-6 sm:flex-row">
-        <p class="text-xs text-slate-500">© 2026 WKTransport. All rights reserved.</p>
-        <p class="text-xs text-slate-500">Designed with precision for reliable logistics.</p>
+        <p class="text-xs text-slate-500" data-i18n="about_2026_wktransport_all_rights_reserved">© 2026 WKTransport. All rights reserved.</p>
+        <p class="text-xs text-slate-500" data-i18n="about_designed_with_precision_for_reliable_logistics">Designed with precision for reliable logistics.</p>
       </div>
     </div>
   </footer>
@@ -806,15 +821,29 @@
 
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    // ── Sticky nav color shift
+    const rvObs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('on');
+          rvObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .1, rootMargin: '0px 0px -32px 0px' });
+
+    document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
+
+    const hbg = document.getElementById('hbg');
+    if (hbg) {
+      window.addEventListener('scroll', () => {
+        hbg.style.transform = `translateY(${scrollY * .28}px)`;
+      }, { passive: true });
+    }
+
     window.addEventListener('scroll', () => {
-      const nav = document.querySelector('nav.main-nav');
-      if (window.scrollY > 60) {
-        nav.classList.remove('bg-brand-bg/85');
-        nav.classList.add('bg-brand-bg/95');
-      } else {
-        nav.classList.remove('bg-brand-bg/95');
-        nav.classList.add('bg-brand-bg/85');
+      const nav = document.getElementById('nav');
+      if (nav) {
+        nav.classList.toggle('bg-black', window.scrollY > 60);
+        nav.classList.toggle('bg-black/85', window.scrollY <= 60);
       }
     });
   </script>

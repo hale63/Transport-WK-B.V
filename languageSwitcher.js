@@ -20,7 +20,7 @@
       if (translations) { resolve(translations); return; }
       try {
         var xhr = new XMLHttpRequest();
-        xhr.overrideMimeType('application/json');
+        xhr.overrideMimeType('application/json; charset=UTF-8');
         xhr.open('GET', 'translations.json', true);
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
@@ -52,6 +52,18 @@
 
     const t = translations[lang];
 
+    function setTranslatedText(el, value) {
+      const textNodes = Array.from(el.childNodes).filter(node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim());
+      if (el.children.length && textNodes.length) {
+        const leading = textNodes[0].nodeValue.match(/^\s*/)[0];
+        const trailing = textNodes[0].nodeValue.match(/\s*$/)[0];
+        textNodes[0].nodeValue = leading + value + trailing;
+        textNodes.slice(1).forEach(node => { node.nodeValue = ''; });
+      } else {
+        el.textContent = value;
+      }
+    }
+
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       // Support dot-separated keys like "career.hero_title_1" → look up "career_hero" or just the key
@@ -63,8 +75,28 @@
         value = t[flatKey];
       }
       if (value) {
-        el.textContent = value;
+        setTranslatedText(el, value);
       }
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const value = t[el.getAttribute('data-i18n-placeholder')];
+      if (value) el.setAttribute('placeholder', value);
+    });
+
+    document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+      const value = t[el.getAttribute('data-i18n-alt')];
+      if (value) el.setAttribute('alt', value);
+    });
+
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      const value = t[el.getAttribute('data-i18n-title')];
+      if (value) el.setAttribute('title', value);
+    });
+
+    document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+      const value = t[el.getAttribute('data-i18n-aria-label')];
+      if (value) el.setAttribute('aria-label', value);
     });
 
     // Update active state of language buttons
@@ -86,6 +118,54 @@
 
     // Update html lang attribute
     document.documentElement.setAttribute('lang', lang);
+    updateActiveNavigation();
+  }
+
+  function getCurrentPageName() {
+    const path = window.location.pathname.split('/').pop().toLowerCase();
+    return path || 'index.html';
+  }
+
+  function getLinkPageName(link) {
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('tel:') || href.startsWith('mailto:')) return '';
+    return href.split('#')[0].split('?')[0].split('/').pop().toLowerCase();
+  }
+
+  function setNavText(el, active) {
+    const key = el.getAttribute('data-i18n');
+    const lang = getSavedLanguage();
+    const t = translations && translations[lang] ? translations[lang] : null;
+    if (!key || !t || !t[key]) return;
+
+    const text = t[key].replace(/^\[\s*/, '').replace(/\s*\]$/, '').trim();
+    const value = active ? `[ ${text} ]` : text;
+    const textNodes = Array.from(el.childNodes).filter(node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim());
+    if (el.children.length && textNodes.length) {
+      const leading = textNodes[0].nodeValue.match(/^\s*/)[0];
+      const trailing = textNodes[0].nodeValue.match(/\s*$/)[0];
+      textNodes[0].nodeValue = leading + value + trailing;
+      textNodes.slice(1).forEach(node => { node.nodeValue = ''; });
+    } else {
+      el.textContent = value;
+    }
+  }
+
+  function updateActiveNavigation() {
+    const current = getCurrentPageName();
+    document.querySelectorAll('header nav a[data-i18n], header a[href$="getaquote.html"][data-i18n="nav_quote"], #mobileMenu a[data-i18n]').forEach(link => {
+      const linkPage = getLinkPageName(link);
+      const active = linkPage === current || (current === 'index.html' && linkPage === 'index.html');
+      const isDesktopNav = Boolean(link.closest('nav'));
+
+      link.classList.toggle('text-[#E8511A]', active);
+      if (isDesktopNav) {
+        link.classList.toggle('before:w-full', active);
+        link.classList.toggle('before:w-0', !active);
+      }
+
+      setNavText(link, active);
+    });
   }
 
   // Switch language

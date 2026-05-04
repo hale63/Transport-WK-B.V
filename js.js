@@ -8,38 +8,73 @@
 ///index services
 const SERVICES = [
   {
+    labelKey: 'home_service_label_warehousing',
     label: 'Warehousing',
+    titleKey: 'services_1_title',
     title: 'Warehousing',
+    descKey: 'home_service_warehousing_desc',
     desc: 'Secure and temperature-controlled storage solutions tailored to protect your inventory and optimize your supply chain.',
-    bullets: ['12,000 m² Secure Storage', 'Temperature-Controlled Zones', 'WMS-Managed Inventory'],
+    bullets: [
+      { key: 'home_service_warehousing_bullet_1', text: '12,000 m² Secure Storage' },
+      { key: 'home_service_warehousing_bullet_2', text: 'Temperature-Controlled Zones' },
+      { key: 'home_service_warehousing_bullet_3', text: 'WMS-Managed Inventory' }
+    ],
     img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80'
   },
   {
+    labelKey: 'home_service_label_shipment',
     label: 'Shipment',
+    titleKey: 'services_2_title',
     title: 'Shipment Management',
+    descKey: 'home_service_shipment_desc',
     desc: 'End-to-end shipment tracking and management ensuring your cargo reaches its destination safely and on time.',
-    bullets: ['Real-Time GPS Tracking', 'Dedicated Account Manager', 'Customs Pre-Clearance'],
+    bullets: [
+      { key: 'home_service_shipment_bullet_1', text: 'Real-Time GPS Tracking' },
+      { key: 'home_service_shipment_bullet_2', text: 'Dedicated Account Manager' },
+      { key: 'home_service_shipment_bullet_3', text: 'Customs Pre-Clearance' }
+    ],
     img: 'assets/images/servıces.jpg'
   },
   {
+    labelKey: 'home_service_label_transport',
     label: 'Transport',
+    titleKey: 'services_3_title',
     title: 'Heavy & Light Transportation',
+    descKey: 'home_service_transport_desc',
     desc: 'Versatile transportation options for payloads of all sizes, from full-truckloads (FTL) to less-than-truckloads (LTL).',
-    bullets: ['Flexible FTL & LTL Options', 'Euro 6 Certified Fleet', 'Optimized Routes'],
+    bullets: [
+      { key: 'home_service_transport_bullet_1', text: 'Flexible FTL & LTL Options' },
+      { key: 'home_service_transport_bullet_2', text: 'Euro 6 Certified Fleet' },
+      { key: 'home_service_transport_bullet_3', text: 'Optimized Routes' }
+    ],
     img: 'https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80'
   },
   {
+    labelKey: 'home_service_label_same_day',
     label: 'Same-Day',
+    titleKey: 'services_4_title',
     title: 'Same-Day Delivery',
+    descKey: 'home_service_same_day_desc',
     desc: 'Time-critical express delivery services designed to reach your customers at record speed with live driver tracking.',
-    bullets: ['Priority Courier Network', 'Live Driver Tracking', 'Proof-Of-Delivery Signature'],
+    bullets: [
+      { key: 'home_service_same_day_bullet_1', text: 'Priority Courier Network' },
+      { key: 'home_service_same_day_bullet_2', text: 'Live Driver Tracking' },
+      { key: 'home_service_same_day_bullet_3', text: 'Proof-Of-Delivery Signature' }
+    ],
     img: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&q=80'
   },
   {
+    labelKey: 'home_service_label_returns',
     label: 'Returns',
+    titleKey: 'services_5_title',
     title: 'Returns Management',
+    descKey: 'home_service_returns_desc',
     desc: 'Streamlined reverse logistics to handle returns efficiently, reducing costs and improving customer satisfaction.',
-    bullets: ['Reverse Logistics Optimization', 'Inspection & Sorting', 'Rapid Restocking'],
+    bullets: [
+      { key: 'home_service_returns_bullet_1', text: 'Reverse Logistics Optimization' },
+      { key: 'home_service_returns_bullet_2', text: 'Inspection & Sorting' },
+      { key: 'home_service_returns_bullet_3', text: 'Rapid Restocking' }
+    ],
     img: 'https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&q=80'
   }
 ];
@@ -62,6 +97,7 @@ if (wpContainer) {
 
     const lbl = document.createElement('span');
     lbl.textContent = s.label;
+    lbl.setAttribute('data-i18n', s.labelKey);
     lbl.dataset.li = i;
     lbl.style.cssText = 'font-family:Barlow Condensed,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#4b5563;transition:color 0.3s;cursor:pointer;';
     lbl.onclick = () => goTo(i);
@@ -78,18 +114,18 @@ if (wpContainer) {
     card.onclick = () => goTo(i);
     card.innerHTML = `
     <div class="card-img-wrap" style="width:38%; min-height:220px; flex-shrink:0;">
-      <img src="${s.img}" alt="${s.title}" style="width:100%;height:100%;object-fit:cover;"/>
+      <img src="${s.img}" alt="${s.title}" data-i18n-alt="${s.titleKey}" style="width:100%;height:100%;object-fit:cover;"/>
     </div>
     <div style="padding:28px 24px; display:flex; flex-direction:column; justify-content:space-between; flex:1; gap:14px;">
       <div>
-        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:#fff;letter-spacing:0.02em;text-transform:uppercase;margin-bottom:10px;">${s.title}</h3>
-        <p style="font-size:13px;color:#6b7280;line-height:1.65;">${s.desc}</p>
+        <h3 data-i18n="${s.titleKey}" style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:#fff;letter-spacing:0.02em;text-transform:uppercase;margin-bottom:10px;">${s.title}</h3>
+        <p data-i18n="${s.descKey}" style="font-size:13px;color:#6b7280;line-height:1.65;">${s.desc}</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:7px;">
-        ${s.bullets.map(b => `<div class="bullet-item">${b}</div>`).join('')}
+        ${s.bullets.map(b => `<div class="bullet-item" data-i18n="${b.key}">${b.text}</div>`).join('')}
       </div>
       <div style="padding-top:6px;">
-        <button class="read-more-btn">
+        <button class="read-more-btn" data-i18n="home_services_read_more">
           Read More
           <span class="arrow-circle">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
