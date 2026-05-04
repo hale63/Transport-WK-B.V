@@ -267,7 +267,7 @@ if (revealElements.length) {
 const mapElement = document.getElementById("map");
 
 if (mapElement && typeof L !== "undefined") {
-  const map = L.map("map").setView([37.7578, -122.5076], 12);
+  const map = L.map("map").setView([52.1391217, 4.6335874], 16);
 
   L.tileLayer(
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
@@ -276,7 +276,7 @@ if (mapElement && typeof L !== "undefined") {
     }
   ).addTo(map);
 
-  L.circleMarker([37.7578, -122.5076], {
+  L.circleMarker([52.1391217, 4.6335874], {
     color: "#ff6600",
     fillColor: "#ff6600",
     fillOpacity: 1,
